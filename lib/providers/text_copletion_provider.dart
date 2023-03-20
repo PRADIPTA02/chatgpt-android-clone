@@ -209,50 +209,50 @@ class TextCompletProvider with ChangeNotifier {
         listOfAllMessages.values.toList()[sessionIndex];
     List<List<Message>> convertedMessageList = tempMessageList.messages;
     if (_message_update_avalable) {
-      if(index>0 && index <= convertedMessageList.length-1){
-      if (convertedMessageList[index-1][0].isApi) {
-        var messageText = _chat_imput_Controler.text;
-        _chat_imput_Controler.text = "";
-        _save_and_cancel_button = "";
-        Message tempUserMessage = Message(
-          sessionId: sessions.values.toList()[sessionIndex].sessionId,
-          message_text: messageText,
-          isApi: false,
-          id: uuid.v4(),
-          timeStamp: DateTime.now().millisecondsSinceEpoch ~/ 1000,
-        );
-        convertedMessageList[index].add(tempUserMessage);
-        listOfAllMessages.values.toList()[sessionIndex].save();
-        listOfAllMessages.values
-            .toList()[sessionIndex]
-            .messages[index][0]
-            .indexOfUpdateMessage = listOfAllMessages.values
-                .toList()[sessionIndex]
-                .messages[index]
-                .length -
-            1;
+      if (index > 0 && index <= convertedMessageList.length - 1) {
+        if (convertedMessageList[index - 1][0].isApi) {
+          var messageText = _chat_imput_Controler.text;
+          _chat_imput_Controler.text = "";
+          _save_and_cancel_button = "";
+          Message tempUserMessage = Message(
+            sessionId: sessions.values.toList()[sessionIndex].sessionId,
+            message_text: messageText,
+            isApi: false,
+            id: uuid.v4(),
+            timeStamp: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+          );
+          convertedMessageList[index].add(tempUserMessage);
+          listOfAllMessages.values.toList()[sessionIndex].save();
+          listOfAllMessages.values
+              .toList()[sessionIndex]
+              .messages[index][0]
+              .indexOfUpdateMessage = listOfAllMessages.values
+                  .toList()[sessionIndex]
+                  .messages[index]
+                  .length -
+              1;
 
-        notifyListeners();
-        Message tempApiMessage = Message(
-          sessionId: sessions.values.toList()[sessionIndex].sessionId,
-          message_text: await getAiResponse(messageText, sessionIndex, true),
-          isApi: true,
-          id: uuid.v4(),
-          timeStamp: DateTime.now().millisecondsSinceEpoch ~/ 1000,
-        );
-        convertedMessageList[index-1].add(tempApiMessage);
-        tempMessageList = Conversation(messages: convertedMessageList);
-        listOfAllMessages.values.toList()[sessionIndex].save();
-        listOfAllMessages.values
-            .toList()[sessionIndex]
-            .messages[index-1][0]
-            .indexOfUpdateMessage = listOfAllMessages.values
-                .toList()[sessionIndex]
-                .messages[index-1]
-                .length -
-            1;
-        _message_update_avalable = false;
-      }
+          notifyListeners();
+          Message tempApiMessage = Message(
+            sessionId: sessions.values.toList()[sessionIndex].sessionId,
+            message_text: await getAiResponse(messageText, sessionIndex, true),
+            isApi: true,
+            id: uuid.v4(),
+            timeStamp: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+          );
+          convertedMessageList[index - 1].add(tempApiMessage);
+          tempMessageList = Conversation(messages: convertedMessageList);
+          listOfAllMessages.values.toList()[sessionIndex].save();
+          listOfAllMessages.values
+              .toList()[sessionIndex]
+              .messages[index - 1][0]
+              .indexOfUpdateMessage = listOfAllMessages.values
+                  .toList()[sessionIndex]
+                  .messages[index - 1]
+                  .length -
+              1;
+          _message_update_avalable = false;
+        }
       }
     }
     notifyListeners();
@@ -298,7 +298,7 @@ class TextCompletProvider with ChangeNotifier {
     }
     _all_messages =
         listOfAllMessages.values.toList().map((e) => e.messages).toList();
-    _isLoading =false;
+    _isLoading = false;
     notifyListeners();
   }
 
@@ -367,7 +367,62 @@ class TextCompletProvider with ChangeNotifier {
           .messages[upperMessageIndex][index]
           .isAnimate = false;
     }
-    listOfAllMessages.values.toList()[_current_session_index].save();
+    listOfAllMessages.values.toList()[sessionIndex].save();
+  }
+
+  void likeMessage(int index, String id, int sessionIndex, int upperIndex,bool isCarouselMessage) {
+    if (!isCarouselMessage) {
+      if (listOfAllMessages.values
+              .toList()[sessionIndex]
+              .messages
+              .toList()[index][0]
+              .id ==
+          id) {
+        var value = listOfAllMessages.values.toList()[sessionIndex].messages.toList()[index][0].isLiked;
+        if(value == false)listOfAllMessages.values.toList()[sessionIndex].messages.toList()[upperIndex][index].isDisLiked = false;
+        listOfAllMessages.values.toList()[sessionIndex].messages.toList()[index][0].isLiked = !value;
+      }
+    } else {
+      if (listOfAllMessages.values
+              .toList()[sessionIndex]
+              .messages
+              .toList()[upperIndex][index]
+              .id ==
+          id) {
+        var value = listOfAllMessages.values.toList()[sessionIndex].messages.toList()[upperIndex][index].isLiked;
+        if(value == false)listOfAllMessages.values.toList()[sessionIndex].messages.toList()[upperIndex][index].isDisLiked = false;
+        listOfAllMessages.values.toList()[sessionIndex].messages.toList()[upperIndex][index].isLiked = !value;
+      }
+    }
+    listOfAllMessages.values.toList()[sessionIndex].save();
+    notifyListeners();
+  }
+  void disLikeMessage(int index, String id, int sessionIndex, int upperIndex,bool isCarouselMessage) {
+    if (!isCarouselMessage) {
+      if (listOfAllMessages.values
+              .toList()[sessionIndex]
+              .messages
+              .toList()[index][0]
+              .id ==
+          id) {
+        var value = listOfAllMessages.values.toList()[sessionIndex].messages.toList()[index][0].isDisLiked;
+        if(value == false)listOfAllMessages.values.toList()[sessionIndex].messages.toList()[upperIndex][index].isLiked = false;
+        listOfAllMessages.values.toList()[sessionIndex].messages.toList()[index][0].isDisLiked = !value;
+      }
+    } else {
+      if (listOfAllMessages.values
+              .toList()[sessionIndex]
+              .messages
+              .toList()[upperIndex][index]
+              .id ==
+          id) {
+        var value = listOfAllMessages.values.toList()[sessionIndex].messages.toList()[upperIndex][index].isDisLiked;
+        if(value == false)listOfAllMessages.values.toList()[sessionIndex].messages.toList()[upperIndex][index].isLiked = false;
+        listOfAllMessages.values.toList()[sessionIndex].messages.toList()[upperIndex][index].isDisLiked = !value;
+      }
+    }
+    listOfAllMessages.values.toList()[sessionIndex].save();
+    notifyListeners();
   }
 
   void updateCarouselMessageLowerIndex(
@@ -379,11 +434,13 @@ class TextCompletProvider with ChangeNotifier {
     listOfAllMessages.values.toList()[sessionIndex].save();
     notifyListeners();
   }
-  void refresh(){
+
+  void refresh() {
     _isLoading = false;
-    _chat_imput_Controler.text="";
+    _chat_imput_Controler.text = "";
     _isTyping = false;
-    _is_speaking =false;
+    _is_speaking = false;
+    FocusManager.instance.primaryFocus?.unfocus();
     notifyListeners();
   }
 

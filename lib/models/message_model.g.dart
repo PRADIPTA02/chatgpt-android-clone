@@ -25,13 +25,14 @@ class MessageAdapter extends TypeAdapter<Message> {
     )
       ..isAnimate = fields[4] as bool
       ..isLiked = fields[5] as bool
-      ..indexOfUpdateMessage = fields[7] as int;
+      ..indexOfUpdateMessage = fields[7] as int
+      ..isDisLiked = fields[8] as bool;
   }
 
   @override
   void write(BinaryWriter writer, Message obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.message_text)
       ..writeByte(1)
@@ -47,7 +48,9 @@ class MessageAdapter extends TypeAdapter<Message> {
       ..writeByte(6)
       ..write(obj.sessionId)
       ..writeByte(7)
-      ..write(obj.indexOfUpdateMessage);
+      ..write(obj.indexOfUpdateMessage)
+      ..writeByte(8)
+      ..write(obj.isDisLiked);
   }
 
   @override

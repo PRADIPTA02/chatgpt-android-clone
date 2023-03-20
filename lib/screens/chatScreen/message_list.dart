@@ -46,6 +46,8 @@ class MessegeList extends StatelessWidget {
                     sessionIndex: _textCompletionProvider.CurrentSessionIndex,
                     isCarouselMessage: false,
                     upperMessageIndex: index,
+                    isLiked: messages[index][0].isLiked,
+                    isDisLiked: messages[index][0].isDisLiked,
                   ):CarouselMessageBody(ms: messages[index],upeerMessageIndex: index, sessionIndex: _textCompletionProvider.CurrentSessionIndex, )
           ));
     });

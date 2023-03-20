@@ -34,6 +34,8 @@ class CarouselMessageBody extends StatelessWidget {
             sessionIndex: _textCompletionProvider.CurrentSessionIndex,
             isCarouselMessage: true,
             upperMessageIndex: upeerMessageIndex,
+            isLiked: ms[messageIndex].isLiked,
+            isDisLiked: ms[messageIndex].isDisLiked,
           ),
           ms[0].isApi? Row(
             mainAxisAlignment: MainAxisAlignment.center,

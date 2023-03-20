@@ -17,7 +17,9 @@ class SingleMessageBody extends StatelessWidget {
     required this.messageIndex,
     required this.sessionIndex,
     required this.isCarouselMessage,
-    required this.upperMessageIndex
+    required this.upperMessageIndex,
+    required this.isLiked,
+    required this.isDisLiked
   });
   final String text;
   final bool isApi;
@@ -28,6 +30,8 @@ class SingleMessageBody extends StatelessWidget {
   final int sessionIndex;
   final bool isCarouselMessage;
   final int upperMessageIndex;
+  final bool isLiked;
+  final bool isDisLiked;
 
   String getTime(int timestamp) {
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
@@ -124,17 +128,34 @@ class SingleMessageBody extends StatelessWidget {
                       Row(
                         children: [
                           IconButton(
-                              onPressed: () => {},
-                              icon: const Icon(
-                                Icons.thumb_up_outlined,
-                                color: Colors.white70,
+                              onPressed: () => {
+                                isCarouselMessage?
+                                _textCompletionProvider.likeMessage(messageIndex,id,sessionIndex,upperMessageIndex, true):
+                                _textCompletionProvider.likeMessage(messageIndex ,id,sessionIndex,upperMessageIndex, false),
+                              },
+                              icon: isLiked?const Icon(
+                                Icons.thumb_up_alt,
+                                color: cgSecondary,
+                              ):
+                             const Icon(
+                                Icons.thumb_up_off_alt,
+                                color:  Colors.white70,
                               )),
                           IconButton(
-                              onPressed: () => {},
-                              icon: const Icon(
-                                Icons.thumb_down_outlined,
+                              onPressed: () => {
+                                isCarouselMessage?
+                                _textCompletionProvider.disLikeMessage(messageIndex,id,sessionIndex,upperMessageIndex, true):
+                                _textCompletionProvider.disLikeMessage(messageIndex ,id,sessionIndex,upperMessageIndex, false),
+                              },
+                              icon: isDisLiked ?const Icon(
+                                Icons.thumb_down_alt,
+                                color: Color.fromARGB(255, 244, 67, 54),
+                              )
+                              :const Icon(
+                                Icons.thumb_down_off_alt,
                                 color: Colors.white70,
-                              ))
+                              )
+                              )
                         ],
                       ),
                     ],
