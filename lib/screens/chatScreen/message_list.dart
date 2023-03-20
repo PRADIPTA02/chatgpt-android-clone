@@ -44,7 +44,9 @@ class MessegeList extends StatelessWidget {
                     id: messages[index][0].id,
                     messageIndex: index,
                     sessionIndex: _textCompletionProvider.CurrentSessionIndex,
-                  ):CarouselMessageBody(ms: messages[index],upeerMessageIndex: index,)
+                    isCarouselMessage: false,
+                    upperMessageIndex: index,
+                  ):CarouselMessageBody(ms: messages[index],upeerMessageIndex: index, sessionIndex: _textCompletionProvider.CurrentSessionIndex, )
           ));
     });
   }

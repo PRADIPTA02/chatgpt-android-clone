@@ -18,7 +18,7 @@ class ChatScreenSidebar extends StatelessWidget {
         child: Padding(
           padding:
               const EdgeInsets.only(top: 20, bottom: 20, left: 10, right: 10),
-          child: Consumer(
+          child: Consumer<TextCompletProvider>(
             builder: (context, value, child) => Column(
               children: [
                 InkWell(
@@ -63,6 +63,8 @@ class ChatScreenSidebar extends StatelessWidget {
                         onTap: () => {
                           _textCompletionProvider.changeShowSaveAndCancelButton(
                               "", false),
+                          _textCompletionProvider.changeSessionDeletation(false),
+                              _textCompletionProvider.setMessageUpdate(false,""),
                           _textCompletionProvider.changeIsloadingState(),
                           _textCompletionProvider.changeCurrentSessionIndex(
                               _textCompletionProvider.allSesions.length -
@@ -150,7 +152,7 @@ class ChatScreenSidebar extends StatelessWidget {
                                                             1 -
                                                             index),
                                                 _textCompletionProvider
-                                                    .changeSessionDeletation(),
+                                                    .changeSessionDeletation(false),
                                                 _textCompletionProvider
                                                     .setSessionIndex(-1),
                                               }
@@ -197,7 +199,7 @@ class ChatScreenSidebar extends StatelessWidget {
                                         InkWell(
                                           onTap: () => {
                                             _textCompletionProvider
-                                                .changeSessionDeletation(),
+                                                .changeSessionDeletation(_textCompletionProvider.isSessionDeleting?false:true),
                                             _textCompletionProvider
                                                 .setSessionIndex(index)
                                           },

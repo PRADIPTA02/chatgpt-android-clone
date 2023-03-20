@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/text_copletion_provider.dart';
 
-class CarouselMessageBody extends StatefulWidget {
-   CarouselMessageBody({super.key,required this.ms,required this.upeerMessageIndex});
-   final List<Message> ms;
-   late int messageIndex = 0;
+
+class CarouselMessageBody extends StatelessWidget {
+     CarouselMessageBody({
+    super.key,
+    required this.ms,
+    required this.upeerMessageIndex,
+    required this.sessionIndex
+    });
+    final List<Message> ms;
+    late int messageIndex = ms[0].indexOfUpdateMessage;
     final upeerMessageIndex;
-  
-
-  @override
-  State<CarouselMessageBody> createState() => _CarouselMessageBodyState();
-}
-
-class _CarouselMessageBodyState extends State<CarouselMessageBody> {
+    final sessionIndex ;
 
   @override
   Widget build(BuildContext context) {
@@ -25,29 +25,29 @@ class _CarouselMessageBodyState extends State<CarouselMessageBody> {
       builder: (context, value, child) => Column(
         children: [
           SingleMessageBody(
-            text: widget.ms[widget.messageIndex].message_text,
-            isApi: widget.ms[widget.messageIndex].isApi,
-            isAnimate: widget.ms[widget.messageIndex].isAnimate,
-            timeStamp: widget.ms[widget.messageIndex].timeStamp,
-            id: widget.ms[widget.messageIndex].id,
-            messageIndex: widget.messageIndex,
+            text: ms[messageIndex].message_text,
+            isApi: ms[messageIndex].isApi,
+            isAnimate: ms[messageIndex].isAnimate,
+            timeStamp: ms[messageIndex].timeStamp,
+            id: ms[messageIndex].id,
+            messageIndex: messageIndex,
             sessionIndex: _textCompletionProvider.CurrentSessionIndex,
+            isCarouselMessage: true,
+            upperMessageIndex: upeerMessageIndex,
           ),
-          Row(
+          ms[0].isApi? Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
                   onPressed: () => {
-                       setState(()=>{
-                           widget.messageIndex = --widget.messageIndex%widget.ms.length
-                       })
+                       _textCompletionProvider.updateCarouselMessageLowerIndex(sessionIndex,upeerMessageIndex,(messageIndex-1)%ms.length)
                       },
                   icon: const Icon(
                     Icons.arrow_back_ios,
                     color: Colors.white70,
                   )),
               Text(
-                "${widget.messageIndex + 1} ",
+                "${messageIndex + 1} ",
                 style: const TextStyle(
                     color: Colors.white70,
                     fontSize: 20,
@@ -61,7 +61,7 @@ class _CarouselMessageBodyState extends State<CarouselMessageBody> {
                     fontWeight: FontWeight.bold),
               ),
               Text(
-                " ${widget.ms.length}",
+                " ${ms.length}",
                 style: const TextStyle(
                     color: Colors.white70,
                     fontSize: 20,
@@ -69,13 +69,11 @@ class _CarouselMessageBodyState extends State<CarouselMessageBody> {
               ),
               IconButton(
                   onPressed: () => {
-                       setState(()=>{
-                           widget.messageIndex = ++widget.messageIndex%widget.ms.length
-                       })
+                      _textCompletionProvider.updateCarouselMessageLowerIndex(sessionIndex,upeerMessageIndex,(1+messageIndex)%ms.length)
                       },
                   icon: const Icon(Icons.arrow_forward_ios, color: Colors.white70))
             ],
-          )
+          ):const SizedBox()
         ],
       ),
     );

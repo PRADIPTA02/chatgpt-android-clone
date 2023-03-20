@@ -16,6 +16,8 @@ class SingleMessageBody extends StatelessWidget {
     required this.id,
     required this.messageIndex,
     required this.sessionIndex,
+    required this.isCarouselMessage,
+    required this.upperMessageIndex
   });
   final String text;
   final bool isApi;
@@ -24,6 +26,8 @@ class SingleMessageBody extends StatelessWidget {
   final String id;
   final int messageIndex;
   final int sessionIndex;
+  final bool isCarouselMessage;
+  final int upperMessageIndex;
 
   String getTime(int timestamp) {
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
@@ -78,11 +82,11 @@ class SingleMessageBody extends StatelessWidget {
                           ],
                           totalRepeatCount: 1,
                           onFinished: () {
-                            if (isApi) {
-                              _textCompletionProvider.changeIsloadingState();
-                            }
+                            isCarouselMessage?
                             _textCompletionProvider
-                                .changeAnimate(messageIndex);
+                                .changeAnimate(messageIndex,false,upperMessageIndex):
+                            _textCompletionProvider
+                                .changeAnimate(messageIndex,true,upperMessageIndex);
                           },
                           isRepeatingAnimation: false,
                         )
@@ -146,7 +150,7 @@ class SingleMessageBody extends StatelessWidget {
                                 MaterialStateProperty.all<Color>(cgSecondary),
                           ),
                           onPressed: () => {
-                            _textCompletionProvider.updateMessage(messageIndex-1,id,_textCompletionProvider.CurrentSessionIndex)
+                            _textCompletionProvider.updateMessage(upperMessageIndex,id,sessionIndex)
                           },
                           child: const Text(
                             "Save & Submit",

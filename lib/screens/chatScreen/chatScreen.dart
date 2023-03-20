@@ -44,6 +44,14 @@ class ChatScreen extends StatelessWidget {
                         size: 30,
                         color: Colors.white70,
                       )),
+                  IconButton(
+                      onPressed: () =>
+                          {_textCompletionProvider.refresh()},
+                      icon: const Icon(
+                        Icons.sync,
+                        size: 30,
+                        color: Colors.white70,
+                      )),
                 ],
               ),
               drawer: const ChatScreenSidebar(),
@@ -121,7 +129,7 @@ class ChatScreen extends StatelessWidget {
                                                   else if (_textCompletionProvider
                                                           .chat_imput_Controler
                                                           .text !=
-                                                      "")
+                                                      ""&&!_textCompletionProvider.messageUpdateAvalable)
                                                     {
                                                       _textCompletionProvider
                                                           .addMessage(

@@ -17,20 +17,21 @@ class MessageAdapter extends TypeAdapter<Message> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Message(
-      sessionId: fields[6] as dynamic,
+      sessionId: fields[6] as String,
       message_text: fields[0] as String,
       isApi: fields[3] as bool,
       id: fields[1] as String,
       timeStamp: fields[2] as int,
     )
       ..isAnimate = fields[4] as bool
-      ..isLiked = fields[5] as bool;
+      ..isLiked = fields[5] as bool
+      ..indexOfUpdateMessage = fields[7] as int;
   }
 
   @override
   void write(BinaryWriter writer, Message obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.message_text)
       ..writeByte(1)
@@ -44,7 +45,9 @@ class MessageAdapter extends TypeAdapter<Message> {
       ..writeByte(5)
       ..write(obj.isLiked)
       ..writeByte(6)
-      ..write(obj.sessionId);
+      ..write(obj.sessionId)
+      ..writeByte(7)
+      ..write(obj.indexOfUpdateMessage);
   }
 
   @override

@@ -17,7 +17,9 @@ class Message extends HiveObject{
   @HiveField(5)
   bool isLiked = false;
   @HiveField(6)
-  final sessionId;
+  final String sessionId;
+  @HiveField(7)
+  int indexOfUpdateMessage=0;
   // this function for typing animate effect run only first time 
   void changeAnimate(){
     isAnimate = false;
