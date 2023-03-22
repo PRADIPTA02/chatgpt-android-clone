@@ -188,8 +188,12 @@ class ChatScreen extends StatelessWidget {
                   FloatingActionButtonLocation.miniEndFloat,
               floatingActionButton: _textCompletionProvider.safeToScroll
                   ? Container(
+                    height: 35,
                       margin: const EdgeInsets.only(bottom: 100),
                       child: FloatingActionButton(
+                        shape:BeveledRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(3))
+     ),
                           backgroundColor: cbgColor,
                           elevation: 0,
                           mini: true,

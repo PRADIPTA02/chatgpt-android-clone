@@ -68,7 +68,7 @@ class SingleMessageBody extends StatelessWidget {
                   width: 5,
                 ),
                 Expanded(
-                  child: isApi && isAnimate&&_textCompletionProvider.CurrentSessionIndex==sessionIndex
+                  child: isApi && isAnimate && _textCompletionProvider.CurrentSessionIndex == sessionIndex
                       ? AnimatedTextKit(
                           repeatForever: false,
                           animatedTexts: [
@@ -88,9 +88,9 @@ class SingleMessageBody extends StatelessWidget {
                           onFinished: () {
                             isCarouselMessage?
                             _textCompletionProvider
-                                .changeAnimate(messageIndex,false,upperMessageIndex):
+                                .changeAnimate(messageIndex,false,upperMessageIndex,sessionIndex):
                             _textCompletionProvider
-                                .changeAnimate(messageIndex,true,upperMessageIndex);
+                                .changeAnimate(messageIndex,true,upperMessageIndex,sessionIndex);
                           },
                           isRepeatingAnimation: false,
                         )

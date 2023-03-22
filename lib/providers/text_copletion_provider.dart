@@ -27,8 +27,8 @@ class TextCompletProvider with ChangeNotifier {
     _current_session_index = sessions.values.toList().length - 1;
     _all_messages =
         listOfAllMessages.values.toList().map((e) => e.messages).toList();
-    print(listOfAllMessages.values.toList().length);
-    print(sessions.values.toList().length);
+    // print(listOfAllMessages.values.toList().length);
+    // print(sessions.values.toList().length);
     //  print(sessions.values.toList());
     //  print(listOfAllMessages.values.toList());
     //    for(int i=0;i<listOfAllMessages.values.toList().length;i++){
@@ -355,7 +355,7 @@ class TextCompletProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void changeAnimate(int index, bool isCarouselMessage, int upperMessageIndex) {
+  void changeAnimate(int index, bool isCarouselMessage, int upperMessageIndex , int sessionIndex) {
     if (isCarouselMessage) {
       listOfAllMessages.values
           .toList()[_current_session_index]
@@ -436,6 +436,7 @@ class TextCompletProvider with ChangeNotifier {
   }
 
   void refresh() {
+    _all_messages =  listOfAllMessages.values.toList().map((e) => e.messages).toList();
     _isLoading = false;
     _chat_imput_Controler.text = "";
     _isTyping = false;

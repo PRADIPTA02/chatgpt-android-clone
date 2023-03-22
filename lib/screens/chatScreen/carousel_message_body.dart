@@ -31,7 +31,7 @@ class CarouselMessageBody extends StatelessWidget {
             timeStamp: ms[messageIndex].timeStamp,
             id: ms[messageIndex].id,
             messageIndex: messageIndex,
-            sessionIndex: _textCompletionProvider.CurrentSessionIndex,
+            sessionIndex: sessionIndex,
             isCarouselMessage: true,
             upperMessageIndex: upeerMessageIndex,
             isLiked: ms[messageIndex].isLiked,

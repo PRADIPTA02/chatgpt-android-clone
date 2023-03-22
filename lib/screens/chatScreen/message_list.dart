@@ -8,7 +8,7 @@ import 'single_message_body.dart';
 import 'package:flutter_list_view/flutter_list_view.dart';
 
 class MessegeList extends StatelessWidget {
-  MessegeList({super.key});
+  const MessegeList({super.key});
   @override
   Widget build(BuildContext context) {
     final _textCompletionProvider =
