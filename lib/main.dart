@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:chatgpt/providers/image_generation_provider.dart';
 import 'package:chatgpt/providers/internet_connection_check_provider.dart';
 import 'package:chatgpt/providers/text_copletion_provider.dart';
+import 'package:chatgpt/screens/auth/AuthScreen/auth_screen.dart';
 import 'package:chatgpt/screens/auth/loginScreen/login_screen.dart';
 import 'package:chatgpt/screens/chatScreen/chatScreen.dart';
 import 'package:chatgpt/screens/homeScreen/home_screen.dart';
@@ -69,7 +70,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: const LoginScreen()),
+          home: const AuthScren()),
     );
   }
 }

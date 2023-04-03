@@ -2,6 +2,7 @@ import 'package:chatgpt/screens/auth/common/authButton.dart';
 import 'package:chatgpt/screens/auth/common/authOptionDevider.dart';
 import 'package:chatgpt/screens/auth/common/authSubmtButton.dart';
 import 'package:chatgpt/util/constants/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -18,7 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   String _email = '';
   String _password = '';
-  bool showPassword =false;
+  bool showPassword = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       AuthButton(
                           ontap: () => {},
-                          buttonIcon:'assets/images/googleIcon.png'),
+                          buttonIcon: 'assets/images/googleIcon.png'),
                       AuthButton(
                           ontap: () => {},
                           buttonIcon: 'assets/images/phoneIcon.png')
@@ -86,7 +87,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: TextFormField(
                               cursorColor: cgSecondary,
                               keyboardType: TextInputType.emailAddress,
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
                               style: GoogleFonts.nunito(
                                   color: Colors.white70,
                                   fontSize: 18,
@@ -118,8 +120,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 errorStyle: TextStyle(
                                     fontSize: 15, fontWeight: FontWeight.bold),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(width: 2, color: Colors.white30),
+                                  borderSide: BorderSide(
+                                      width: 2, color: Colors.white30),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide:
@@ -152,7 +154,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   color: Colors.white70,
                                   fontSize: 18,
                                   fontWeight: FontWeight.w700),
-                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter a password';
@@ -166,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 _password = value!;
                               },
                               obscureText: !showPassword,
-                              decoration:  InputDecoration(
+                              decoration: InputDecoration(
                                   prefixIcon: const Icon(
                                     Icons.lock_outline,
                                     color: Colors.white70,
@@ -174,10 +177,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                   suffixIcon: IconButton(
                                     splashColor: Colors.transparent,
                                     onPressed: () => {
-                                      setState(() => showPassword =!showPassword,)
+                                      setState(
+                                        () => showPassword = !showPassword,
+                                      )
                                     },
-                                    icon :
-                                   Icon( showPassword?Icons.visibility_outlined:Icons.visibility_off_outlined),
+                                    icon: Icon(showPassword
+                                        ? Icons.visibility_outlined
+                                        : Icons.visibility_off_outlined),
                                     color: Colors.white70,
                                   ),
                                   hintText: 'Enter your password',
@@ -206,15 +212,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           InkWell(
-                            onTap: ()=>{},
+                            onTap: () => {},
                             child: Align(
                               alignment: Alignment.bottomRight,
-                              child: Text('Forgot your password?',
-                              style: GoogleFonts.nunito(
-                                color: cgSecondary,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 17
-                              ),
+                              child: Text(
+                                'Forgot your password?',
+                                style: GoogleFonts.nunito(
+                                    color: cgSecondary,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 17),
                               ),
                             ),
                           ),
@@ -222,13 +228,26 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: 40,
                           ),
                           AuthSubmitButton(
-                              ontap: () => {
-                                    if (_formKey.currentState!.validate())
-                                      {
-                                        _formKey.currentState!.save(),
-                                        
-                                      }
-                                  },
+                              ontap: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  _formKey.currentState!.save();
+                                  try {
+                                    print(_email);
+                                    print(_password);
+                                    final credential = await FirebaseAuth
+                                        .instance
+                                        .signInWithEmailAndPassword(
+                                            email: _email, password: _password);
+                                  } on FirebaseAuthException catch (e) {
+                                    if (e.code == 'user-not-found') {
+                                      print('No user found for that email.');
+                                    } else if (e.code == 'wrong-password') {
+                                      print(
+                                          'Wrong password provided for that user.');
+                                    }
+                                  }
+                                }
+                              },
                               title: "Log in"),
                           const SizedBox(
                             height: 100,
