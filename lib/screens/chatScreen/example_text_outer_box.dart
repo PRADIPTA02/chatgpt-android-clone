@@ -1,5 +1,5 @@
-import 'package:chatgpt/constants.dart';
 import 'package:flutter/material.dart';
+import '../../util/constants/constants.dart';
 
 class ExampleTextOuterBox extends StatelessWidget {
   const ExampleTextOuterBox({super.key, required this.text});
@@ -9,18 +9,18 @@ class ExampleTextOuterBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(15),
-      child: Center(
-          child: Text(
-        this.text,
-        style: TextStyle(
-            fontSize: 16, color: Colors.white70, fontWeight: FontWeight.w500),
-        textAlign: TextAlign.center,
-      )),
+      padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
         color: secondaryColor,
         borderRadius: BorderRadius.circular(5),
       ),
+      child: Center(
+          child: Text(
+        text,
+        style: const TextStyle(
+            fontSize: 16, color: Colors.white70, fontWeight: FontWeight.w500),
+        textAlign: TextAlign.center,
+      )),
     );
   }
 }

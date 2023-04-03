@@ -1,12 +1,13 @@
 import 'dart:io';
-import 'package:chatgpt/providers/carousel_message_provider.dart';
 import 'package:chatgpt/providers/image_generation_provider.dart';
 import 'package:chatgpt/providers/internet_connection_check_provider.dart';
 import 'package:chatgpt/providers/text_copletion_provider.dart';
+import 'package:chatgpt/screens/auth/loginScreen/login_screen.dart';
 import 'package:chatgpt/screens/chatScreen/chatScreen.dart';
 import 'package:chatgpt/screens/homeScreen/home_screen.dart';
 import 'package:chatgpt/screens/imageGenerationScreen/image_generate_screen.dart';
 import 'package:chatgpt/screens/settingsScreen/settings_screen.dart';
+import 'package:chatgpt/screens/splashScreen/splash_screen.dart';
 import 'package:chatgpt/screens/startingScreen/start_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,9 +17,24 @@ import 'package:provider/provider.dart';
 import 'models/message_list_conversation.dart';
 import 'models/message_model.dart';
 import 'models/message_session_list_model.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
+class PostHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  HttpOverrides.global = PostHttpOverrides();
   final InterNetConnectionCheck connectivityService = InterNetConnectionCheck();
   await connectivityService.startMonitoring();
   Directory document = await getApplicationDocumentsDirectory();
@@ -45,7 +61,6 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => TextCompletProvider()),
         ChangeNotifierProvider(create: (_) => ImageGenerationProvider()),
-        ChangeNotifierProvider(create: (_) => CarouselMessageProvider()),
         ChangeNotifierProvider.value(value: connectivityService),
       ],
       child: MaterialApp(
@@ -54,8 +69,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: ChatScreen()),
+          home: const LoginScreen()),
     );
   }
 }
- 

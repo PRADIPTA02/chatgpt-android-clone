@@ -1,6 +1,8 @@
-import 'package:chatgpt/constants.dart';
+
 import 'package:chatgpt/screens/homescreen/home_screen.dart';
 import 'package:flutter/material.dart';
+
+import '../../util/constants/constants.dart';
 
 class StartButton extends StatelessWidget {
   final String text;
@@ -20,7 +22,7 @@ class StartButton extends StatelessWidget {
         },
         style: OutlinedButton.styleFrom(
           backgroundColor: secondaryColor,
-          side: BorderSide(
+          side: const BorderSide(
             width: .90,
             color: Colors.white70,
           ),
@@ -29,7 +31,7 @@ class StartButton extends StatelessWidget {
         ),
         child: Text(
           text,
-          style: TextStyle(
+          style: const TextStyle(
               color: Colors.white70, fontSize: 25, fontWeight: FontWeight.w400),
         ),
       ),

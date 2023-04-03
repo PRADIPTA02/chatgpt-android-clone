@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
-import '../../constants.dart';
+import '../../util/constants/constants.dart';
 import '../../providers/image_generation_provider.dart';
 
 class SearchTextInput extends StatelessWidget {

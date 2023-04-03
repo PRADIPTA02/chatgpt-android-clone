@@ -1,4 +1,3 @@
-import 'package:chatgpt/constants.dart';
 import 'package:chatgpt/screens/chatScreen/chat_input.dart';
 import 'package:chatgpt/screens/chatScreen/chatscreen_sidebar.dart';
 import 'package:chatgpt/screens/chatScreen/message_list.dart';
@@ -11,6 +10,7 @@ import '../../CommonWidgets/internet_check_dialog.dart';
 import 'package:chatgpt/models/message_model.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:uuid/uuid.dart';
+import '../../util/constants/constants.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
@@ -45,8 +45,7 @@ class ChatScreen extends StatelessWidget {
                         color: Colors.white70,
                       )),
                   IconButton(
-                      onPressed: () =>
-                          {_textCompletionProvider.refresh()},
+                      onPressed: () => {_textCompletionProvider.refresh()},
                       icon: const Icon(
                         Icons.sync,
                         size: 30,
@@ -93,7 +92,8 @@ class ChatScreen extends StatelessWidget {
                                                 animate: TextCompletProvider
                                                     .isSpeaking,
                                                 repeatPauseDuration:
-                                                    const Duration(milliseconds: 100),
+                                                    const Duration(
+                                                        milliseconds: 100),
                                                 child: InkWell(
                                                     onTapDown:
                                                         TextCompletProvider
@@ -108,7 +108,6 @@ class ChatScreen extends StatelessWidget {
                                                       color: Colors.white,
                                                     )))
                                             : IconButton(
-                                              
                                                 icon: const Icon(
                                                   Icons.send_rounded,
                                                   size: 25,
@@ -127,10 +126,15 @@ class ChatScreen extends StatelessWidget {
                                                       )
                                                     }
                                                   else if (_textCompletionProvider
-                                                          .chat_imput_Controler
-                                                          .text !=
-                                                      ""&&!_textCompletionProvider.messageUpdateAvalable)
+                                                              .chat_imput_Controler
+                                                              .text !=
+                                                          "" &&
+                                                      !_textCompletionProvider
+                                                          .messageUpdateAvalable)
                                                     {
+                                                      _textCompletionProvider.allMessages.length<_textCompletionProvider.allSesions.length?
+                                                      _textCompletionProvider.changeSafetoScrollButton(false)
+                                                      :null,
                                                       _textCompletionProvider
                                                           .addMessage(
                                                         <Message>[
@@ -141,7 +145,11 @@ class ChatScreen extends StatelessWidget {
                                                                       .text,
                                                               isApi: false,
                                                               id: uuid.v1(),
-                                                              sessionId: _textCompletionProvider.allSesions[_textCompletionProvider.CurrentSessionIndex].sessionId,
+                                                              sessionId: _textCompletionProvider
+                                                                  .allSesions[
+                                                                      _textCompletionProvider
+                                                                          .CurrentSessionIndex]
+                                                                  .sessionId,
                                                               timeStamp: DateTime
                                                                           .now()
                                                                       .millisecondsSinceEpoch ~/
@@ -155,7 +163,9 @@ class ChatScreen extends StatelessWidget {
                                                               .chat_imput_Controler
                                                               .text,
                                                           _textCompletionProvider
-                                                              .CurrentSessionIndex,false),
+                                                              .CurrentSessionIndex,
+                                                          false,
+                                                          context),
                                                       _textCompletionProvider
                                                           .chat_imput_Controler
                                                           .clear()
@@ -188,12 +198,12 @@ class ChatScreen extends StatelessWidget {
                   FloatingActionButtonLocation.miniEndFloat,
               floatingActionButton: _textCompletionProvider.safeToScroll
                   ? Container(
-                    height: 35,
+                      height: 35,
                       margin: const EdgeInsets.only(bottom: 100),
                       child: FloatingActionButton(
-                        shape:BeveledRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(3))
-     ),
+                          shape: const BeveledRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(3))),
                           backgroundColor: cbgColor,
                           elevation: 0,
                           mini: true,

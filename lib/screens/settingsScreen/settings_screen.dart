@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../constants.dart';
+import '../../util/constants/constants.dart';
 import '../chatScreen/carousel_message_body.dart';
 import '../chatScreen/message_list.dart';
 
@@ -11,8 +11,8 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Text completion",
+        title: const Text(
+          "Text completion ",
           style: TextStyle(color: Colors.white70),
         ),
         backgroundColor: bgColor,
@@ -20,7 +20,7 @@ class SettingsScreen extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () => {},
-              icon: Icon(
+              icon: const Icon(
                 Icons.add,
                 size: 30,
                 color: Colors.white70,

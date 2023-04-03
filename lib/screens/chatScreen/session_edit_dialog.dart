@@ -1,8 +1,7 @@
-import 'package:chatgpt/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../providers/text_copletion_provider.dart';
+import '../../util/constants/constants.dart';
 
 class SessionEditDialog extends StatelessWidget {
   final int sessionIndex;
@@ -21,7 +20,7 @@ class SessionEditDialog extends StatelessWidget {
       builder: (context, value, child) => AlertDialog(
         shadowColor: Colors.transparent,
         backgroundColor: bgColor,
-        title: Text(
+        title: const Text(
           'Edit Session Name',
           style: TextStyle(color: Colors.white70),
         ),
@@ -29,8 +28,8 @@ class SessionEditDialog extends StatelessWidget {
           width: 500,
           child: TextField(
             controller: _controller,
-            style: TextStyle(fontSize: 20, color: Colors.white70),
-            decoration: InputDecoration(
+            style: const TextStyle(fontSize: 20, color: Colors.white70),
+            decoration: const InputDecoration(
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.white),
               ),
@@ -43,9 +42,9 @@ class SessionEditDialog extends StatelessWidget {
         actions: [
           OutlinedButton(
               style: OutlinedButton.styleFrom(
-                  side: BorderSide(color: Colors.white70)),
+                  side: const BorderSide(color: Colors.white70)),
               onPressed: () => Navigator.of(context).pop(),
-              child: Text(
+              child: const Text(
                 "Cancel",
                 style: TextStyle(
                     color: Colors.white70,
@@ -62,7 +61,7 @@ class SessionEditDialog extends StatelessWidget {
                         _controller.text.toString()),
                     Navigator.of(context).pop()
                   },
-              child: Text(
+              child: const Text(
                 "Save",
                 style: TextStyle(
                     color: Colors.white70,

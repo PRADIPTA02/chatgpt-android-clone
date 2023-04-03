@@ -1,10 +1,10 @@
 import 'dart:convert';
+import 'package:chatgpt/util/constants/constants.dart';
 import 'package:chatgpt/models/error_message_model.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_list_view/flutter_list_view.dart';
 import 'package:hive/hive.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:speech_to_text/speech_to_text.dart';
 import '../models/message_list_conversation.dart';
@@ -22,7 +22,7 @@ class TextCompletProvider with ChangeNotifier {
     if (sessions.values.toList().isEmpty) {
       addNewSession();
     }
-    _chatScroollCrontrol.addListener(_scrollListener);
+    _chatScroollCrontrol.addListener(scrollListener);
     _all_sessions = sessions.values.toList();
     _current_session_index = sessions.values.toList().length - 1;
     _all_messages =
@@ -106,7 +106,7 @@ class TextCompletProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void _scrollListener() {
+  void scrollListener() {
     if (_chatScroollCrontrol.offset > 0.0) {
       _safe_to_scroll = true;
     } else {
@@ -128,29 +128,40 @@ class TextCompletProvider with ChangeNotifier {
 
 //Get the api response from api endpoint and add this to message list
   Future<String> getAiResponse(
-      String question, int index, bool isupdate) async {
+      String question, int index, bool isupdate, BuildContext context) async {
     _isLoading = true;
     Map<String, String> header = {
       'Content-Type': 'application/json',
       'Authorization':
           'Bearer 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',
     };
-
-    var response =
-        await http.post(Uri.parse("https://api.openai.com/v1/completions"),
-            headers: header,
-            body: jsonEncode(
-              {
-                "model": "text-davinci-003",
-                "prompt": question,
-                "temperature": 0.6,
-                "max_tokens": 150,
-                "top_p": 1,
-                "frequency_penalty": 1,
-                "presence_penalty": 1
-              },
-            ));
-    if (response.statusCode == 200 && !isupdate) {
+    var response;
+    try {
+      response =
+          await http.post(Uri.parse("https://api.openai.com/v1/completions"),
+              headers: header,
+              body: jsonEncode(
+                {
+                  "model": "text-davinci-003",
+                  "prompt": question,
+                  "temperature": 0.6,
+                  "max_tokens": 3457,
+                  "top_p": 0.1,
+                  "frequency_penalty": 1,
+                  "presence_penalty": 1
+                },
+              ));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: secondaryColor,
+          elevation: 0,
+          content: Text(e.toString())));
+      _isLoading = false;
+      notifyListeners();
+      return "";
+    }
+    if (response?.statusCode == 200 && !isupdate) {
       Map<String, dynamic> newResponse = jsonDecode(response.body);
       addMessage(<Message>[
         Message(
@@ -162,26 +173,27 @@ class TextCompletProvider with ChangeNotifier {
       ], index);
       _isLoading = false;
       onChangeTextInput("");
-    } else if (!isupdate) {
+    } else if (response != null && !isupdate) {
       Map<String, dynamic> newResponse = jsonDecode(response.body);
       _isLoading = false;
-      addErrorMessage(ErroMessage(errorText: newResponse['error']['message']));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: secondaryColor,
+          elevation: 0,
+          behavior: SnackBarBehavior.floating,
+          content: Text(newResponse['error']['message'])));
       onChangeTextInput("");
     }
-    if (isupdate) {
+    if (response != null && isupdate) {
       Map<String, dynamic> newResponse = jsonDecode(response.body);
       _isLoading = false;
       return newResponse['choices'][0]['text'];
     } else {
       return "";
     }
-    // notifyListeners();
   }
 
 // Add a new message to the messageList
   void addMessage(List<Message> message, int index) {
-    // print('message ${message[0].sessionId}');
-    // print('index ${sessions.values.toList()[index].sessionId}');
     if (index <= sessions.values.toList().length - 1 &&
         message[0].sessionId == sessions.values.toList()[index].sessionId) {
       if (index > listOfAllMessages.values.toList().length - 1) {
@@ -203,7 +215,8 @@ class TextCompletProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateMessage(int index, String id, int sessionIndex) async {
+  void updateMessage(
+      int index, String id, int sessionIndex, BuildContext context) async {
     // print(index);
     Conversation tempMessageList =
         listOfAllMessages.values.toList()[sessionIndex];
@@ -235,7 +248,8 @@ class TextCompletProvider with ChangeNotifier {
           notifyListeners();
           Message tempApiMessage = Message(
             sessionId: sessions.values.toList()[sessionIndex].sessionId,
-            message_text: await getAiResponse(messageText, sessionIndex, true),
+            message_text:
+                await getAiResponse(messageText, sessionIndex, true, context),
             isApi: true,
             id: uuid.v4(),
             timeStamp: DateTime.now().millisecondsSinceEpoch ~/ 1000,
@@ -309,12 +323,12 @@ class TextCompletProvider with ChangeNotifier {
   }
 
   void addErrorMessage(ErroMessage message) {
+    _error_messags.clear();
     _error_messags.add(message);
     notifyListeners();
   }
 
   void scrollToTop() {
-    // print(_safe_to_scroll);
     _chatScroollCrontrol.jumpTo(0.0);
   }
 
@@ -355,7 +369,8 @@ class TextCompletProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void changeAnimate(int index, bool isCarouselMessage, int upperMessageIndex , int sessionIndex) {
+  void changeAnimate(int index, bool isCarouselMessage, int upperMessageIndex,
+      int sessionIndex) {
     if (isCarouselMessage) {
       listOfAllMessages.values
           .toList()[_current_session_index]
@@ -370,7 +385,8 @@ class TextCompletProvider with ChangeNotifier {
     listOfAllMessages.values.toList()[sessionIndex].save();
   }
 
-  void likeMessage(int index, String id, int sessionIndex, int upperIndex,bool isCarouselMessage) {
+  void likeMessage(int index, String id, int sessionIndex, int upperIndex,
+      bool isCarouselMessage) {
     if (!isCarouselMessage) {
       if (listOfAllMessages.values
               .toList()[sessionIndex]
@@ -378,9 +394,23 @@ class TextCompletProvider with ChangeNotifier {
               .toList()[index][0]
               .id ==
           id) {
-        var value = listOfAllMessages.values.toList()[sessionIndex].messages.toList()[index][0].isLiked;
-        if(value == false)listOfAllMessages.values.toList()[sessionIndex].messages.toList()[upperIndex][index].isDisLiked = false;
-        listOfAllMessages.values.toList()[sessionIndex].messages.toList()[index][0].isLiked = !value;
+        var value = listOfAllMessages.values
+            .toList()[sessionIndex]
+            .messages
+            .toList()[index][0]
+            .isLiked;
+        if (value == false) {
+          listOfAllMessages.values
+              .toList()[sessionIndex]
+              .messages
+              .toList()[index][0]
+              .isDisLiked = false;
+        }
+        listOfAllMessages.values
+            .toList()[sessionIndex]
+            .messages
+            .toList()[index][0]
+            .isLiked = !value;
       }
     } else {
       if (listOfAllMessages.values
@@ -389,15 +419,31 @@ class TextCompletProvider with ChangeNotifier {
               .toList()[upperIndex][index]
               .id ==
           id) {
-        var value = listOfAllMessages.values.toList()[sessionIndex].messages.toList()[upperIndex][index].isLiked;
-        if(value == false)listOfAllMessages.values.toList()[sessionIndex].messages.toList()[upperIndex][index].isDisLiked = false;
-        listOfAllMessages.values.toList()[sessionIndex].messages.toList()[upperIndex][index].isLiked = !value;
+        var value = listOfAllMessages.values
+            .toList()[sessionIndex]
+            .messages
+            .toList()[upperIndex][index]
+            .isLiked;
+        if (value == false) {
+          listOfAllMessages.values
+              .toList()[sessionIndex]
+              .messages
+              .toList()[upperIndex][index]
+              .isDisLiked = false;
+        }
+        listOfAllMessages.values
+            .toList()[sessionIndex]
+            .messages
+            .toList()[upperIndex][index]
+            .isLiked = !value;
       }
     }
     listOfAllMessages.values.toList()[sessionIndex].save();
     notifyListeners();
   }
-  void disLikeMessage(int index, String id, int sessionIndex, int upperIndex,bool isCarouselMessage) {
+
+  void disLikeMessage(int index, String id, int sessionIndex, int upperIndex,
+      bool isCarouselMessage) {
     if (!isCarouselMessage) {
       if (listOfAllMessages.values
               .toList()[sessionIndex]
@@ -405,9 +451,23 @@ class TextCompletProvider with ChangeNotifier {
               .toList()[index][0]
               .id ==
           id) {
-        var value = listOfAllMessages.values.toList()[sessionIndex].messages.toList()[index][0].isDisLiked;
-        if(value == false)listOfAllMessages.values.toList()[sessionIndex].messages.toList()[upperIndex][index].isLiked = false;
-        listOfAllMessages.values.toList()[sessionIndex].messages.toList()[index][0].isDisLiked = !value;
+        var value = listOfAllMessages.values
+            .toList()[sessionIndex]
+            .messages
+            .toList()[index][0]
+            .isDisLiked;
+        if (value == false) {
+          listOfAllMessages.values
+              .toList()[sessionIndex]
+              .messages
+              .toList()[index][0]
+              .isLiked = false;
+        }
+        listOfAllMessages.values
+            .toList()[sessionIndex]
+            .messages
+            .toList()[index][0]
+            .isDisLiked = !value;
       }
     } else {
       if (listOfAllMessages.values
@@ -416,9 +476,23 @@ class TextCompletProvider with ChangeNotifier {
               .toList()[upperIndex][index]
               .id ==
           id) {
-        var value = listOfAllMessages.values.toList()[sessionIndex].messages.toList()[upperIndex][index].isDisLiked;
-        if(value == false)listOfAllMessages.values.toList()[sessionIndex].messages.toList()[upperIndex][index].isLiked = false;
-        listOfAllMessages.values.toList()[sessionIndex].messages.toList()[upperIndex][index].isDisLiked = !value;
+        var value = listOfAllMessages.values
+            .toList()[sessionIndex]
+            .messages
+            .toList()[upperIndex][index]
+            .isDisLiked;
+        if (value == false) {
+          listOfAllMessages.values
+              .toList()[sessionIndex]
+              .messages
+              .toList()[upperIndex][index]
+              .isLiked = false;
+        }
+        listOfAllMessages.values
+            .toList()[sessionIndex]
+            .messages
+            .toList()[upperIndex][index]
+            .isDisLiked = !value;
       }
     }
     listOfAllMessages.values.toList()[sessionIndex].save();
@@ -436,7 +510,8 @@ class TextCompletProvider with ChangeNotifier {
   }
 
   void refresh() {
-    _all_messages =  listOfAllMessages.values.toList().map((e) => e.messages).toList();
+    _all_messages =
+        listOfAllMessages.values.toList().map((e) => e.messages).toList();
     _isLoading = false;
     _chat_imput_Controler.text = "";
     _isTyping = false;

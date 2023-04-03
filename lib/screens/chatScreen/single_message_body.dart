@@ -1,12 +1,15 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:chatgpt/screens/chatScreen/chat_avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
 
-import '../../constants.dart';
+import '../../util/constants/constants.dart';
 import '../../providers/text_copletion_provider.dart';
 
 class SingleMessageBody extends StatelessWidget {
+
+
   const SingleMessageBody({
     super.key,
     required this.text,
@@ -47,6 +50,14 @@ class SingleMessageBody extends StatelessWidget {
         Provider.of<TextCompletProvider>(context, listen: false);
     if(isApi && isAnimate&&_textCompletionProvider.CurrentSessionIndex==sessionIndex){
     }
+
+  Future<bool> onLikeButtonTapped(bool isLiked) async{
+    isCarouselMessage?
+        _textCompletionProvider.likeMessage(messageIndex,id,sessionIndex,upperMessageIndex, true):
+        _textCompletionProvider.likeMessage(messageIndex ,id,sessionIndex,upperMessageIndex, false);
+    return !isLiked;
+  }
+
     return Consumer<TextCompletProvider>(
       builder: (context, value, child) => Container(
         padding: const EdgeInsets.all(5),
@@ -127,26 +138,22 @@ class SingleMessageBody extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          IconButton(
-                              onPressed: () => {
-                                isCarouselMessage?
-                                _textCompletionProvider.likeMessage(messageIndex,id,sessionIndex,upperMessageIndex, true):
-                                _textCompletionProvider.likeMessage(messageIndex ,id,sessionIndex,upperMessageIndex, false),
-                              },
-                              icon: isLiked?const Icon(
-                                Icons.thumb_up_alt,
-                                color: cgSecondary,
-                              ):
-                             const Icon(
-                                Icons.thumb_up_off_alt,
-                                color:  Colors.white70,
-                              )),
+                          LikeButton(
+                            isLiked: isLiked,
+                            size: 24.0,
+                            onTap:onLikeButtonTapped,
+                            likeBuilder: (isLiked) =>Icon(
+                            isLiked?Icons.thumb_up_alt:Icons.thumb_up_off_alt,
+                            color: isLiked?cgSecondary:Colors.white70,
+                            )
+                          ),
                           IconButton(
                               onPressed: () => {
                                 isCarouselMessage?
                                 _textCompletionProvider.disLikeMessage(messageIndex,id,sessionIndex,upperMessageIndex, true):
                                 _textCompletionProvider.disLikeMessage(messageIndex ,id,sessionIndex,upperMessageIndex, false),
                               },
+                              splashColor: Colors.transparent,
                               icon: isDisLiked ?const Icon(
                                 Icons.thumb_down_alt,
                                 color: Color.fromARGB(255, 244, 67, 54),
@@ -171,7 +178,7 @@ class SingleMessageBody extends StatelessWidget {
                                 MaterialStateProperty.all<Color>(cgSecondary),
                           ),
                           onPressed: () => {
-                            _textCompletionProvider.updateMessage(upperMessageIndex,id,sessionIndex)
+                            _textCompletionProvider.updateMessage(upperMessageIndex,id,sessionIndex,context)
                           },
                           child: const Text(
                             "Save & Submit",

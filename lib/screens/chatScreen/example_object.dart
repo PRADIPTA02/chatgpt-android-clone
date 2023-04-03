@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../constants.dart';
 import '../../providers/text_copletion_provider.dart';
+import '../../util/constants/constants.dart';
 import 'example_text_outer_box.dart';
 
 class ExampleObject extends StatelessWidget {
@@ -13,24 +12,22 @@ class ExampleObject extends StatelessWidget {
         Provider.of<TextCompletProvider>(context, listen: false);
     return Consumer<TextCompletProvider>(
       builder: (context, value, child) => Column(
-        // controller: _textCompletionProvider.exampleObjectScrollControler,
-        // physics: BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast),
         children: [
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
-          Center(
+          const Center(
               child: Text("ChatGPT",
                   style: TextStyle(
                       fontSize: 35,
                       fontWeight: FontWeight.bold,
                       color: Colors.white))),
-          SizedBox(
+          const SizedBox(
             height: 40,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               Icon(
                 Icons.light_mode_outlined,
                 color: cgSecondary,
@@ -43,7 +40,7 @@ class ExampleObject extends StatelessWidget {
                       color: cgSecondary))
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Center(
@@ -52,10 +49,10 @@ class ExampleObject extends StatelessWidget {
                         _textCompletionProvider.onExampleTextPressed(
                             "Explain quantum computing in simple terms")
                       },
-                  child: ExampleTextOuterBox(
+                  child: const ExampleTextOuterBox(
                       text:
                           '"Explain quantum computing in simple terms -->"'))),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           Center(
@@ -64,10 +61,10 @@ class ExampleObject extends StatelessWidget {
                         _textCompletionProvider.onExampleTextPressed(
                             "Got any creative ideas for a 10 year old’s birthday?")
                       },
-                  child: ExampleTextOuterBox(
+                  child: const ExampleTextOuterBox(
                       text:
                           '"Got any creative ideas for a 10 year old’s \nbirthday? -->"'))),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           Center(
@@ -76,15 +73,15 @@ class ExampleObject extends StatelessWidget {
                         _textCompletionProvider.onExampleTextPressed(
                             "How do I make an HTTP request in Javascript?")
                       },
-                  child: ExampleTextOuterBox(
+                  child: const ExampleTextOuterBox(
                       text:
                           '"How do I make an HTTP request in \nJavascript? -->"'))),
-          SizedBox(
+          const SizedBox(
             height: 40,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               Icon(
                 Icons.insights_outlined,
                 color: cgSecondary,
@@ -97,31 +94,31 @@ class ExampleObject extends StatelessWidget {
                       color: cgSecondary))
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          Center(
+          const Center(
               child: ExampleTextOuterBox(
                   text:
                       'Remembers what user said earlier in the conversation')),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
-          Center(
+          const Center(
               child: ExampleTextOuterBox(
                   text: 'Allows user to provide follow-up corrections')),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
-          Center(
+          const Center(
               child: ExampleTextOuterBox(
                   text: 'Trained to decline inappropriate requests')),
-          SizedBox(
+          const SizedBox(
             height: 40,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               Icon(
                 Icons.warning_amber,
                 color: cgSecondary,
@@ -134,26 +131,26 @@ class ExampleObject extends StatelessWidget {
                       color: cgSecondary))
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          Center(
+          const Center(
               child: ExampleTextOuterBox(
                   text: 'May occasionally generate incorrect information')),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
-          Center(
+          const Center(
               child: ExampleTextOuterBox(
                   text:
                       'May occasionally produce harmful instructions or biased content')),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
-          Center(
+          const Center(
               child: ExampleTextOuterBox(
                   text: 'Limited knowledge of world and events \nafter 2021')),
-          SizedBox(
+          const SizedBox(
             height: 20,
           )
         ],

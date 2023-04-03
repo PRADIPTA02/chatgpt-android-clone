@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../constants.dart';
+import '../../util/constants/constants.dart';
 
 class ImageFrame extends StatelessWidget {
   const ImageFrame({super.key, required this.url});

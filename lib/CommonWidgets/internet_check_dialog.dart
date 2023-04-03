@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
+import '../util/constants/constants.dart';
 
 class InternetCheckDialog extends StatelessWidget {
   const InternetCheckDialog({super.key});

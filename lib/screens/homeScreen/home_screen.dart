@@ -1,8 +1,7 @@
-import 'package:chatgpt/constants.dart';
 import 'package:chatgpt/screens/chatScreen/chatScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import '../../util/constants/constants.dart';
 import '../imageGenerationScreen/image_generate_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -14,20 +13,20 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: bgColor,
         elevation: 0,
-        title: Text(
+        title: const Text(
           "OpenAI",
           style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(
               onPressed: () => {},
-              icon: Icon(
+              icon: const Icon(
                 Icons.settings_outlined,
                 size: 30,
                 color: Colors.white70,
               )),
         ],
-        systemOverlayStyle: SystemUiOverlayStyle(
+        systemOverlayStyle: const SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
         ),
       ),
@@ -39,31 +38,31 @@ class HomeScreen extends StatelessWidget {
             Center(
               child: Image.asset("assets/images/logo.png"),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             InkWell(
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ChatScreen()),
+                MaterialPageRoute(builder: (context) => const ChatScreen()),
               ),
               child: Row(
                 children: [
                   Container(
                     height: 50,
                     width: 50,
-                    child: Icon(
+                    decoration: BoxDecoration(
+                        color: const Color.fromRGBO(51, 196, 145, 1),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: const Icon(
                       Icons.edit,
                       color: Colors.white,
                     ),
-                    decoration: BoxDecoration(
-                        color: Color.fromRGBO(51, 196, 145, 1),
-                        borderRadius: BorderRadius.circular(5)),
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: const [
                       Text(
                         "Text completion",
                         style: TextStyle(
@@ -81,29 +80,29 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             InkWell(
               onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ImageGenerateScreen())),
+                      builder: (context) => const ImageGenerateScreen())),
               child: Row(
                 children: [
                   Container(
                     height: 50,
                     width: 50,
-                    child: Icon(
+                    decoration: BoxDecoration(
+                        color: const Color.fromRGBO(121, 80, 224, 1),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: const Icon(
                       Icons.image,
                       color: Colors.white,
                     ),
-                    decoration: BoxDecoration(
-                        color: Color.fromRGBO(121, 80, 224, 1),
-                        borderRadius: BorderRadius.circular(5)),
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: const [
                       Text(
                         "Image generation",
                         style: TextStyle(

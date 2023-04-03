@@ -1,17 +1,17 @@
-import 'package:chatgpt/constants.dart';
 import 'package:chatgpt/screens/chatScreen/session_edit_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/text_copletion_provider.dart';
+import '../../util/constants/constants.dart';
 
 class ChatScreenSidebar extends StatelessWidget {
   const ChatScreenSidebar({super.key});
-
   @override
   Widget build(BuildContext context) {
     final _textCompletionProvider =
         Provider.of<TextCompletProvider>(context, listen: false);
     return Drawer(
+      width: MediaQuery.of(context).size.width*0.7,
       backgroundColor: bgColor,
       shadowColor: Colors.transparent,
       child: SafeArea(
