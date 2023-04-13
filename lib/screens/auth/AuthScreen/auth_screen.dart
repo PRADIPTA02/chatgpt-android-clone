@@ -3,6 +3,8 @@ import 'package:chatgpt/screens/chatScreen/chatScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../homeScreen/home_screen.dart';
+
 class AuthScren extends StatelessWidget {
   const AuthScren({super.key});
 
@@ -13,7 +15,7 @@ class AuthScren extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot){
           if(snapshot.hasData){
-            return const ChatScreen();
+            return const HomeScreen();
           }else{
             return const LoginScreen();
           }

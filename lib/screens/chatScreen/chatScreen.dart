@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers, non_constant_identifier_names, avoid_types_as_parameter_names
+
 import 'package:chatgpt/screens/chatScreen/chat_input.dart';
 import 'package:chatgpt/screens/chatScreen/chatscreen_sidebar.dart';
 import 'package:chatgpt/screens/chatScreen/message_list.dart';
@@ -16,7 +18,7 @@ class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    final uuid = Uuid();
+    const uuid = Uuid();
     final _textCompletionProvider =
         Provider.of<TextCompletProvider>(context, listen: false);
     const spinKit = SpinKitThreeBounce(
@@ -27,6 +29,7 @@ class ChatScreen extends StatelessWidget {
       builder: (context, TextCompletProvider, InterNetConnectionCheck, child) =>
           Scaffold(
               appBar: AppBar(
+                automaticallyImplyLeading: false,
                 title: Text(
                   _textCompletionProvider
                       .allSesions[_textCompletionProvider.CurrentSessionIndex]
@@ -35,22 +38,33 @@ class ChatScreen extends StatelessWidget {
                 ),
                 backgroundColor: bgColor,
                 elevation: 0,
+                leading: IconButton(
+                  onPressed: () => {
+                    Navigator.pop(context)
+                  },
+                  icon: const Icon(
+                        Icons.arrow_back,
+                        color: Colors.white70,
+                      ),
+                ),
                 actions: [
                   IconButton(
                       onPressed: () =>
                           {_textCompletionProvider.addNewSession()},
                       icon: const Icon(
                         Icons.add,
-                        size: 30,
+                        size: 28,
                         color: Colors.white70,
                       )),
-                  IconButton(
-                      onPressed: () => {_textCompletionProvider.refresh()},
-                      icon: const Icon(
-                        Icons.sync,
-                        size: 30,
-                        color: Colors.white70,
-                      )),
+                  Builder(builder: (context) {
+                    return IconButton(
+                        onPressed: () => {Scaffold.of(context).openDrawer()},
+                        icon: const Icon(
+                          Icons.menu_rounded,
+                          size: 28,
+                          color: Colors.white70,
+                        ));
+                  }),
                 ],
               ),
               drawer: const ChatScreenSidebar(),
@@ -60,7 +74,7 @@ class ChatScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Expanded(child: MessegeList()),
+                    const Expanded(child: MessegeList()),
                     Padding(
                       padding: const EdgeInsets.only(top: 5, right: 2),
                       child: Stack(
@@ -132,9 +146,16 @@ class ChatScreen extends StatelessWidget {
                                                       !_textCompletionProvider
                                                           .messageUpdateAvalable)
                                                     {
-                                                      _textCompletionProvider.allMessages.length<_textCompletionProvider.allSesions.length?
-                                                      _textCompletionProvider.changeSafetoScrollButton(false)
-                                                      :null,
+                                                      _textCompletionProvider
+                                                                  .allMessages
+                                                                  .length <
+                                                              _textCompletionProvider
+                                                                  .allSesions
+                                                                  .length
+                                                          ? _textCompletionProvider
+                                                              .changeSafetoScrollButton(
+                                                                  false)
+                                                          : null,
                                                       _textCompletionProvider
                                                           .addMessage(
                                                         <Message>[

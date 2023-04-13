@@ -66,10 +66,11 @@ class ImageGenerationProvider with ChangeNotifier {
   void startListening() async {
     _is_speaking = true;
     _is_avalable = await _speechToText.initialize();
-    if (_is_avalable)
+    if (_is_avalable) {
       _speechToText.listen(
         onResult: _onSpeechResult,
       );
+    }
     notifyListeners();
   }
 

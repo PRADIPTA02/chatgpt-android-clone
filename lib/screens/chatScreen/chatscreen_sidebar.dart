@@ -1,5 +1,6 @@
 import 'package:chatgpt/screens/chatScreen/session_edit_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../providers/text_copletion_provider.dart';
 import '../../util/constants/constants.dart';
@@ -11,7 +12,7 @@ class ChatScreenSidebar extends StatelessWidget {
     final _textCompletionProvider =
         Provider.of<TextCompletProvider>(context, listen: false);
     return Drawer(
-      width: MediaQuery.of(context).size.width*0.7,
+      width: MediaQuery.of(context).size.width * 0.75,
       backgroundColor: bgColor,
       shadowColor: Colors.transparent,
       child: SafeArea(
@@ -63,15 +64,17 @@ class ChatScreenSidebar extends StatelessWidget {
                         onTap: () => {
                           _textCompletionProvider.changeShowSaveAndCancelButton(
                               "", false),
-                          _textCompletionProvider.changeSessionDeletation(false),
-                              _textCompletionProvider.setMessageUpdate(false,""),
+                          _textCompletionProvider
+                              .changeSessionDeletation(false),
+                          _textCompletionProvider.setMessageUpdate(false, ""),
                           _textCompletionProvider.changeIsloadingState(),
                           _textCompletionProvider.changeCurrentSessionIndex(
                               _textCompletionProvider.allSesions.length -
                                   1 -
                                   index),
-                                  _textCompletionProvider.changeSafetoScrollButton(false),
-                                  FocusManager.instance.primaryFocus?.unfocus(),
+                          _textCompletionProvider
+                              .changeSafetoScrollButton(false),
+                          FocusManager.instance.primaryFocus?.unfocus(),
                           Navigator.pop(context),
                         },
                         child: Container(
@@ -152,7 +155,8 @@ class ChatScreenSidebar extends StatelessWidget {
                                                             1 -
                                                             index),
                                                 _textCompletionProvider
-                                                    .changeSessionDeletation(false),
+                                                    .changeSessionDeletation(
+                                                        false),
                                                 _textCompletionProvider
                                                     .setSessionIndex(-1),
                                               }
@@ -199,7 +203,11 @@ class ChatScreenSidebar extends StatelessWidget {
                                         InkWell(
                                           onTap: () => {
                                             _textCompletionProvider
-                                                .changeSessionDeletation(_textCompletionProvider.isSessionDeleting?false:true),
+                                                .changeSessionDeletation(
+                                                    _textCompletionProvider
+                                                            .isSessionDeleting
+                                                        ? false
+                                                        : true),
                                             _textCompletionProvider
                                                 .setSessionIndex(index)
                                           },
@@ -217,11 +225,35 @@ class ChatScreenSidebar extends StatelessWidget {
                                         )
                                       ],
                                     )
-                                  : SizedBox()
+                                  : const SizedBox()
                             ],
                           ),
                         ),
                       ),
+                    ),
+                  ),
+                ),
+                const Divider(
+                  thickness: 2,
+                  color: cglasscolor,
+                ),
+                InkWell(
+                  onTap: () => _textCompletionProvider.clearConversations(),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.delete_forever_rounded,
+                            color: Colors.white70),
+                        SizedBox(width: MediaQuery.of(context).size.width*0.01,),
+                        Text(
+                          'Clear conversations',
+                          style: GoogleFonts.nunito(
+                              fontSize: 18,
+                              color: Colors.white70,
+                              fontWeight: FontWeight.bold),
+                        )
+                      ],
                     ),
                   ),
                 )

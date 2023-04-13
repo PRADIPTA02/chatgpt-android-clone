@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../util/constants/constants.dart';
 
@@ -9,15 +10,15 @@ class InternetCheckDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Row(
-        children: [
-          Icon(Icons.signal_wifi_off,color: Colors.red,),
-          SizedBox(width: 10),
+        children:  [
+          const Icon(Icons.signal_wifi_off,color: Colors.red,),
+          const SizedBox(width: 10),
           Text(
             'No Internet Connection',
-            style: TextStyle(
+            style: GoogleFonts.nunito (
               color: Colors.red,
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
             ),
           ),
         ],
@@ -26,16 +27,16 @@ class InternetCheckDialog extends StatelessWidget {
         child: ListBody(
           children: [
             Row(
-              children: [
-                Icon(
+              children:  [
+                const Icon(
                   Icons.info_outline,
                   color: Colors.white70,
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Text(
                     'Please check your internet connection and try again.',
-                    style: TextStyle(
+                    style: GoogleFonts.nunito(
                       color: Colors.white70,
                       fontSize: 16.0,
                     ),
@@ -48,7 +49,7 @@ class InternetCheckDialog extends StatelessWidget {
       ),
       actions: [
         TextButton(
-          child: Text(
+          child: const Text(
             'OK',
             style: TextStyle(
               color: cgSecondary,

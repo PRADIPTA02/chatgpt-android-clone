@@ -1,38 +1,36 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:chatgpt/screens/auth/common/authButton.dart';
 import 'package:chatgpt/screens/auth/common/authOptionDevider.dart';
 import 'package:chatgpt/screens/auth/common/authSubmtButton.dart';
 import 'package:chatgpt/util/constants/constants.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import '../../../providers/auth_provider.dart';
 import '../common/heading.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final _formKey = GlobalKey<FormState>();
-  String _email = '';
-  String _password = '';
-  bool showPassword = false;
   @override
   Widget build(BuildContext context) {
+    FocusNode _focusNode1 = FocusNode();
+    FocusNode _focusNode2 = FocusNode();
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      // resizeToAvoidBottomInset: false,
+      
       backgroundColor: bgColor,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
+          padding:
+              const EdgeInsets.only(left: 15, right: 15, top: 15, bottom: 0),
           child: SingleChildScrollView(
+            reverse: true,
             physics: const BouncingScrollPhysics(
               decelerationRate: ScrollDecelerationRate.fast,
             ),
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -40,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       alignment: Alignment.topLeft,
                       child: Heading(title: "Log in")),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.08,
+                    height: MediaQuery.of(context).size.height * 0.05,
                   ),
                   Align(
                       alignment: Alignment.topLeft,
@@ -51,8 +49,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             fontSize: 17,
                             fontWeight: FontWeight.w700),
                       )),
-                  const SizedBox(
-                    height: 15,
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -65,15 +63,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           buttonIcon: 'assets/images/phoneIcon.png')
                     ],
                   ),
-                  const SizedBox(
-                    height: 40,
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.03,
                   ),
                   const AuthOptionDevider(),
-                  const SizedBox(
-                    height: 40,
-                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   Form(
-                      key: _formKey,
+                      key: authProvider.fromKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -85,13 +81,18 @@ class _LoginScreenState extends State<LoginScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             child: TextFormField(
+                              focusNode: _focusNode1,
+                              onFieldSubmitted: (e) =>
+                                  {_focusNode2.requestFocus()},
+                              controller: authProvider.login_email_controller,
                               cursorColor: cgSecondary,
+                              cursorRadius: const Radius.circular(5),
                               keyboardType: TextInputType.emailAddress,
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               style: GoogleFonts.nunito(
                                   color: Colors.white70,
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w700),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -104,9 +105,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 }
                                 return null;
                               },
-                              onSaved: (value) {
-                                _email = value!;
-                              },
                               decoration: const InputDecoration(
                                 prefixIcon: Icon(
                                   Icons.alternate_email,
@@ -118,7 +116,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontWeight: FontWeight.w600,
                                 ),
                                 errorStyle: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
+                                    // fontSize: 16, 
+                                    fontWeight: FontWeight.bold),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                       width: 2, color: Colors.white30),
@@ -138,9 +137,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(
-                            height: 20,
-                          ),
+                          SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.02),
                           Text("Password",
                               style: GoogleFonts.nunito(
                                   color: Colors.white,
@@ -148,67 +147,80 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontSize: 16)),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: TextFormField(
-                              cursorColor: cgSecondary,
-                              style: GoogleFonts.nunito(
-                                  color: Colors.white70,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700),
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter a password';
-                                }
-                                if (value.length < 6) {
-                                  return 'Password must be at least 6 characters';
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                _password = value!;
-                              },
-                              obscureText: !showPassword,
-                              decoration: InputDecoration(
-                                  prefixIcon: const Icon(
-                                    Icons.lock_outline,
+                            child: Consumer<AuthProvider>(
+                              builder: (context, value, child) => TextFormField(
+                                focusNode: _focusNode2,
+                                onEditingComplete: () => {
+                                  _focusNode2.unfocus(),
+                                  authProvider.SignIn(
+                                      email: authProvider
+                                          .login_email_controller.text,
+                                      password: authProvider
+                                          .login_password_controller.text,
+                                      context: context),
+                                },
+                                keyboardType: TextInputType.emailAddress,
+                                controller:
+                                    authProvider.login_password_controller,
+                                cursorColor: cgSecondary,
+                                cursorRadius: const Radius.circular(5),
+                                style: GoogleFonts.nunito(
                                     color: Colors.white70,
-                                  ),
-                                  suffixIcon: IconButton(
-                                    splashColor: Colors.transparent,
-                                    onPressed: () => {
-                                      setState(
-                                        () => showPassword = !showPassword,
-                                      )
-                                    },
-                                    icon: Icon(showPassword
-                                        ? Icons.visibility_outlined
-                                        : Icons.visibility_off_outlined),
-                                    color: Colors.white70,
-                                  ),
-                                  hintText: 'Enter your password',
-                                  hintStyle: const TextStyle(
-                                      color: Colors.white30,
-                                      fontWeight: FontWeight.w600),
-                                  enabledBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 2, color: Colors.white30),
-                                  ),
-                                  focusedBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 2, color: cgSecondary),
-                                  ),
-                                  errorBorder: const OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(width: 2, color: errorColor),
-                                  ),
-                                  focusedErrorBorder: const OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(width: 2, color: errorColor),
-                                  ),
-                                  errorStyle: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold)),
+                                    // fontSize: 16,
+                                    fontWeight: FontWeight.w700),
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter a password';
+                                  }
+                                  if (value.length < 6) {
+                                    return 'Password must be at least 6 characters';
+                                  }
+                                  return null;
+                                },
+                                obscureText: !authProvider.showLoginPassword,
+                                decoration: InputDecoration(
+                                    prefixIcon: const Icon(
+                                      Icons.lock_outline,
+                                      color: Colors.white70,
+                                    ),
+                                    suffixIcon: IconButton(
+                                      splashColor: Colors.transparent,
+                                      onPressed: () => {
+                                        authProvider
+                                            .changeLoginPasswordVisibility(),
+                                      },
+                                      icon: Icon(authProvider.showLoginPassword
+                                          ? Icons.visibility_outlined
+                                          : Icons.visibility_off_outlined),
+                                      color: Colors.white70,
+                                    ),
+                                    hintText: 'Enter your password',
+                                    hintStyle: const TextStyle(
+                                        color: Colors.white30,
+                                        fontWeight: FontWeight.w600),
+                                    enabledBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 2, color: Colors.white30),
+                                    ),
+                                    focusedBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 2, color: cgSecondary),
+                                    ),
+                                    errorBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 2, color: errorColor),
+                                    ),
+                                    focusedErrorBorder:
+                                        const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 2, color: errorColor),
+                                    ),
+                                    errorStyle: const TextStyle(
+                                        // fontSize: 15,
+                                        fontWeight: FontWeight.bold)),
+                              ),
                             ),
                           ),
                           InkWell(
@@ -220,7 +232,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 style: GoogleFonts.nunito(
                                     color: cgSecondary,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 17),
+                                    fontSize: 16),
                               ),
                             ),
                           ),
@@ -228,29 +240,17 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: 40,
                           ),
                           AuthSubmitButton(
-                              ontap: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  _formKey.currentState!.save();
-                                  try {
-                                    print(_email);
-                                    print(_password);
-                                    final credential = await FirebaseAuth
-                                        .instance
-                                        .signInWithEmailAndPassword(
-                                            email: _email, password: _password);
-                                  } on FirebaseAuthException catch (e) {
-                                    if (e.code == 'user-not-found') {
-                                      print('No user found for that email.');
-                                    } else if (e.code == 'wrong-password') {
-                                      print(
-                                          'Wrong password provided for that user.');
-                                    }
-                                  }
-                                }
+                              ontap: () {
+                                authProvider.SignIn(
+                                    email: authProvider
+                                        .login_email_controller.text,
+                                    password: authProvider
+                                        .login_password_controller.text,
+                                    context: context);
                               },
                               title: "Log in"),
-                          const SizedBox(
-                            height: 100,
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.07,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -258,19 +258,22 @@ class _LoginScreenState extends State<LoginScreen> {
                               Text(
                                 "Don't have an account? ",
                                 style: GoogleFonts.nunito(
-                                    fontSize: 17,
+                                    fontSize: 16,
                                     color: Colors.white70,
                                     fontWeight: FontWeight.w700),
                               ),
                               Text(
                                 "Sign up",
                                 style: GoogleFonts.nunito(
-                                    fontSize: 17,
+                                    fontSize: 16,
                                     color: cgSecondary,
                                     fontWeight: FontWeight.w700),
-                              )
+                              ),
                             ],
-                          )
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.03,
+                          ),
                         ],
                       ))
                 ]),

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:chatgpt/util/constants/constants.dart';
 import 'package:chatgpt/models/error_message_model.dart';
@@ -7,6 +9,7 @@ import 'package:hive/hive.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:http/http.dart' as http;
 import 'package:speech_to_text/speech_to_text.dart';
+import '../CommonWidgets/custom_snakebar.dart';
 import '../models/message_list_conversation.dart';
 import '../models/message_model.dart';
 import 'package:uuid/uuid.dart';
@@ -152,11 +155,11 @@ class TextCompletProvider with ChangeNotifier {
                 },
               ));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: secondaryColor,
-          elevation: 0,
-          content: Text(e.toString())));
+           CustomSnackeBar.show(
+          context: context,
+          message: e.toString(),
+          status: Status.error
+        );
       _isLoading = false;
       notifyListeners();
       return "";
@@ -176,11 +179,11 @@ class TextCompletProvider with ChangeNotifier {
     } else if (response != null && !isupdate) {
       Map<String, dynamic> newResponse = jsonDecode(response.body);
       _isLoading = false;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: secondaryColor,
-          elevation: 0,
-          behavior: SnackBarBehavior.floating,
-          content: Text(newResponse['error']['message'])));
+        CustomSnackeBar.show(
+          context: context,
+          message: newResponse['error']['message'].toString(),
+          status: Status.error
+        );
       onChangeTextInput("");
     }
     if (response != null && isupdate) {
@@ -217,7 +220,6 @@ class TextCompletProvider with ChangeNotifier {
 
   void updateMessage(
       int index, String id, int sessionIndex, BuildContext context) async {
-    // print(index);
     Conversation tempMessageList =
         listOfAllMessages.values.toList()[sessionIndex];
     List<List<Message>> convertedMessageList = tempMessageList.messages;
@@ -321,7 +323,9 @@ class TextCompletProvider with ChangeNotifier {
     session.save();
     notifyListeners();
   }
+  void clearConversations(){
 
+  }
   void addErrorMessage(ErroMessage message) {
     _error_messags.clear();
     _error_messags.add(message);
