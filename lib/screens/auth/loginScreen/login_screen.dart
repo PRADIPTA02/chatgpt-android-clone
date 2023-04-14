@@ -3,6 +3,7 @@
 import 'package:chatgpt/screens/auth/common/authButton.dart';
 import 'package:chatgpt/screens/auth/common/authOptionDevider.dart';
 import 'package:chatgpt/screens/auth/common/authSubmtButton.dart';
+import 'package:chatgpt/screens/auth/signUpScreen/signUp_screen.dart';
 import 'package:chatgpt/util/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,6 +15,7 @@ class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
   @override
   Widget build(BuildContext context) {
+    GlobalKey<FormState> _login_formKey = GlobalKey<FormState>();
     FocusNode _focusNode1 = FocusNode();
     FocusNode _focusNode2 = FocusNode();
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
@@ -69,7 +71,7 @@ class LoginScreen extends StatelessWidget {
                   const AuthOptionDevider(),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   Form(
-                      key: authProvider.fromKey,
+                      key: _login_formKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -241,13 +243,15 @@ class LoginScreen extends StatelessWidget {
                           ),
                           AuthSubmitButton(
                               ontap: () {
+                                if (_login_formKey.currentState!.validate()){
+                                   _login_formKey.currentState!.save();
                                 authProvider.SignIn(
                                     email: authProvider
                                         .login_email_controller.text,
                                     password: authProvider
                                         .login_password_controller.text,
                                     context: context);
-                              },
+                              }},
                               title: "Log in"),
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.07,
@@ -262,12 +266,18 @@ class LoginScreen extends StatelessWidget {
                                     color: Colors.white70,
                                     fontWeight: FontWeight.w700),
                               ),
-                              Text(
-                                "Sign up",
-                                style: GoogleFonts.nunito(
-                                    fontSize: 16,
-                                    color: cgSecondary,
-                                    fontWeight: FontWeight.w700),
+                              InkWell(
+                                splashColor: Colors.transparent,
+                                onTap: () => {
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=> SignUpScreen())),
+                                },
+                                child: Text(
+                                  "Sign up",
+                                  style: GoogleFonts.nunito(
+                                      fontSize: 16,
+                                      color: cgSecondary,
+                                      fontWeight: FontWeight.w700),
+                                ),
                               ),
                             ],
                           ),

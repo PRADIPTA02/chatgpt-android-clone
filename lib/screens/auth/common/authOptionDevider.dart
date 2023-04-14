@@ -11,8 +11,8 @@ class AuthOptionDevider extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
-          color: Colors.white12,
-          height: 3,
+          color: cglasscolor,
+          height: 2,
           width: MediaQuery.of(context).size.width * 0.40,
         ),
         Text(
@@ -24,8 +24,8 @@ class AuthOptionDevider extends StatelessWidget {
           ),
         ),
         Container(
-          color: Colors.white12,
-          height: 3,
+          color: cglasscolor,
+          height: 2,
           width: MediaQuery.of(context).size.width * 0.40,
         ),
       ],

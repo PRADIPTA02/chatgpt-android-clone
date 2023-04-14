@@ -26,9 +26,9 @@ class AuthSubmitButton extends StatelessWidget {
             )
           ),
           child: Center(child: value.isLoading? const SizedBox(height:35,width:35,child: CircularProgressIndicator(color: Colors.white, )): Text(title,style: GoogleFonts.nunito(
-            fontSize: 21,
+            fontSize: 18,
             fontWeight: FontWeight.w800,
-            color: Colors.white
+            color: Colors.white70
           ))),
           ),
       ),

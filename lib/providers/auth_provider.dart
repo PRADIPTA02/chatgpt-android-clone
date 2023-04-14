@@ -10,16 +10,21 @@ class AuthProvider extends ChangeNotifier {
   String _loginErrorMessage = "";
   String get loginErrorMessage => _loginErrorMessage;
   late UserCredential _userCredential;
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _login_email_controller = TextEditingController();
+  final _signup_username_controller = TextEditingController();
   final _login_password_controller = TextEditingController();
+  final _signup_email_controller = TextEditingController();
+  final _signup_password_controller = TextEditingController();
   bool get isLoading => _isLoading;
   bool get showLoginPassword => _showLoginPassword;
   UserCredential get CurrentUserCredential => _userCredential;
-  GlobalKey<FormState> get fromKey => _formKey;
   TextEditingController get login_email_controller => _login_email_controller;
   TextEditingController get login_password_controller =>
       _login_password_controller;
+  TextEditingController get signup_username_controller => _signup_username_controller;
+  TextEditingController get signup_email_controller => _signup_email_controller;
+  TextEditingController get signup_password_controller =>
+      _signup_password_controller;
 
   void changeIsLoading(bool value) {
     _isLoading = value;
@@ -47,10 +52,7 @@ class AuthProvider extends ChangeNotifier {
       {required String email,
       required String password,
       required BuildContext context}) async {
-    if (_formKey.currentState!.validate()) {
       changeIsLoading(true);
-
-      _formKey.currentState!.save();
       try {
         final userCredential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
@@ -82,5 +84,18 @@ class AuthProvider extends ChangeNotifier {
       changeIsLoading(false);
       notifyListeners();
     }
+
+    void SignUp({
+      required String username,
+      required String email,
+      required String password,
+      required BuildContext context
+    }){
+      var  obj = {
+        "user" : username,
+        "userEmail" : email,
+        "password" : password
+      };
+      print(obj.toString());
+    }
   }
-}
