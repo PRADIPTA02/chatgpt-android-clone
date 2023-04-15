@@ -21,7 +21,6 @@ class SignUpScreen extends StatelessWidget {
     FocusNode _focusNode3 = FocusNode();
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
 
       backgroundColor: bgColor,
       body: SafeArea(
@@ -33,7 +32,6 @@ class SignUpScreen extends StatelessWidget {
             physics: const BouncingScrollPhysics(
               decelerationRate: ScrollDecelerationRate.fast,
             ),
-            // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -66,9 +64,7 @@ class SignUpScreen extends StatelessWidget {
                           buttonIcon: 'assets/images/github_icon.png')
                     ],
                   ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.03,
-                  ),
+                  SizedBox( height: MediaQuery.of(context).size.height * 0.03,),
                   const AuthOptionDevider(),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   Form(
@@ -92,8 +88,8 @@ class SignUpScreen extends StatelessWidget {
                               cursorColor: cgSecondary,
                               cursorRadius: const Radius.circular(5),
                               keyboardType: TextInputType.name,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                              // autovalidateMode:
+                              //     AutovalidateMode.,
                               style: GoogleFonts.nunito(
                                   color: Colors.white70,
                                   fontSize: 16,
@@ -101,6 +97,9 @@ class SignUpScreen extends StatelessWidget {
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter a username';
+                                }
+                                if (value.characters.length<4){
+                                  return 'Use atlest 4 character';
                                 }
                                 return null;
                               },
@@ -138,7 +137,7 @@ class SignUpScreen extends StatelessWidget {
                           SizedBox(
                               height:
                                   MediaQuery.of(context).size.height * 0.01),
-                          Text("Email",
+                          Text("Email / Phone",
                               style: GoogleFonts.nunito(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w600,
@@ -153,39 +152,33 @@ class SignUpScreen extends StatelessWidget {
                               cursorColor: cgSecondary,
                               cursorRadius: const Radius.circular(5),
                               keyboardType: TextInputType.emailAddress,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
+                              // autovalidateMode:
+                              //     AutovalidateMode.onUserInteraction,
                               style: GoogleFonts.nunito(
                                   color: Colors.white70,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter an email address';
+                                  return 'please enter a valid cradetial';
                                 }
                                 final emailRegex =
-                                    RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                                    RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
                                 final phoneRegex = 
-                                    RegExp(r'^(?:[+0][1-9])?[0-9]{10,12}$');
-                                if (!emailRegex.hasMatch(value)||(!phoneRegex.hasMatch(value))) {
-                                  print(phoneRegex.hasMatch(value));
-
-                                  return 'Please enter a valid email address';
-                                }
-                                return null;
+                                    RegExp(r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$');
+                                   return emailRegex.hasMatch(value)?null:phoneRegex.hasMatch(value)?null:'please enter a valid cradetial';
                               },
                               decoration: const InputDecoration(
                                 contentPadding: EdgeInsets.symmetric(
                                     vertical: 15, horizontal: 12),
                                 filled: true,
                                 fillColor: secondaryColor,
-                                hintText: 'example@gmail.com',
+                                hintText: 'Email ID / Mobile number',
                                 hintStyle: TextStyle(
                                   color: Colors.white30,
                                   fontWeight: FontWeight.w600,
                                 ),
                                 errorStyle: TextStyle(
-                                    // fontSize: 16,
                                     fontWeight: FontWeight.bold),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide:
@@ -241,10 +234,7 @@ class SignUpScreen extends StatelessWidget {
                                 cursorRadius: const Radius.circular(5),
                                 style: GoogleFonts.nunito(
                                     color: Colors.white70,
-                                    // fontSize: 16,
                                     fontWeight: FontWeight.w700),
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter a password';
@@ -293,7 +283,6 @@ class SignUpScreen extends StatelessWidget {
                                           width: 2, color: errorColor),
                                     ),
                                     errorStyle: const TextStyle(
-                                        // fontSize: 15,
                                         fontWeight: FontWeight.bold)),
                               ),
                             ),

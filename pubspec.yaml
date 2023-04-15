@@ -54,6 +54,7 @@ dependencies:
   flutter_flushbar: ^0.0.2
   animated_snack_bar: ^0.3.0
   share_plus: ^6.3.1
+  flutter_otp_text_field: ^1.1.1
 dev_dependencies:
   hive_flutter: ^1.1.0
   build_runner: ^2.3.3

@@ -16,6 +16,7 @@ class AuthProvider extends ChangeNotifier {
   final _login_password_controller = TextEditingController();
   final _signup_email_controller = TextEditingController();
   final _signup_password_controller = TextEditingController();
+  final _forgot_password_email_controller = TextEditingController();
   bool get isLoading => _isLoading;
   bool get showLoginPassword => _showLoginPassword;
   UserCredential get CurrentUserCredential => _userCredential;
@@ -25,6 +26,7 @@ class AuthProvider extends ChangeNotifier {
   TextEditingController get signup_username_controller =>
       _signup_username_controller;
   TextEditingController get signup_email_controller => _signup_email_controller;
+  TextEditingController get forgot_password_email_controller => _forgot_password_email_controller;
   TextEditingController get signup_password_controller =>
       _signup_password_controller;
   RegExp get emailRegex => RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');

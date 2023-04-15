@@ -226,6 +226,7 @@ class LoginScreen extends StatelessWidget {
                             ),
                           ),
                           InkWell(
+                            splashColor: Colors.transparent,
                             onTap: () => {},
                             child: Align(
                               alignment: Alignment.bottomRight,
