@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../CommonWidgets/custom_snakebar.dart';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
+
 class AuthProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool _showLoginPassword = false;
@@ -21,10 +22,13 @@ class AuthProvider extends ChangeNotifier {
   TextEditingController get login_email_controller => _login_email_controller;
   TextEditingController get login_password_controller =>
       _login_password_controller;
-  TextEditingController get signup_username_controller => _signup_username_controller;
+  TextEditingController get signup_username_controller =>
+      _signup_username_controller;
   TextEditingController get signup_email_controller => _signup_email_controller;
   TextEditingController get signup_password_controller =>
       _signup_password_controller;
+  RegExp get emailRegex => RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+  RegExp get phoneNumberRegex => RegExp(r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$');
 
   void changeIsLoading(bool value) {
     _isLoading = value;
@@ -52,50 +56,55 @@ class AuthProvider extends ChangeNotifier {
       {required String email,
       required String password,
       required BuildContext context}) async {
-      changeIsLoading(true);
-      try {
-        final userCredential = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: email, password: password);
-        _userCredential = userCredential;
-        _login_email_controller.text = "";
-        _login_password_controller.text = "";
-              CustomSnackeBar.show(
-              context: context,
-              message:  'Welcome! You have successfully logged in',
-              status: Status.success);
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'user-not-found') {
-          CustomSnackeBar.show(
-              context: context,
-              message: 'Error: The username or password you entered is incorrect. ',
-              status: Status.warning);
-        } else if (e.code == 'wrong-password') {
-          CustomSnackeBar.show(
-              context: context,
-              message:'Error: The username or password you entered is incorrect. ',
-              status: Status.warning);
-        } else {
-          CustomSnackeBar.show(
-              context: context,
-              message:  'Warning: You have exceeded the maximum number of login attempts',
-              status: Status.error);
-        }
+    changeIsLoading(true);
+    try {
+      final userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      _userCredential = userCredential;
+      _login_email_controller.text = "";
+      _login_password_controller.text = "";
+      CustomSnackeBar.show(
+          context: context,
+          message: 'Welcome! You have successfully logged in',
+          status: Status.success);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        CustomSnackeBar.show(
+            context: context,
+            message:
+                'Error: The username or password you entered is incorrect. ',
+            status: Status.warning);
+      } else if (e.code == 'wrong-password') {
+        CustomSnackeBar.show(
+            context: context,
+            message:
+                'Error: The username or password you entered is incorrect. ',
+            status: Status.warning);
+      } else {
+        CustomSnackeBar.show(
+            context: context,
+            message:
+                'Warning: You have exceeded the maximum number of login attempts',
+            status: Status.error);
       }
-      changeIsLoading(false);
-      notifyListeners();
     }
+    changeIsLoading(false);
+    notifyListeners();
+  }
 
-    void SignUp({
-      required String username,
+  String phoneAndEmailvalidator(String ?value){
+    if(emailRegex.hasMatch(value!)||phoneNumberRegex.hasMatch(value)){
+      print(value);
+    }
+    return 'please enter valid cradential';
+  }
+
+  void SignUp(
+      {required String username,
       required String email,
       required String password,
-      required BuildContext context
-    }){
-      var  obj = {
-        "user" : username,
-        "userEmail" : email,
-        "password" : password
-      };
-      print(obj.toString());
-    }
+      required BuildContext context}) {
+    var obj = {"user": username, "userEmail": email, "password": password};
+    print(obj.toString());
   }
+}
