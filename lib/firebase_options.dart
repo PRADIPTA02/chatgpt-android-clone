@@ -55,6 +55,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '213725534600',
     projectId: 'chatgpt-146d0',
     authDomain: 'chatgpt-146d0.firebaseapp.com',
+    databaseURL: 'https://chatgpt-146d0-default-rtdb.firebaseio.com',
     storageBucket: 'chatgpt-146d0.appspot.com',
     measurementId: 'G-H4ER6DMH40',
   );
@@ -64,6 +65,7 @@ class DefaultFirebaseOptions {
     appId: '1:213725534600:android:939ee044c3c046a15a023d',
     messagingSenderId: '213725534600',
     projectId: 'chatgpt-146d0',
+    databaseURL: 'https://chatgpt-146d0-default-rtdb.firebaseio.com',
     storageBucket: 'chatgpt-146d0.appspot.com',
   );
 }

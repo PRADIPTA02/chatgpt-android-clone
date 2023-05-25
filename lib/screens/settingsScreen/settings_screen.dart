@@ -22,6 +22,7 @@ class SettingsScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 25),
         child: ListView(
+          physics: const BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast),
           children: [
             Text(
               "Settings",
@@ -34,7 +35,7 @@ class SettingsScreen extends StatelessWidget {
             Text(
               "Account",
               style: GoogleFonts.nunito(
-                  color: Color.fromARGB(255, 255, 255, 255),
+                  color: cgSecondary,
                   fontSize: 23,
                   fontWeight: FontWeight.w500),
             ),
@@ -87,7 +88,7 @@ class SettingsScreen extends StatelessWidget {
             Text(
               "Settings",
               style: GoogleFonts.nunito(
-                  color: const Color.fromARGB(255, 212, 211, 211),
+                  color: cgSecondary,
                   fontSize: 23,
                   fontWeight: FontWeight.w500),
             ),

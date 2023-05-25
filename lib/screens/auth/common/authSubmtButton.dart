@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../../../util/constants/constants.dart';
 
 class AuthSubmitButton extends StatelessWidget {
-  const AuthSubmitButton({super.key,required this.ontap,required this.title});
+  const AuthSubmitButton({super.key, required this.ontap, required this.title});
   final VoidCallback ontap;
   final String title;
   @override
@@ -15,22 +15,35 @@ class AuthSubmitButton extends StatelessWidget {
       builder: (context, value, child) => InkWell(
         onTap: ontap,
         child: Container(
-          width: MediaQuery.of(context).size.width*0.95,
-          height:MediaQuery.of(context).size.height*0.06,
+          width: MediaQuery.of(context).size.width * 0.95,
+          height: MediaQuery.of(context).size.height * 0.06,
           decoration: BoxDecoration(
-            color: cgSecondary,
-            borderRadius: BorderRadius.circular(5),
-            border: Border.all(
-              color: cglasscolor,
-              width: 2
-            )
-          ),
-          child: Center(child: value.isLoading? const SizedBox(height:35,width:35,child: CircularProgressIndicator(color: Colors.white, )): Text(title,style: GoogleFonts.nunito(
-            fontSize: 18,
-            fontWeight: FontWeight.w800,
-            color: Colors.white70
-          ))),
-          ),
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                
+                colors: <Color>[
+                  Color(0xffd62507),
+                  Color(0xffe55a32)
+                ], // red to yellow
+                tileMode:
+                    TileMode.clamp, // repeats the gradient over the canvas
+              ),
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(color: cglasscolor, width: 2)),
+          child: Center(
+              child: value.isLoading
+                  ? const SizedBox(
+                      height: 35,
+                      width: 35,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ))
+                  : Text(title,
+                      style: GoogleFonts.nunito(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white70))),
+        ),
       ),
     );
   }

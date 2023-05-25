@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
 
+
 import '../../util/constants/constants.dart';
 import '../../providers/text_copletion_provider.dart';
 
@@ -36,25 +37,26 @@ class SingleMessageBody extends StatelessWidget {
   final bool isLiked;
   final bool isDisLiked;
 
-  String getTime(int timestamp) {
-    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
-    int hour = dateTime.hour % 12;
-    int minute = dateTime.minute;
-    int second = dateTime.second;
-    return "$hour:$minute:$second";
-  }
-
+  String formatTime(int timestamp) {
+  DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+  String amOrPm = dateTime.hour < 12 ? 'AM' : 'PM';
+  int hour = dateTime.hour > 12 ? dateTime.hour - 12 : dateTime.hour;
+  String minute = dateTime.minute.toString().padLeft(2, '0');
+  String second = dateTime.second.toString().padLeft(2, '0');
+  
+  return '$hour:$minute:$second $amOrPm';
+}
   @override
   Widget build(BuildContext context) {
-    final _textCompletionProvider =
+    final textCompletionProvider =
         Provider.of<TextCompletProvider>(context, listen: false);
-    if(isApi && isAnimate&&_textCompletionProvider.CurrentSessionIndex==sessionIndex){
+    if(isApi && isAnimate&&textCompletionProvider.CurrentSessionIndex==sessionIndex){
     }
 
   Future<bool> onLikeButtonTapped(bool isLiked) async{
     isCarouselMessage?
-        _textCompletionProvider.likeMessage(messageIndex,id,sessionIndex,upperMessageIndex, true):
-        _textCompletionProvider.likeMessage(messageIndex ,id,sessionIndex,upperMessageIndex, false);
+        textCompletionProvider.likeMessage(messageIndex,id,sessionIndex,upperMessageIndex, true):
+        textCompletionProvider.likeMessage(messageIndex ,id,sessionIndex,upperMessageIndex, false);
     return !isLiked;
   }
 
@@ -79,14 +81,14 @@ class SingleMessageBody extends StatelessWidget {
                   width: 5,
                 ),
                 Expanded(
-                  child: isApi && isAnimate && _textCompletionProvider.CurrentSessionIndex == sessionIndex
+                  child: isApi && isAnimate && textCompletionProvider.CurrentSessionIndex == sessionIndex
                       ? AnimatedTextKit(
                           repeatForever: false,
                           animatedTexts: [
                             TypewriterAnimatedText(
                               text.trim(),
                               textStyle: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 17,
                                   color: isApi
                                       ? Colors.white70
                                       : Colors.white,
@@ -98,25 +100,25 @@ class SingleMessageBody extends StatelessWidget {
                           totalRepeatCount: 1,
                           onFinished: () {
                             isCarouselMessage?
-                            _textCompletionProvider
+                            textCompletionProvider
                                 .changeAnimate(messageIndex,false,upperMessageIndex,sessionIndex):
-                            _textCompletionProvider
+                            textCompletionProvider
                                 .changeAnimate(messageIndex,true,upperMessageIndex,sessionIndex);
                           },
                           isRepeatingAnimation: false,
                         )
                       :Text(
                           text.trim(),
-                          style: const TextStyle(fontSize: 18, color: Colors.white70),
+                          style: const TextStyle(fontSize: 17, color: Colors.white70),
                         ),
                 ),
                 !isApi
                     ? IconButton(
                         onPressed: () => {
-                              _textCompletionProvider
+                              textCompletionProvider
                                   .changeShowSaveAndCancelButton(
                                       id, true),
-                              _textCompletionProvider.setMessageUpdate(true,text )
+                              textCompletionProvider.setMessageUpdate(true,text )
                             },
                         icon: const Icon(
                           Icons.edit_note,
@@ -132,8 +134,8 @@ class SingleMessageBody extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 3),
                         child: Text(
-                          getTime(timeStamp),
-                          style: const TextStyle(fontSize: 18, color: Colors.white60),
+                          formatTime(timeStamp),
+                          style: const TextStyle(fontSize: 16, color: Colors.white70),
                         ),
                       ),
                       Row(
@@ -144,14 +146,14 @@ class SingleMessageBody extends StatelessWidget {
                             onTap:onLikeButtonTapped,
                             likeBuilder: (isLiked) =>Icon(
                             isLiked?Icons.thumb_up_alt:Icons.thumb_up_off_alt,
-                            color: isLiked?cgSecondary:Colors.white70,
+                            color: isLiked?const Color.fromARGB(255, 78, 171, 112):Colors.white70,
                             )
                           ),
                           IconButton(
                               onPressed: () => {
                                 isCarouselMessage?
-                                _textCompletionProvider.disLikeMessage(messageIndex,id,sessionIndex,upperMessageIndex, true):
-                                _textCompletionProvider.disLikeMessage(messageIndex ,id,sessionIndex,upperMessageIndex, false),
+                                textCompletionProvider.disLikeMessage(messageIndex,id,sessionIndex,upperMessageIndex, true):
+                                textCompletionProvider.disLikeMessage(messageIndex ,id,sessionIndex,upperMessageIndex, false),
                               },
                               splashColor: Colors.transparent,
                               icon: isDisLiked ?const Icon(
@@ -178,7 +180,7 @@ class SingleMessageBody extends StatelessWidget {
                                 MaterialStateProperty.all<Color>(cgSecondary),
                           ),
                           onPressed: () => {
-                            _textCompletionProvider.updateMessage(upperMessageIndex,id,sessionIndex,context)
+                            textCompletionProvider.updateMessage(upperMessageIndex,id,sessionIndex,context)
                           },
                           child: const Text(
                             "Save & Submit",
@@ -194,10 +196,10 @@ class SingleMessageBody extends StatelessWidget {
                           style: OutlinedButton.styleFrom(
                               side: const BorderSide(color: Colors.white70)),
                           onPressed: () => {
-                                _textCompletionProvider
+                                textCompletionProvider
                                     .changeShowSaveAndCancelButton(
                                         id, false,),
-                                        _textCompletionProvider.setMessageUpdate(false,text),
+                                        textCompletionProvider.setMessageUpdate(false,text),
                               },
                           child: const Text(
                             "Cancel",

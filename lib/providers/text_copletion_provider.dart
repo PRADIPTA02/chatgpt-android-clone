@@ -1,5 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
-
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, prefer_final_fields
 import 'dart:convert';
 import 'package:chatgpt/util/constants/constants.dart';
 import 'package:chatgpt/models/error_message_model.dart';
@@ -40,7 +39,7 @@ class TextCompletProvider with ChangeNotifier {
     // }
     notifyListeners();
   }
-  final uuid = Uuid();
+  final uuid = const Uuid();
   double maxPosition = double.minPositive;
   int _message_no = 0;
   bool _safe_to_scroll = false;
@@ -136,9 +135,9 @@ class TextCompletProvider with ChangeNotifier {
     Map<String, String> header = {
       'Content-Type': 'application/json',
       'Authorization':
-          'Bearer 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',
+          'Bearer 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',
     };
-    var response;
+    http.Response response;
     try {
       response =
           await http.post(Uri.parse("https://api.openai.com/v1/completions"),
@@ -164,7 +163,7 @@ class TextCompletProvider with ChangeNotifier {
       notifyListeners();
       return "";
     }
-    if (response?.statusCode == 200 && !isupdate) {
+    if (response.statusCode == 200 && !isupdate) {
       Map<String, dynamic> newResponse = jsonDecode(response.body);
       addMessage(<Message>[
         Message(

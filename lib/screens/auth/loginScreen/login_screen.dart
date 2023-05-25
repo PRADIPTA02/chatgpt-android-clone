@@ -12,16 +12,19 @@ import '../../../providers/auth_provider.dart';
 import '../common/heading.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
+  GlobalKey<FormState> _login_formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    GlobalKey<FormState> _login_formKey = GlobalKey<FormState>();
     FocusNode _focusNode1 = FocusNode();
     FocusNode _focusNode2 = FocusNode();
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
-      
+      appBar: AppBar(
+        backgroundColor: bgColor,
+        elevation: 0,
+        title: const Heading(title: "Log in"),
+      ),
       backgroundColor: bgColor,
       body: SafeArea(
         child: Padding(
@@ -32,13 +35,9 @@ class LoginScreen extends StatelessWidget {
             physics: const BouncingScrollPhysics(
               decelerationRate: ScrollDecelerationRate.fast,
             ),
-            // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Align(
-                      alignment: Alignment.topLeft,
-                      child: Heading(title: "Log in")),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.05,
                   ),
@@ -48,7 +47,7 @@ class LoginScreen extends StatelessWidget {
                         "Log in with one of the following options.",
                         style: GoogleFonts.nunito(
                             color: Colors.white60,
-                            fontSize: 17,
+                            fontSize: 15,
                             fontWeight: FontWeight.w700),
                       )),
                   SizedBox(
@@ -62,7 +61,7 @@ class LoginScreen extends StatelessWidget {
                           buttonIcon: 'assets/images/googleIcon.png'),
                       AuthButton(
                           ontap: () => {},
-                          buttonIcon: 'assets/images/phoneIcon.png')
+                          buttonIcon: 'assets/images/github_icon.png')
                     ],
                   ),
                   SizedBox(
@@ -75,11 +74,11 @@ class LoginScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Email",
+                          Text("Email / Phone",
                               style: GoogleFonts.nunito(
                                   color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16)),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15)),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             child: TextFormField(
@@ -90,39 +89,39 @@ class LoginScreen extends StatelessWidget {
                               cursorColor: cgSecondary,
                               cursorRadius: const Radius.circular(5),
                               keyboardType: TextInputType.emailAddress,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
                               style: GoogleFonts.nunito(
                                   color: Colors.white70,
                                   fontSize: 16,
-                                  fontWeight: FontWeight.w700),
+                                  fontWeight: FontWeight.w500),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter an email address';
+                                  return 'please enter a valid cradetial';
                                 }
-                                final emailRegex =
-                                    RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-                                if (!emailRegex.hasMatch(value)) {
-                                  return 'Please enter a valid email address';
-                                }
-                                return null;
+                                final emailRegex = RegExp(
+                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                                final phoneRegex = RegExp(
+                                    r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$');
+                                return emailRegex.hasMatch(value)
+                                    ? null
+                                    : phoneRegex.hasMatch(value)
+                                        ? null
+                                        : 'please enter valid cradetial';
                               },
                               decoration: const InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.alternate_email,
-                                  color: Colors.white70,
-                                ),
-                                hintText: 'example@gmail.com',
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 12),
+                                filled: true,
+                                fillColor: secondaryColor,
+                                hintText: 'Email ID / Phone number',
                                 hintStyle: TextStyle(
                                   color: Colors.white30,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w500,
                                 ),
-                                errorStyle: TextStyle(
-                                    // fontSize: 16, 
-                                    fontWeight: FontWeight.bold),
+                                errorStyle:
+                                    TextStyle(fontWeight: FontWeight.bold),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 2, color: Colors.white30),
+                                  borderSide:
+                                      BorderSide(width: 2, color: cglasscolor),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide:
@@ -145,8 +144,8 @@ class LoginScreen extends StatelessWidget {
                           Text("Password",
                               style: GoogleFonts.nunito(
                                   color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16)),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15)),
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             child: Consumer<AuthProvider>(
@@ -155,7 +154,7 @@ class LoginScreen extends StatelessWidget {
                                 onEditingComplete: () => {
                                   _focusNode2.unfocus(),
                                   authProvider.SignIn(
-                                      email: authProvider
+                                      address: authProvider
                                           .login_email_controller.text,
                                       password: authProvider
                                           .login_password_controller.text,
@@ -168,10 +167,7 @@ class LoginScreen extends StatelessWidget {
                                 cursorRadius: const Radius.circular(5),
                                 style: GoogleFonts.nunito(
                                     color: Colors.white70,
-                                    // fontSize: 16,
                                     fontWeight: FontWeight.w700),
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter a password';
@@ -183,10 +179,10 @@ class LoginScreen extends StatelessWidget {
                                 },
                                 obscureText: !authProvider.showLoginPassword,
                                 decoration: InputDecoration(
-                                    prefixIcon: const Icon(
-                                      Icons.lock_outline,
-                                      color: Colors.white70,
-                                    ),
+                                    filled: true,
+                                    fillColor: secondaryColor,
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 15, horizontal: 12),
                                     suffixIcon: IconButton(
                                       splashColor: Colors.transparent,
                                       onPressed: () => {
@@ -201,10 +197,10 @@ class LoginScreen extends StatelessWidget {
                                     hintText: 'Enter your password',
                                     hintStyle: const TextStyle(
                                         color: Colors.white30,
-                                        fontWeight: FontWeight.w600),
+                                        fontWeight: FontWeight.w500),
                                     enabledBorder: const OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          width: 2, color: Colors.white30),
+                                          width: 2, color: cglasscolor),
                                     ),
                                     focusedBorder: const OutlineInputBorder(
                                       borderSide: BorderSide(
@@ -226,7 +222,8 @@ class LoginScreen extends StatelessWidget {
                             ),
                           ),
                           InkWell(
-                            splashColor: Colors.transparent,
+                            // splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
                             onTap: () => {},
                             child: Align(
                               alignment: Alignment.bottomRight,
@@ -234,7 +231,7 @@ class LoginScreen extends StatelessWidget {
                                 'Forgot your password?',
                                 style: GoogleFonts.nunito(
                                     color: cgSecondary,
-                                    fontWeight: FontWeight.w600,
+                                    fontWeight: FontWeight.w500,
                                     fontSize: 16),
                               ),
                             ),
@@ -244,15 +241,16 @@ class LoginScreen extends StatelessWidget {
                           ),
                           AuthSubmitButton(
                               ontap: () {
-                                if (_login_formKey.currentState!.validate()){
-                                   _login_formKey.currentState!.save();
-                                authProvider.SignIn(
-                                    email: authProvider
-                                        .login_email_controller.text,
-                                    password: authProvider
-                                        .login_password_controller.text,
-                                    context: context);
-                              }},
+                                if (_login_formKey.currentState!.validate()) {
+                                  _login_formKey.currentState!.save();
+                                  authProvider.SignIn(
+                                      address: authProvider
+                                          .login_email_controller.text,
+                                      password: authProvider
+                                          .login_password_controller.text,
+                                      context: context);
+                                }
+                              },
                               title: "Log in"),
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.07,
@@ -265,12 +263,13 @@ class LoginScreen extends StatelessWidget {
                                 style: GoogleFonts.nunito(
                                     fontSize: 16,
                                     color: Colors.white70,
-                                    fontWeight: FontWeight.w700),
+                                    fontWeight: FontWeight.w600),
                               ),
                               InkWell(
                                 splashColor: Colors.transparent,
                                 onTap: () => {
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=> SignUpScreen())),
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => SignUpScreen())),
                                 },
                                 child: Text(
                                   "Sign up",

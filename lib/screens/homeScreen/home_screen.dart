@@ -1,5 +1,6 @@
 import 'package:chatgpt/screens/accountInfo/account_info.dart';
 import 'package:chatgpt/screens/chatScreen/chatScreen.dart';
+import 'package:chatgpt/screens/homeScreen/conversation_list.dart';
 import 'package:chatgpt/screens/homeScreen/menu_items.dart';
 import 'package:chatgpt/screens/settingsScreen/settings_screen.dart';
 import 'package:flutter/material.dart';
@@ -28,11 +29,10 @@ class HomeScreen extends StatelessWidget {
           Theme(
             data: Theme.of(context).copyWith(
                 dividerColor: const Color.fromARGB(68, 158, 158, 158),
-                dividerTheme:
-                    const DividerThemeData(indent: 20, endIndent: 20,thickness: 1.5 )),
+                dividerTheme: const DividerThemeData(
+                    indent: 20, endIndent: 20, thickness: 1.5)),
             child: PopupMenuButton<MenuItem>(
                 iconSize: 50,
-                elevation: 0,
                 onSelected: (value) => {
                       if (value.text.toString() == 'Sign Out')
                         {
@@ -42,15 +42,22 @@ class HomeScreen extends StatelessWidget {
                                 return const SignOutDialog();
                               })
                         }
-                    else if(value.text.toString() == 'Account'){
-                      Navigator.push(context, MaterialPageRoute(builder:(context)=>const AccountInfo()))
-                    }
-                    else if(value.text.toString() == 'Settings'){
-                      Navigator.push(context, MaterialPageRoute(builder:(context)=>const SettingsScreen()))
-                    }
-                    else if(value.text.toString() == 'Share'){
-                      Share.share('https://www.google.com')
-                    }
+                      else if (value.text.toString() == 'Account')
+                        {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const AccountInfo()))
+                        }
+                      else if (value.text.toString() == 'Settings')
+                        {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const SettingsScreen()))
+                        }
+                      else if (value.text.toString() == 'Share')
+                        {Share.share('https://www.google.com')}
                     },
                 shape: BeveledRectangleBorder(
                     borderRadius: BorderRadius.circular(3)),
@@ -73,107 +80,108 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: bgColor,
       body: Padding(
         padding: const EdgeInsets.all(15),
-        child: Stack(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(
-              "assets/images/chatgpt_background.jpg",
-              // height: MediaQuery.of(context).size.height*0.5,
+            Text(
+              'AI Tools',
+              style: GoogleFonts.nunito(
+                  color: cgSecondary,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15),
             ),
-            ListView(
-              physics:  const BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast),
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.11,
-                ),
-                Center(
-                  child: Image.asset(
-                    "assets/logo/chatgpt(1).png",
-                    height: MediaQuery.of(context).size.height * 0.2,
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.005,
+            ),
+            InkWell(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ChatScreen()),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
+                        color: const Color.fromRGBO(51, 196, 145, 1),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: const Icon(
+                      Icons.edit,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.2,
-                ),
-                InkWell(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ChatScreen()),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                            color: const Color.fromRGBO(51, 196, 145, 1),
-                            borderRadius: BorderRadius.circular(5)),
-                        child: const Icon(
-                          Icons.edit,
-                          color: Colors.white,
-                        ),
+                  const SizedBox(width: 8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        "Text completion",
+                        style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700),
                       ),
-                      const SizedBox(width: 8),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            "Text completion",
-                            style: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700),
-                          ),
-                          Text("Generate and edit text",
-                              style: TextStyle(
-                                  color: Colors.white54,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500))
-                        ],
-                      )
+                      Text("Generate and edit text",
+                          style: TextStyle(
+                              color: Colors.white54,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500))
                     ],
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.01,
+            ),
+            Text(
+              'Resent Chats',
+              style: GoogleFonts.nunito(
+                  color: cgSecondary,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15),
+            ),
+            const Flexible(flex: 2, child: ConversationList()),
+            const SizedBox(height: 20),
+            InkWell(
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ImageGenerateScreen())),
+              child: Row(
+                children: [
+                  Container(
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
+                        color: const Color.fromRGBO(121, 80, 224, 1),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: const Icon(
+                      Icons.image,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                InkWell(
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ImageGenerateScreen())),
-                  child: Row(
-                    children: [
-                      Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                            color: const Color.fromRGBO(121, 80, 224, 1),
-                            borderRadius: BorderRadius.circular(5)),
-                        child: const Icon(
-                          Icons.image,
-                          color: Colors.white,
-                        ),
+                  const SizedBox(width: 8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        "Image generation",
+                        style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700),
                       ),
-                      const SizedBox(width: 8),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            "Image generation",
-                            style: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700),
-                          ),
-                          Text("Generate and edit images",
-                              style: TextStyle(
-                                  color: Colors.white54,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500))
-                        ],
-                      )
+                      Text("Generate and edit images",
+                          style: TextStyle(
+                              color: Colors.white54,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500))
                     ],
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ],
         ),

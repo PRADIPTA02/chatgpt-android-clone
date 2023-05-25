@@ -18,7 +18,7 @@ class AuthOptionDevider extends StatelessWidget {
         Text(
           "or",
           style: GoogleFonts.nunito(
-            color: Colors.white30,
+            color: cgSecondary,
             fontWeight: FontWeight.w700,
             fontSize: 20,
           ),

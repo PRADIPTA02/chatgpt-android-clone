@@ -1,4 +1,5 @@
 import 'package:chatgpt/models/home_screen_menu_item.dart';
+import 'package:chatgpt/util/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class MenuItems {
@@ -19,7 +20,7 @@ class MenuItems {
       text: 'Settings',
       icon: Icon(
         Icons.settings,
-        color: Colors.white,
+        color: cgSecondary,
       ));
   static const itemShare = MenuItem(
       text: 'Share',

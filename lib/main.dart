@@ -4,16 +4,6 @@ import 'package:chatgpt/providers/image_generation_provider.dart';
 import 'package:chatgpt/providers/internet_connection_check_provider.dart';
 import 'package:chatgpt/providers/text_copletion_provider.dart';
 import 'package:chatgpt/screens/auth/AuthScreen/auth_screen.dart';
-import 'package:chatgpt/screens/auth/forgot_password/forgot_password_screen.dart';
-import 'package:chatgpt/screens/auth/loginScreen/login_screen.dart';
-import 'package:chatgpt/screens/auth/otp_verification/otp_validation_screen.dart';
-import 'package:chatgpt/screens/auth/signUpScreen/signUp_screen.dart';
-import 'package:chatgpt/screens/chatScreen/chatScreen.dart';
-import 'package:chatgpt/screens/homeScreen/home_screen.dart';
-import 'package:chatgpt/screens/imageGenerationScreen/image_generate_screen.dart';
-import 'package:chatgpt/screens/settingsScreen/settings_screen.dart';
-import 'package:chatgpt/screens/splashScreen/splash_screen.dart';
-import 'package:chatgpt/screens/startingScreen/start_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
@@ -76,8 +66,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          // home: const AuthScren()),
-          home:  OtpValidationScreen()),
+          home:  const AuthScren(),)
     );
   }
 }
