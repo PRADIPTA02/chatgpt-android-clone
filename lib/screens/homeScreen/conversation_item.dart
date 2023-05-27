@@ -51,7 +51,7 @@ class ConversationItem extends StatelessWidget {
         ),
         trailing: Text(
           getTimeOrDate(timeStamp),
-          style: const TextStyle(fontSize: 14, color: Colors.white60),
+          style: const TextStyle(fontSize: 14, color: Colors.grey),
         ),
       ),
     );

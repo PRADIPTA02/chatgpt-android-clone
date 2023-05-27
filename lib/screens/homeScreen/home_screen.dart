@@ -167,7 +167,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                       Text("Generate and edit images",
                           style: GoogleFonts.nunito(
-                              color: Colors.white54,
+                              color: Colors.grey,
                               fontSize: 16,
                               fontWeight: FontWeight.w500))
                     ],

@@ -122,7 +122,7 @@ class SingleMessageBody extends StatelessWidget {
                             },
                         icon: const Icon(
                           Icons.edit_note,
-                          color: Colors.white70,
+                          color: Colors.grey,
                         ))
                     : const SizedBox()
               ],
@@ -135,7 +135,7 @@ class SingleMessageBody extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 3),
                         child: Text(
                           formatTime(timeStamp),
-                          style: const TextStyle(fontSize: 16, color: Colors.white70),
+                          style: const TextStyle(fontSize: 16, color: Colors.grey),
                         ),
                       ),
                       Row(
@@ -146,7 +146,7 @@ class SingleMessageBody extends StatelessWidget {
                             onTap:onLikeButtonTapped,
                             likeBuilder: (isLiked) =>Icon(
                             isLiked?Icons.thumb_up_alt:Icons.thumb_up_off_alt,
-                            color: isLiked?const Color.fromARGB(255, 78, 171, 112):Colors.white70,
+                            color: isLiked?const Color.fromARGB(255, 78, 171, 112):Colors.grey,
                             )
                           ),
                           IconButton(
@@ -162,7 +162,7 @@ class SingleMessageBody extends StatelessWidget {
                               )
                               :const Icon(
                                 Icons.thumb_down_off_alt,
-                                color: Colors.white70,
+                                color: Colors.grey,
                               )
                               )
                         ],

@@ -80,7 +80,7 @@ class MessegeList extends StatelessWidget {
                           children: [
                             index == messages.length - 1
                                 ? Container(
-                                    margin: const EdgeInsets.only(top: 5),
+                                    margin: const EdgeInsets.only(top: 10),
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 2),
                                     decoration: BoxDecoration(
@@ -99,7 +99,7 @@ class MessegeList extends StatelessWidget {
                                                 messages[index + 1][0]
                                                     .timeStamp))
                                     ? Container(
-                                        margin: const EdgeInsets.only(top: 5),
+                                        margin: const EdgeInsets.only(top: 10),
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 10, vertical: 2),
                                         decoration: BoxDecoration(
@@ -133,7 +133,7 @@ class MessegeList extends StatelessWidget {
                           children: [
                             index == messages.length - 1
                                 ? Container(
-                                    margin: const EdgeInsets.only(top: 5),
+                                    margin: const EdgeInsets.only(top: 10),
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 2),
                                     decoration: BoxDecoration(
@@ -143,7 +143,7 @@ class MessegeList extends StatelessWidget {
                                       getTimeOrDate(
                                           messages[index][0].timeStamp),
                                       style: GoogleFonts.nunito(
-                                          color: Colors.white70),
+                                          color: Colors.grey),
                                     ))
                                 : index < messages.length - 1 &&
                                         (getDayFromTimestamp(
@@ -152,7 +152,7 @@ class MessegeList extends StatelessWidget {
                                                 messages[index + 1][0]
                                                     .timeStamp))
                                     ? Container(
-                                        margin: const EdgeInsets.only(top: 5),
+                                        margin: const EdgeInsets.only(top: 10),
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 10, vertical: 2),
                                         decoration: BoxDecoration(
@@ -163,7 +163,7 @@ class MessegeList extends StatelessWidget {
                                           getTimeOrDate(
                                               messages[index][0].timeStamp),
                                           style: GoogleFonts.nunito(
-                                              color: Colors.white70),
+                                              color: Colors.grey),
                                         ))
                                     : const SizedBox(),
                             CarouselMessageBody(
