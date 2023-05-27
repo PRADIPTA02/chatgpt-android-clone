@@ -18,11 +18,7 @@ class ConversationList extends StatelessWidget {
                   decelerationRate: ScrollDecelerationRate.fast),
               itemCount: textCompletionProvider.allMessages.length > 4
                   ? 4
-                  : textCompletionProvider
-                          .allMessages[
-                              textCompletionProvider.allMessages.length - 1][0]
-                          .isEmpty
-                      ? textCompletionProvider.allMessages.length - 1
+                  
                       : textCompletionProvider.allMessages.length,
               itemBuilder: (context, index) => ConversationItem(
                 firstMessage: textCompletionProvider

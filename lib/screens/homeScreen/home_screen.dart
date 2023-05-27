@@ -134,7 +134,7 @@ class HomeScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   fontSize: 15),
             ),
-            const Flexible(flex: 2, child: ConversationList()),
+            const Flexible(flex: 1, child: ConversationList()),
             const SizedBox(height: 20),
             InkWell(
               onTap: () => Navigator.push(
