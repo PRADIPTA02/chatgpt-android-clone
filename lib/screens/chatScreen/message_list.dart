@@ -1,4 +1,6 @@
+import 'package:chatgpt/util/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../models/message_model.dart';
 import '../../providers/text_copletion_provider.dart';
@@ -26,7 +28,8 @@ class MessegeList extends StatelessWidget {
     int dayIndex = dateTime.weekday - 1;
     return daysOfWeek[dayIndex];
   }
- String getTimeOrDate(int timestamp) {
+
+  String getTimeOrDate(int timestamp) {
     DateTime now = DateTime.now();
     DateTime today = DateTime(now.year, now.month, now.day);
     DateTime inputDate = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
@@ -34,7 +37,7 @@ class MessegeList extends StatelessWidget {
 
     if (diff.inDays == 0) {
       // Return time if it's today
-      return DateFormat('H:m:s').format(inputDate);
+      return 'Today';
     } else if (diff.inDays == 1) {
       // Return "Yesterday" if it's yesterday
       return 'Yesterday';
@@ -46,6 +49,7 @@ class MessegeList extends StatelessWidget {
       return DateFormat('MMMM d, yyyy').format(inputDate);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     final textCompletionProvider =
@@ -72,16 +76,42 @@ class MessegeList extends StatelessWidget {
               (BuildContext context, int index) => messages.isEmpty
                   ? const ExampleObject()
                   : messages[index].length == 1
-                      ? 
-                      Column (
-                        children: [
-                          index == messages.length-1 ?  
-                          Text(getTimeOrDate(messages[index][0].timeStamp)):
-                          index<messages.length-1 && 
-                          (getDayFromTimestamp(messages[index][0].timeStamp)!= getDayFromTimestamp(messages[index+1 ][0].timeStamp))?
-                          Text(getTimeOrDate(messages[index][0].timeStamp)):
-                          const SizedBox(),
-                          SingleMessageBody(
+                      ? Column(
+                          children: [
+                            index == messages.length - 1
+                                ? Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 2),
+                                    decoration: BoxDecoration(
+                                        color: secondaryColor,
+                                        borderRadius: BorderRadius.circular(3)),
+                                    child: Text(
+                                      getTimeOrDate(
+                                          messages[index][0].timeStamp),
+                                      style: GoogleFonts.nunito(
+                                          color: Colors.white70),
+                                    ))
+                                : index < messages.length - 1 &&
+                                        (getDayFromTimestamp(
+                                                messages[index][0].timeStamp) !=
+                                            getDayFromTimestamp(
+                                                messages[index + 1][0]
+                                                    .timeStamp))
+                                    ? Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 2),
+                                        decoration: BoxDecoration(
+                                            color: secondaryColor,
+                                            borderRadius:
+                                                BorderRadius.circular(3)),
+                                        child: Text(
+                                          getTimeOrDate(
+                                              messages[index][0].timeStamp),
+                                          style: GoogleFonts.nunito(
+                                              color: Colors.white70),
+                                        ))
+                                    : const SizedBox(),
+                            SingleMessageBody(
                               text: messages[index][0].message_text,
                               isApi: messages[index][0].isApi,
                               isAnimate: messages[index][0].isAnimate,
@@ -95,24 +125,51 @@ class MessegeList extends StatelessWidget {
                               isLiked: messages[index][0].isLiked,
                               isDisLiked: messages[index][0].isDisLiked,
                             ),
-                        ],
-                      )
+                          ],
+                        )
                       : Column(
-                        children: [
-                          index == messages.length-1 ?  
-                          Text(getTimeOrDate(messages[index][0].timeStamp)):
-                          index<messages.length-1 && 
-                          (getDayFromTimestamp(messages[index][0].timeStamp)!= getDayFromTimestamp(messages[index+1 ][0].timeStamp))?
-                          Text(getTimeOrDate(messages[index][0].timeStamp)):
-                          const SizedBox(),
-                          CarouselMessageBody(
+                          children: [
+                            index == messages.length - 1
+                                ? Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 2),
+                                    decoration: BoxDecoration(
+                                        color: secondaryColor,
+                                        borderRadius: BorderRadius.circular(3)),
+                                    child: Text(
+                                      getTimeOrDate(
+                                          messages[index][0].timeStamp),
+                                      style: GoogleFonts.nunito(
+                                          color: Colors.white70),
+                                    ))
+                                : index < messages.length - 1 &&
+                                        (getDayFromTimestamp(
+                                                messages[index][0].timeStamp) !=
+                                            getDayFromTimestamp(
+                                                messages[index + 1][0]
+                                                    .timeStamp))
+                                    ? Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 2),
+                                        decoration: BoxDecoration(
+                                            color: secondaryColor,
+                                            borderRadius:
+                                                BorderRadius.circular(3)),
+                                        child: Text(
+                                          getTimeOrDate(
+                                              messages[index][0].timeStamp),
+                                          style: GoogleFonts.nunito(
+                                              color: Colors.white70),
+                                        ))
+                                    : const SizedBox(),
+                            CarouselMessageBody(
                               ms: messages[index],
                               upeerMessageIndex: index,
                               sessionIndex:
                                   textCompletionProvider.CurrentSessionIndex,
                             ),
-                        ],
-                      )));
+                          ],
+                        )));
     });
   }
 }
