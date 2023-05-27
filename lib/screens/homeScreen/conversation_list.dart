@@ -16,14 +16,14 @@ class ConversationList extends StatelessWidget {
               addRepaintBoundaries: false,
               physics: const BouncingScrollPhysics(
                   decelerationRate: ScrollDecelerationRate.fast),
-              itemCount: textCompletionProvider.allSesions.length > 4
+              itemCount: textCompletionProvider.allMessages.length > 4
                   ? 4
                   : textCompletionProvider
                           .allMessages[
-                              textCompletionProvider.allSesions.length - 1][0]
+                              textCompletionProvider.allMessages.length - 1][0]
                           .isEmpty
-                      ? textCompletionProvider.allSesions.length - 1
-                      : textCompletionProvider.allSesions.length,
+                      ? textCompletionProvider.allMessages.length - 1
+                      : textCompletionProvider.allMessages.length,
               itemBuilder: (context, index) => ConversationItem(
                 firstMessage: textCompletionProvider
                     .allMessages[index][1][0].message_text,
