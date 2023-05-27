@@ -15,7 +15,7 @@ class ConversationItem extends StatelessWidget {
 
     if (diff.inDays == 0) {
       // Return time if it's today
-      return DateFormat('H:m:s').format(inputDate);
+      return 'Today';
     } else if (diff.inDays == 1) {
       // Return "Yesterday" if it's yesterday
       return 'Yesterday';

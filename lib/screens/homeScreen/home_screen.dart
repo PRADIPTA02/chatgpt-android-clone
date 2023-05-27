@@ -119,14 +119,14 @@ class HomeScreen extends StatelessWidget {
                         "Text completion",
                         style: TextStyle(
                             color: Colors.white70,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500),
                       ),
                       Text("Generate and edit text",
                           style: TextStyle(
-                              color: Colors.white54,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500))
+                              color: Colors.grey,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w300))
                     ],
                   )
                 ],
