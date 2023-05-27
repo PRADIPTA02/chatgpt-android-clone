@@ -250,7 +250,7 @@ class ChatScreenSidebar extends StatelessWidget {
                     child: Row(
                       children: [
                         const Icon(Icons.delete_forever_rounded,
-                            color: Colors.white70),
+                            color: cgSecondary),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.01,
                         ),
