@@ -1,3 +1,4 @@
+import 'package:chatgpt/providers/text_copletion_provider.dart';
 import 'package:chatgpt/screens/accountInfo/account_info.dart';
 import 'package:chatgpt/screens/chatScreen/chatScreen.dart';
 import 'package:chatgpt/screens/homeScreen/conversation_list.dart';
@@ -6,6 +7,7 @@ import 'package:chatgpt/screens/settingsScreen/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../CommonWidgets/sign_out_dialog.dart';
 import '../../models/home_screen_menu_item.dart';
 import '../../util/constants/constants.dart';
@@ -17,6 +19,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     final textCompletionProvider =
+        Provider.of<TextCompletProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: bgColor,
@@ -80,103 +84,106 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: bgColor,
       body: Padding(
         padding: const EdgeInsets.all(15),
-        child: Column(
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.005,
-            ),
-            InkWell(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ChatScreen()),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                        color: const Color.fromRGBO(51, 196, 145, 1),
-                        borderRadius: BorderRadius.circular(5)),
-                    child: const Icon(
-                      Icons.edit,
-                      color: Colors.white,
+        child: Consumer<TextCompletProvider>(
+            builder: (context, value, child) => Column(
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.005,
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children:  [
-                      Text(
-                        "Text completion",
-                        style: GoogleFonts.nunito(
-                            color: Colors.white70,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500),
+                    InkWell(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ChatScreen()),
                       ),
-                      Text("Generate and edit text",
-                          style: GoogleFonts.nunito(
-                              color: Colors.grey,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w300))
-                    ],
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.01,
-            ),
-            Text(
-              'Resent Chats',
-              style: GoogleFonts.nunito(
-                  color: Colors.white70,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15),
-            ),
-            const Flexible(flex: 1, child: ConversationList()),
-            const SizedBox(height: 20),
-            InkWell(
-              onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ImageGenerateScreen())),
-              child: Row(
-                children: [
-                  Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                        color: const Color.fromRGBO(121, 80, 224, 1),
-                        borderRadius: BorderRadius.circular(5)),
-                    child: const Icon(
-                      Icons.image,
-                      color: Colors.white,
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                                color: const Color.fromRGBO(51, 196, 145, 1),
+                                borderRadius: BorderRadius.circular(5)),
+                            child: const Icon(
+                              Icons.edit,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Text completion",
+                                style: GoogleFonts.nunito(
+                                    color: Colors.white70,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              Text("Generate and edit text",
+                                  style: GoogleFonts.nunito(
+                                      color: Colors.grey,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w300))
+                            ],
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children:  [
-                      Text(
-                        "Image generation",
-                        style: GoogleFonts.nunito(
-                            color: Colors.white70,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.01,
+                    ),
+                    textCompletionProvider.allMessages.isEmpty?const SizedBox(): Text(
+                      'Resent Chats',
+                      style: GoogleFonts.nunito(
+                          color: Colors.white70,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15),
+                    ),
+                    const Flexible(flex: 1, child: ConversationList()),
+                    const SizedBox(height: 20),
+                    InkWell(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const ImageGenerateScreen())),
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                                color: const Color.fromRGBO(121, 80, 224, 1),
+                                borderRadius: BorderRadius.circular(5)),
+                            child: const Icon(
+                              Icons.image,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Image generation",
+                                style: GoogleFonts.nunito(
+                                    color: Colors.white70,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              Text("Generate and edit images",
+                                  style: GoogleFonts.nunito(
+                                      color: Colors.grey,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500))
+                            ],
+                          )
+                        ],
                       ),
-                      Text("Generate and edit images",
-                          style: GoogleFonts.nunito(
-                              color: Colors.grey,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500))
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
+                    ),
+                  ],
+                )),
       ),
     );
   }
