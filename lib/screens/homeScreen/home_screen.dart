@@ -81,7 +81,6 @@ class HomeScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.005,
@@ -131,7 +130,7 @@ class HomeScreen extends StatelessWidget {
             Text(
               'Resent Chats',
               style: GoogleFonts.nunito(
-                  color: cgSecondary,
+                  color: Colors.white70,
                   fontWeight: FontWeight.bold,
                   fontSize: 15),
             ),
