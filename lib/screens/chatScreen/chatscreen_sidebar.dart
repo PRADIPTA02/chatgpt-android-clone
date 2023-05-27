@@ -212,16 +212,22 @@ class ChatScreenSidebar extends StatelessWidget {
                                                 .setSessionIndex(index)
                                           },
                                           child: Icon(
-                                            _textCompletionProvider
-                                                        .isSessionDeleting &&
-                                                    _textCompletionProvider
-                                                            .sessionIndex ==
-                                                        index
-                                                ? Icons.close
-                                                : Icons.delete_outline_rounded,
-                                            size: 20,
-                                            color: Colors.white70,
-                                          ),
+                                              _textCompletionProvider
+                                                          .isSessionDeleting &&
+                                                      _textCompletionProvider
+                                                              .sessionIndex ==
+                                                          index
+                                                  ? Icons.close
+                                                  : Icons
+                                                      .delete_outline_rounded,
+                                              size: 20,
+                                              color: _textCompletionProvider
+                                                          .isSessionDeleting &&
+                                                      _textCompletionProvider
+                                                              .sessionIndex ==
+                                                          index
+                                                  ? Colors.white70
+                                                  : cgSecondary),
                                         )
                                       ],
                                     )
@@ -245,7 +251,9 @@ class ChatScreenSidebar extends StatelessWidget {
                       children: [
                         const Icon(Icons.delete_forever_rounded,
                             color: Colors.white70),
-                        SizedBox(width: MediaQuery.of(context).size.width*0.01,),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.01,
+                        ),
                         Text(
                           'Clear conversations',
                           style: GoogleFonts.nunito(

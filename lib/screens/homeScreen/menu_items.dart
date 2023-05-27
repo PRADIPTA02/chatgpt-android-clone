@@ -20,7 +20,7 @@ class MenuItems {
       text: 'Settings',
       icon: Icon(
         Icons.settings,
-        color: cgSecondary,
+        color: Colors.white,
       ));
   static const itemShare = MenuItem(
       text: 'Share',
