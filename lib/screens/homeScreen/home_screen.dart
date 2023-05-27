@@ -81,15 +81,8 @@ class HomeScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'AI Tools',
-              style: GoogleFonts.nunito(
-                  color: cgSecondary,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15),
-            ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.005,
             ),
@@ -114,16 +107,16 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(width: 8),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children:  [
                       Text(
                         "Text completion",
-                        style: TextStyle(
+                        style: GoogleFonts.nunito(
                             color: Colors.white70,
                             fontSize: 18,
                             fontWeight: FontWeight.w500),
                       ),
                       Text("Generate and edit text",
-                          style: TextStyle(
+                          style: GoogleFonts.nunito(
                               color: Colors.grey,
                               fontSize: 16,
                               fontWeight: FontWeight.w300))
@@ -165,18 +158,18 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(width: 8),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children:  [
                       Text(
                         "Image generation",
-                        style: TextStyle(
+                        style: GoogleFonts.nunito(
                             color: Colors.white70,
-                            fontSize: 20,
+                            fontSize: 18,
                             fontWeight: FontWeight.w700),
                       ),
                       Text("Generate and edit images",
-                          style: TextStyle(
+                          style: GoogleFonts.nunito(
                               color: Colors.white54,
-                              fontSize: 17,
+                              fontSize: 16,
                               fontWeight: FontWeight.w500))
                     ],
                   )
