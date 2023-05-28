@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     final textCompletionProvider =
+    final textCompletionProvider =
         Provider.of<TextCompletProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
@@ -133,13 +133,15 @@ class HomeScreen extends StatelessWidget {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.01,
                     ),
-                    textCompletionProvider.allMessages.isEmpty?const SizedBox(): Text(
-                      'Resent Chats',
-                      style: GoogleFonts.nunito(
-                          color: Colors.white70,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15),
-                    ),
+                    textCompletionProvider.allMessages.isEmpty
+                        ? const SizedBox()
+                        : Text(
+                            'Resent Chats',
+                            style: GoogleFonts.nunito(
+                                color: Colors.white70,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15),
+                          ),
                     const Flexible(flex: 1, child: ConversationList()),
                     const SizedBox(height: 20),
                     InkWell(

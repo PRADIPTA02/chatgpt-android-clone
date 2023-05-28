@@ -8,7 +8,7 @@ class ChatInput extends StatelessWidget {
   const ChatInput({super.key});
   @override
   Widget build(BuildContext context) {
-    final _textCompletionProvider =
+    final textCompletionProvider =
         Provider.of<TextCompletProvider>(context, listen: false);
     return Consumer2<TextCompletProvider, InterNetConnectionCheck>(
       builder: (context, TextCompletProvider, InterNetConnectionCheck, child) =>
@@ -17,7 +17,7 @@ class ChatInput extends StatelessWidget {
                   controller: TextCompletProvider.chat_imput_Controler,
                   autofocus: false,
                   onChanged: (text) {
-            _textCompletionProvider.onChangeTextInput(text);
+            textCompletionProvider.onChangeTextInput(text);
                   },
                   style: const TextStyle(fontSize: 20, color: Colors.white70),
                   minLines: 1,

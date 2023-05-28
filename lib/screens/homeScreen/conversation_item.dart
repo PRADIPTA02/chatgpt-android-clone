@@ -10,7 +10,7 @@ class ConversationItem extends StatelessWidget {
   String getTimeOrDate(int timestamp) {
     DateTime now = DateTime.now();
     DateTime today = DateTime(now.year, now.month, now.day);
-    DateTime inputDate = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+    DateTime inputDate = DateTime.fromMillisecondsSinceEpoch(timestamp );
     Duration diff = today.difference(inputDate);
 
     if (diff.inDays == 0) {

@@ -44,7 +44,7 @@ class SingleMessageBody extends StatelessWidget {
   String minute = dateTime.minute.toString().padLeft(2, '0');
   String second = dateTime.second.toString().padLeft(2, '0');
   
-  return '$hour:$minute:$second $amOrPm';
+  return '$hour:$minute $amOrPm';
 }
   @override
   Widget build(BuildContext context) {

@@ -39,13 +39,11 @@ class ChatScreen extends StatelessWidget {
                 backgroundColor: bgColor,
                 elevation: 0,
                 leading: IconButton(
-                  onPressed: () => {
-                    Navigator.pop(context)
-                  },
+                  onPressed: () => {Navigator.pop(context)},
                   icon: const Icon(
-                        Icons.arrow_back,
-                        color: Colors.white70,
-                      ),
+                    Icons.arrow_back,
+                    color: Colors.white70,
+                  ),
                 ),
                 actions: [
                   IconButton(
@@ -171,10 +169,11 @@ class ChatScreen extends StatelessWidget {
                                                                       _textCompletionProvider
                                                                           .CurrentSessionIndex]
                                                                   .sessionId,
-                                                              timeStamp: DateTime
+                                                              timeStamp: int
+                                                                  .parse(DateTime
                                                                           .now()
-                                                                      .millisecondsSinceEpoch ~/
-                                                                  1000),
+                                                                      .millisecondsSinceEpoch
+                                                                      .toString())),
                                                         ],
                                                         _textCompletionProvider
                                                             .CurrentSessionIndex,

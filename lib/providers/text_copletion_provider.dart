@@ -171,7 +171,7 @@ class TextCompletProvider with ChangeNotifier {
             isApi: true,
             id: uuid.v1(),
             sessionId: sessions.values.toList()[index].sessionId,
-            timeStamp: DateTime.now().millisecondsSinceEpoch ~/ 1000),
+            timeStamp: int.parse(DateTime.now().millisecondsSinceEpoch.toString())),
       ], index);
       _isLoading = false;
       onChangeTextInput("");
@@ -233,7 +233,7 @@ class TextCompletProvider with ChangeNotifier {
             message_text: messageText,
             isApi: false,
             id: uuid.v4(),
-            timeStamp: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+            timeStamp: int.parse(DateTime.now().millisecondsSinceEpoch.toString()),
           );
           convertedMessageList[index].add(tempUserMessage);
           listOfAllMessages.values.toList()[sessionIndex].save();
@@ -253,7 +253,7 @@ class TextCompletProvider with ChangeNotifier {
                 await getAiResponse(messageText, sessionIndex, true, context),
             isApi: true,
             id: uuid.v4(),
-            timeStamp: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+            timeStamp:int.parse(DateTime.now().millisecondsSinceEpoch.toString()),
           );
           convertedMessageList[index - 1].add(tempApiMessage);
           tempMessageList = Conversation(messages: convertedMessageList);
