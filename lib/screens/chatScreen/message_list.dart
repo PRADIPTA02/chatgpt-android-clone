@@ -15,7 +15,7 @@ class MessegeList extends StatelessWidget {
   const MessegeList({super.key});
 
   String getDayFromTimestamp(int timestamp) {
-    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
     List<String> daysOfWeek = [
       'Monday',
       'Tuesday',
@@ -35,10 +35,10 @@ class MessegeList extends StatelessWidget {
     DateTime inputDate = DateTime.fromMillisecondsSinceEpoch(timestamp);
     Duration diff = today.difference(inputDate);
 
-    if (diff.inDays == 0) {
+    if (diff.inDays == 0 && inputDate.weekday == now.weekday) {
       // Return time if it's today
       return 'Today';
-    } else if (diff.inDays == 1) {
+    } else if (diff.inDays == 1 || diff.inDays == 0 && inputDate.weekday != now.weekday ) {
       // Return "Yesterday" if it's yesterday
       return 'Yesterday';
     } else if (diff.inDays >= 2 && diff.inDays <= 6) {

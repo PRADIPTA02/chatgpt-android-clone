@@ -26,7 +26,7 @@ class ImageGenerationProvider with ChangeNotifier {
     Map<String, String> header = {
       'Content-Type': 'application/json',
       'Authorization':
-          'Bearer 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',
+          'Bearer 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',
     };
 
     var response = await http.post(
