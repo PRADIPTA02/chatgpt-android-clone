@@ -38,10 +38,10 @@ class MessegeList extends StatelessWidget {
     if (diff.inDays == 0 && inputDate.weekday == now.weekday) {
       // Return time if it's today
       return 'Today';
-    } else if (diff.inDays == 1 || diff.inDays == 0 && inputDate.weekday != now.weekday ) {
+    } else if (diff.inDays == 1 && inputDate.weekday == now.weekday-1 || diff.inDays == 0 && inputDate.weekday != now.weekday ) {
       // Return "Yesterday" if it's yesterday
       return 'Yesterday';
-    } else if (diff.inDays >= 2 && diff.inDays <= 6) {
+    } else if (diff.inDays == 1 && inputDate.weekday != now.weekday-1 || diff.inDays >= 2 && diff.inDays <= 6) {
       // Return the day of the week if it's within the past week
       return DateFormat('EEEE').format(inputDate);
     } else {
@@ -80,7 +80,7 @@ class MessegeList extends StatelessWidget {
                           children: [
                             index == messages.length - 1
                                 ? Container(
-                                    margin: const EdgeInsets.only(top: 10),
+                                    margin: const EdgeInsets.only(top: 8),
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 2),
                                     decoration: BoxDecoration(
@@ -99,7 +99,7 @@ class MessegeList extends StatelessWidget {
                                                 messages[index + 1][0]
                                                     .timeStamp))
                                     ? Container(
-                                        margin: const EdgeInsets.only(top: 10),
+                                        margin: const EdgeInsets.only(top: 8),
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 10, vertical: 2),
                                         decoration: BoxDecoration(
@@ -133,7 +133,7 @@ class MessegeList extends StatelessWidget {
                           children: [
                             index == messages.length - 1
                                 ? Container(
-                                    margin: const EdgeInsets.only(top: 10),
+                                    margin: const EdgeInsets.only(top: 8),
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 2),
                                     decoration: BoxDecoration(
@@ -152,7 +152,7 @@ class MessegeList extends StatelessWidget {
                                                 messages[index + 1][0]
                                                     .timeStamp))
                                     ? Container(
-                                        margin: const EdgeInsets.only(top: 10),
+                                        margin: const EdgeInsets.only(top: 8),
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 10, vertical: 2),
                                         decoration: BoxDecoration(

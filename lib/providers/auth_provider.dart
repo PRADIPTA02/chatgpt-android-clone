@@ -1,6 +1,7 @@
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
+// ignore_for_file: non_constant_identifier_names, prefer_final_fields, use_build_context_synchronously
 import 'package:chatgpt/screens/auth/otp_verification/otp_validation_screen.dart';
 import 'package:chatgpt/screens/homescreen/home_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -80,6 +81,9 @@ class AuthProvider extends ChangeNotifier {
             context: context,
             message: 'Welcome! You have successfully logged in',
             status: Status.success);
+        changeIsLoading(false);
+        _login_email_controller.text = "";
+        _login_password_controller.text = "";
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           CustomSnackeBar.show(
@@ -87,18 +91,21 @@ class AuthProvider extends ChangeNotifier {
               message:
                   'Error: The username or password you entered is incorrect. ',
               status: Status.warning);
+          changeIsLoading(false);
         } else if (e.code == 'wrong-password') {
           CustomSnackeBar.show(
               context: context,
               message:
                   'Error: The username or password you entered is incorrect. ',
               status: Status.warning);
+          changeIsLoading(false);
         } else {
           CustomSnackeBar.show(
               context: context,
               message:
                   'Warning: You have exceeded the maximum number of login attempts',
               status: Status.error);
+          changeIsLoading(false);
         }
       }
     } else {
@@ -110,14 +117,12 @@ class AuthProvider extends ChangeNotifier {
           Navigator.pop(context);
         },
         verificationFailed: (FirebaseAuthException e) {
-          if (e.code == 'invalid-phone-number') {
-            print('phone number is invalid');
-          }
+          if (e.code == 'invalid-phone-number') {}
         },
         codeSent: (String verificationId, int? resendToken) {
           changeIsLoading(false);
-              _login_email_controller.text = "";
-    _login_password_controller.text = "";
+          _login_email_controller.text = "";
+          _login_password_controller.text = "";
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -132,22 +137,69 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void verify_otp(String verificationId, String otp ,BuildContext context) async {
+  void verify_otp(
+      String verificationId, String otp, BuildContext context) async {
     changeIsLoading(true);
     await FirebaseAuth.instance.signInWithCredential(
         PhoneAuthProvider.credential(
             verificationId: verificationId, smsCode: otp));
-            Navigator.pop(context, MaterialPageRoute(builder: (context)=>const HomeScreen()));
+    Navigator.pop(
+        context, MaterialPageRoute(builder: (context) => const HomeScreen()));
     changeIsLoading(false);
     notifyListeners();
+  }
+
+//function to add user into firebase firestore database
+  Future adduserDetails(
+      {required String userEmail,
+      String userID = "",
+      required String userName,
+      required String userPassword,
+      int userPhone = 0,
+      required String? userUID}) async {
+    var user = await FirebaseFirestore.instance.collection('users').add({
+      'created_at': FieldValue.serverTimestamp(),
+      'user_email': userEmail,
+      'user_id': userID,
+      'user_login_date' : FieldValue.serverTimestamp(),
+      'user_name': userName,
+      'user_password': userPassword,
+      'user_uid': userUID,
+      'user_phone': userPhone
+    });
+    return user.id;
   }
 
   void SignUp(
       {required String username,
       required String email,
       required String password,
-      required BuildContext context}) {
-    var obj = {"user": username, "userEmail": email, "password": password};
-    print(obj.toString());
+      required BuildContext context}) async {
+    _isLoading = true;
+    try {
+      final user = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+      final userInDatabase = await adduserDetails(
+          userEmail: email,
+          userName: username,
+          userPassword: password,
+          userUID: user.user?.uid,
+          );
+      await FirebaseFirestore.instance.collection('users').doc(userInDatabase).update({
+        'user_id' : userInDatabase,
+      });
+      changeIsLoading(false);
+      _signup_username_controller.text = "";
+      _signup_email_controller.text = "";
+      _signup_password_controller.text = "";
+      Navigator.pop(
+          context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+    } catch (e) {
+      _signup_username_controller.text = "";
+      _signup_email_controller.text = "";
+      _signup_password_controller.text = "";
+      print(e);
+      changeIsLoading(false);
+    }
   }
 }

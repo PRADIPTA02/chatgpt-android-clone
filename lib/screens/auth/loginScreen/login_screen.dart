@@ -167,7 +167,7 @@ class LoginScreen extends StatelessWidget {
                                 cursorRadius: const Radius.circular(5),
                                 style: GoogleFonts.nunito(
                                     color: Colors.white70,
-                                    fontWeight: FontWeight.w700),
+                                    fontWeight: FontWeight.w500),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter a password';

@@ -13,7 +13,7 @@ import '../common/heading.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
-  GlobalKey<FormState> _signup_formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _signup_formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     FocusNode _focusNode1 = FocusNode();
@@ -22,7 +22,7 @@ class SignUpScreen extends StatelessWidget {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: Heading(title: "Sign up"),
+        title: const Heading(title: "Sign up"),
         backgroundColor: bgColor,
         elevation: 0,
       ),
@@ -240,7 +240,7 @@ class SignUpScreen extends StatelessWidget {
                                 cursorRadius: const Radius.circular(5),
                                 style: GoogleFonts.nunito(
                                     color: Colors.white70,
-                                    fontWeight: FontWeight.w700),
+                                    fontWeight: FontWeight.w500),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter a password';
@@ -299,6 +299,7 @@ class SignUpScreen extends StatelessWidget {
                           ),
                           AuthSubmitButton(
                               ontap: () {
+                                authProvider.changeIsLoading(true);
                                 if (_signup_formKey.currentState!.validate()) {
                                   authProvider.SignUp(
                                       username: authProvider
