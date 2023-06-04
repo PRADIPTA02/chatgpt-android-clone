@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../util/constants/constants.dart';
 
 class ExampleTextOuterBox extends StatelessWidget {
@@ -17,7 +18,7 @@ class ExampleTextOuterBox extends StatelessWidget {
       child: Center(
           child: Text(
         text,
-        style: const TextStyle(
+        style: GoogleFonts.nunito(
             fontSize: 16, color: Colors.white70, fontWeight: FontWeight.w500),
         textAlign: TextAlign.center,
       )),

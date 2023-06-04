@@ -4,6 +4,7 @@ import 'package:chatgpt/screens/chatScreen/chat_input.dart';
 import 'package:chatgpt/screens/chatScreen/chatscreen_sidebar.dart';
 import 'package:chatgpt/screens/chatScreen/message_list.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../providers/internet_connection_check_provider.dart';
 import '../../providers/text_copletion_provider.dart';
@@ -34,7 +35,7 @@ class ChatScreen extends StatelessWidget {
                   _textCompletionProvider
                       .allSesions[_textCompletionProvider.CurrentSessionIndex]
                       .sessionName,
-                  style: const TextStyle(color: Colors.white70),
+                  style: GoogleFonts.nunito(color: Colors.white70),
                 ),
                 backgroundColor: bgColor,
                 elevation: 0,

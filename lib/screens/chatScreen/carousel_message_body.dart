@@ -1,10 +1,12 @@
 import 'package:chatgpt/models/message_model.dart';
 import 'package:chatgpt/screens/chatScreen/single_message_body.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../providers/text_copletion_provider.dart';
 
 
+// ignore: must_be_immutable
 class CarouselMessageBody extends StatelessWidget {
      CarouselMessageBody({
     super.key,
@@ -50,21 +52,21 @@ class CarouselMessageBody extends StatelessWidget {
                   )),
               Text(
                 "${messageIndex + 1} ",
-                style: const TextStyle(
+                style: GoogleFonts.nunito(
                     color: Colors.white70,
                     fontSize: 20,
                     fontWeight: FontWeight.bold),
               ),
-              const Text(
+              Text(
                 "/",
-                style:  TextStyle(
+                style:  GoogleFonts.nunito(
                     color: Colors.white70,
                     fontSize: 20,
                     fontWeight: FontWeight.bold),
               ),
               Text(
                 " ${ms.length}",
-                style: const TextStyle(
+                style: GoogleFonts.nunito(
                     color: Colors.white70,
                     fontSize: 20,
                     fontWeight: FontWeight.bold),

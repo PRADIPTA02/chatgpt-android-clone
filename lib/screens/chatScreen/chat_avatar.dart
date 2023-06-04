@@ -1,4 +1,7 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ChatAvater extends StatelessWidget {
   ChatAvater({super.key, this.isApi = true});
@@ -12,7 +15,7 @@ class ChatAvater extends StatelessWidget {
           child: !isApi
               ? Text(
                   "DP",
-                  style: TextStyle(
+                  style: GoogleFonts.nunito(
                       fontSize: 20,
                       color: Colors.white70,
                       fontWeight: FontWeight.bold),

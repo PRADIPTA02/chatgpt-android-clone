@@ -174,31 +174,31 @@ class SignUpScreen extends StatelessWidget {
                                         ? null
                                         : 'please enter a valid cradetial';
                               },
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
+                              decoration:  InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
                                     vertical: 15, horizontal: 12),
                                 filled: true,
                                 fillColor: secondaryColor,
                                 hintText: 'Email ID / Mobile number',
-                                hintStyle: TextStyle(
+                                hintStyle:GoogleFonts.nunito(
                                   color: Colors.white30,
                                   // fontWeight: FontWeight.w600,
                                 ),
                                 errorStyle:
-                                    TextStyle(fontWeight: FontWeight.bold),
-                                enabledBorder: OutlineInputBorder(
+                                   GoogleFonts.nunito(fontWeight: FontWeight.bold),
+                                enabledBorder: const OutlineInputBorder(
                                   borderSide:
                                       BorderSide(width: 2, color: cglasscolor),
                                 ),
-                                focusedBorder: OutlineInputBorder(
+                                focusedBorder: const OutlineInputBorder(
                                   borderSide:
                                       BorderSide(width: 2, color: cgSecondary),
                                 ),
-                                errorBorder: OutlineInputBorder(
+                                errorBorder: const OutlineInputBorder(
                                   borderSide:
                                       BorderSide(width: 2, color: errorColor),
                                 ),
-                                focusedErrorBorder: OutlineInputBorder(
+                                focusedErrorBorder: const OutlineInputBorder(
                                   borderSide:
                                       BorderSide(width: 2, color: errorColor),
                                 ),
@@ -257,7 +257,7 @@ class SignUpScreen extends StatelessWidget {
                                     filled: true,
                                     fillColor: secondaryColor,
                                     hintText: 'Enter your password',
-                                    hintStyle: const TextStyle(
+                                    hintStyle:GoogleFonts.nunito(
                                       color: Colors.white30,
                                       // fontWeight: FontWeight.w400,
                                     ),
@@ -289,7 +289,7 @@ class SignUpScreen extends StatelessWidget {
                                       borderSide: BorderSide(
                                           width: 2, color: errorColor),
                                     ),
-                                    errorStyle: const TextStyle(
+                                    errorStyle: GoogleFonts.nunito(
                                         fontWeight: FontWeight.bold)),
                               ),
                             ),

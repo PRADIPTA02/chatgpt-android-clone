@@ -34,16 +34,16 @@ class ChatScreenSidebar extends StatelessWidget {
                       borderRadius: const BorderRadius.all(Radius.circular(5)),
                     ),
                     child: Row(
-                      children: const [
-                        Icon(
+                      children: [
+                        const Icon(
                           Icons.add,
                           size: 20,
                           color: Colors.white70,
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         Text(
                           "New chat",
-                          style: TextStyle(
+                          style: GoogleFonts.nunito(
                               color: Colors.white70,
                               fontSize: 18,
                               fontWeight: FontWeight.bold),
@@ -118,7 +118,7 @@ class ChatScreenSidebar extends StatelessWidget {
                                                 index]
                                             .sessionName
                                             .toString(),
-                                        style: const TextStyle(
+                                        style: GoogleFonts.nunito(
                                             color: Colors.white70,
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),

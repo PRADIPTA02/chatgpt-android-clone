@@ -1,6 +1,7 @@
 
 import 'package:chatgpt/screens/homescreen/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../util/constants/constants.dart';
 
@@ -31,7 +32,7 @@ class StartButton extends StatelessWidget {
         ),
         child: Text(
           text,
-          style: const TextStyle(
+          style: GoogleFonts.nunito  (
               color: Colors.white70, fontSize: 25, fontWeight: FontWeight.w400),
         ),
       ),
