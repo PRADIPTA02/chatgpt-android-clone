@@ -154,11 +154,8 @@ class TextCompletProvider with ChangeNotifier {
                 },
               ));
     } catch (e) {
-           CustomSnackeBar.show(
-          context: context,
-          message: e.toString(),
-          status: Status.error
-        );
+      CustomSnackeBar.show(
+          context: context, message: e.toString(), status: Status.error);
       _isLoading = false;
       notifyListeners();
       return "";
@@ -171,18 +168,18 @@ class TextCompletProvider with ChangeNotifier {
             isApi: true,
             id: uuid.v1(),
             sessionId: sessions.values.toList()[index].sessionId,
-            timeStamp: int.parse(DateTime.now().millisecondsSinceEpoch.toString())),
+            timeStamp:
+                int.parse(DateTime.now().millisecondsSinceEpoch.toString())),
       ], index);
       _isLoading = false;
       onChangeTextInput("");
     } else if (response != null && !isupdate) {
       Map<String, dynamic> newResponse = jsonDecode(response.body);
       _isLoading = false;
-        CustomSnackeBar.show(
+      CustomSnackeBar.show(
           context: context,
           message: newResponse['error']['message'].toString(),
-          status: Status.error
-        );
+          status: Status.error);
       onChangeTextInput("");
     }
     if (response != null && isupdate) {
@@ -233,7 +230,8 @@ class TextCompletProvider with ChangeNotifier {
             message_text: messageText,
             isApi: false,
             id: uuid.v4(),
-            timeStamp: int.parse(DateTime.now().millisecondsSinceEpoch.toString()),
+            timeStamp:
+                int.parse(DateTime.now().millisecondsSinceEpoch.toString()),
           );
           convertedMessageList[index].add(tempUserMessage);
           listOfAllMessages.values.toList()[sessionIndex].save();
@@ -253,7 +251,8 @@ class TextCompletProvider with ChangeNotifier {
                 await getAiResponse(messageText, sessionIndex, true, context),
             isApi: true,
             id: uuid.v4(),
-            timeStamp:int.parse(DateTime.now().millisecondsSinceEpoch.toString()),
+            timeStamp:
+                int.parse(DateTime.now().millisecondsSinceEpoch.toString()),
           );
           convertedMessageList[index - 1].add(tempApiMessage);
           tempMessageList = Conversation(messages: convertedMessageList);
@@ -274,7 +273,9 @@ class TextCompletProvider with ChangeNotifier {
   }
 
   void deleteMessage() {}
+
   //add new session  when sessions.length == messageList.length
+
   void addNewSession() async {
     if (listOfAllMessages.values.length == sessions.values.length) {
       final MessageSessionList session =
@@ -288,7 +289,7 @@ class TextCompletProvider with ChangeNotifier {
   }
 
 // Delete a session along with messagelist linked with session
-  void deleteSession(MessageSessionList session, int index) async {
+  Future<void> deleteSession(MessageSessionList session, int index) async {
     if (sessions.values.toList().length == 1 &&
         listOfAllMessages.values.toList().length == 1) {
       addNewSession();
@@ -307,8 +308,8 @@ class TextCompletProvider with ChangeNotifier {
           : index - 1;
     } else if (listOfAllMessages.values.toList().length - 1 >= index) {
       await session.delete();
-      await listOfAllMessages.values.toList()[index].delete();
       _all_sessions = sessions.values.toList();
+      await listOfAllMessages.values.toList()[index].delete();
       _current_session_index = index == 0 ? 0 : index - 1;
     }
     _all_messages =
@@ -322,9 +323,20 @@ class TextCompletProvider with ChangeNotifier {
     session.save();
     notifyListeners();
   }
-  void clearConversations(){
 
+  Future<void> clearConversations() async{
+    _isLoading =true;
+    for (int i = allSesions.length - 1; i >= 0; i--) {
+      await deleteSession(allSesions[i], i);
+    }
+    if (allSesions.isEmpty) {
+      addNewSession();
+    }
+    _current_session_index = 0;
+        _isLoading =false;
+    notifyListeners();
   }
+
   void addErrorMessage(ErroMessage message) {
     _error_messags.clear();
     _error_messags.add(message);

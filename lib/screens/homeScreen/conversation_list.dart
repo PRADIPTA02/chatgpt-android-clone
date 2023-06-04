@@ -18,14 +18,25 @@ class ConversationList extends StatelessWidget {
                   decelerationRate: ScrollDecelerationRate.fast),
               itemCount: textCompletionProvider.allMessages.length > 4
                   ? 4
-                  
-                      : textCompletionProvider.allMessages.length,
-              itemBuilder: (context, index) => ConversationItem(
-                firstMessage: textCompletionProvider
-                    .allMessages[index][1][0].message_text,
-                timeStamp:
-                    textCompletionProvider.allMessages[index][1][0].timeStamp,
-              ),
+                  : textCompletionProvider.allMessages.length,
+              itemBuilder: (context, index) =>
+                  textCompletionProvider.allMessages.isEmpty
+                      ? const Center(
+                          child: Text('No items in the list.'),
+                        )
+                      : ConversationItem(
+                          firstMessage:
+                              textCompletionProvider.allMessages[index].length > 1
+                                  ? textCompletionProvider
+                                      .allMessages[index][1][0].message_text
+                                  : textCompletionProvider
+                                      .allMessages[index][0][0].message_text,
+                          timeStamp: textCompletionProvider.allMessages[index].length > 1
+                                  ? textCompletionProvider
+                                      .allMessages[index][1][0].timeStamp
+                                  : textCompletionProvider
+                                      .allMessages[index][0][0].timeStamp,
+                        ),
             ));
   }
 }

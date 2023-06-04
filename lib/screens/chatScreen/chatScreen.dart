@@ -32,6 +32,7 @@ class ChatScreen extends StatelessWidget {
               appBar: AppBar(
                 automaticallyImplyLeading: false,
                 title: Text(
+                  _textCompletionProvider.allSesions.isEmpty?"":
                   _textCompletionProvider
                       .allSesions[_textCompletionProvider.CurrentSessionIndex]
                       .sessionName,

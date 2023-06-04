@@ -2,6 +2,7 @@ import 'package:chatgpt/screens/chatScreen/session_edit_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import '../../CommonWidgets/confirm_dialog_box.dart';
 import '../../providers/text_copletion_provider.dart';
 import '../../util/constants/constants.dart';
 
@@ -244,7 +245,15 @@ class ChatScreenSidebar extends StatelessWidget {
                   color: cglasscolor,
                 ),
                 InkWell(
-                  onTap: () => _textCompletionProvider.clearConversations(),
+                  onTap: () => showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return  ConfirmDialogBox(
+                                  confirm_message: "This action will clear all conversations permanently.Are you sure you want to proceed!",
+                                  title: "Clear All Conversations",
+                                  onOK: _textCompletionProvider.clearConversations,
+                                );
+                              }),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
