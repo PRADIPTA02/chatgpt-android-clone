@@ -53,20 +53,20 @@ class MyApp extends StatelessWidget {
       statusBarColor: Colors.transparent,
     ));
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => TextCompletProvider()),
-        ChangeNotifierProvider(create: (_) => ImageGenerationProvider()),
-        ChangeNotifierProvider(create: (_) => AuthProvider()),
-        ChangeNotifierProvider.value(value: connectivityService),
-      ],
-      child: MaterialApp(
+        providers: [
+          ChangeNotifierProvider(create: (_) => TextCompletProvider()),
+          ChangeNotifierProvider(create: (_) => ImageGenerationProvider()),
+          ChangeNotifierProvider(create: (_) => AuthProvider()),
+          ChangeNotifierProvider.value(value: connectivityService),
+        ],
+        child: MaterialApp(
           useInheritedMediaQuery: true,
           debugShowCheckedModeBanner: false,
           title: 'ChatGPT',
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home:  const AuthScren(),)
-    );
+          home: const AuthScren(),
+        ));
   }
 }

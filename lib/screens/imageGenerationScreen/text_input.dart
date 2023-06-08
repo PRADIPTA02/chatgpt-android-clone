@@ -11,58 +11,58 @@ class SearchTextInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _imageGenerationProvider =
+    final imageGenerationProvider =
         Provider.of<ImageGenerationProvider>(context, listen: true);
-    final spinKit = SpinKitThreeBounce(
+    const spinKit = SpinKitThreeBounce(
       color: Colors.white70,
       size: 20.00,
     );
 
     return Consumer<ImageGenerationProvider>(
       builder: (context, value, child) => TextField(
-        style: TextStyle(fontSize: 20, color: Colors.white70),
+        style: const TextStyle(fontSize: 20, color: Colors.white70),
         minLines: 1,
         maxLines: 5,
-        controller: _imageGenerationProvider.ImageInputControler,
-        onChanged: _imageGenerationProvider.onChangeTextInput,
+        controller: imageGenerationProvider.ImageInputControler,
+        onChanged: imageGenerationProvider.onChangeTextInput,
         cursorColor: cgSecondary,
         decoration: InputDecoration(
           isDense: true,
           isCollapsed: true,
-          contentPadding: EdgeInsets.only(top: 8, bottom: 1, left: 5),
-          suffixIcon: _imageGenerationProvider.isTyping
-              ? !_imageGenerationProvider.isImageLoading
+          contentPadding: const EdgeInsets.only(top: 8, bottom: 1, left: 5),
+          suffixIcon: imageGenerationProvider.isTyping
+              ? !imageGenerationProvider.isImageLoading
                   ? IconButton(
                       onPressed: () => {
-                            _imageGenerationProvider.getImages(
-                                _imageGenerationProvider
+                            imageGenerationProvider.getImages(
+                                imageGenerationProvider
                                     .ImageInputControler.text),
-                            _imageGenerationProvider.ImageInputControler
+                            imageGenerationProvider.ImageInputControler
                                 .clear(),
                             FocusManager.instance.primaryFocus?.unfocus(),
                           },
-                      icon: Icon(Icons.send_rounded,
+                      icon: const Icon(Icons.send_rounded,
                           size: 30, color: cgSecondary))
                   : spinKit
               : AvatarGlow(
                   glowColor: Colors.blue,
                   endRadius: 25.0,
-                  duration: Duration(milliseconds: 2000),
+                  duration: const Duration(milliseconds: 2000),
                   repeat: true,
                   showTwoGlows: true,
                   animate: value.isSpeaking,
-                  repeatPauseDuration: Duration(milliseconds: 100),
+                  repeatPauseDuration: const Duration(milliseconds: 100),
                   child: IconButton(
                       splashColor: Colors.transparent,
                       onPressed: () => {
                             value.startListening(),
                           },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.mic_none_outlined,
                         size: 30,
                         color: cgSecondary,
                       ))),
-          border: OutlineInputBorder(
+          border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(3)),
               borderSide: BorderSide.none),
           filled: true,

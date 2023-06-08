@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../util/constants/constants.dart';
+import '../auth/common/user_details_form.dart';
 import '../settingsScreen/info_widgets.dart';
 
 class AccountInfo extends StatelessWidget {
@@ -14,13 +15,26 @@ class AccountInfo extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: bgColor,
         elevation: 0,
-        actions: const [],
+        actions: [
+          IconButton(
+            onPressed: () => showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return const UserDialog();
+                }),
+            icon: const Icon(
+              Icons.edit_note,
+              color: Colors.white,
+            ),
+          )
+        ],
       ),
       backgroundColor: bgColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 25),
         child: ListView(
-          physics: const BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast),
+          physics: const BouncingScrollPhysics(
+              decelerationRate: ScrollDecelerationRate.fast),
           children: [
             Text(
               "Account",
