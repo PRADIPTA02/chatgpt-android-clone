@@ -17,7 +17,7 @@ class ImageGenerationProvider with ChangeNotifier {
   bool _isTyping = false;
   int _number_of_images = 1;
   String _size_of_images = '256x256';
-  String _get_image_view_type = "List";
+  String _get_image_view_type = "list";
   String get GetImageViewType => _get_image_view_type;
   String get SizeOfImages => _size_of_images;
   List<Images> _images = [];

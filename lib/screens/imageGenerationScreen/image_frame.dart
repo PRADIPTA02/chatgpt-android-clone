@@ -35,7 +35,7 @@ class ImageFrame extends StatelessWidget {
                                   )),
                         child: Image.network(
                           url,
-                          fit: BoxFit.fill,
+                          fit: BoxFit.fitHeight,
                           loadingBuilder: (BuildContext context, Widget child,
                               ImageChunkEvent? loadingProgress) {
                             if (loadingProgress == null) return child;
@@ -108,7 +108,6 @@ class ImageFrame extends StatelessWidget {
                   ),
                   value.GetImageViewType == 'list'
                       ? Container(
-                          height: MediaQuery.of(context).size.height * 0.06,
                           color: cglasscolor,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
