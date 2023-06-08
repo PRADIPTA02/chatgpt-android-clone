@@ -118,7 +118,7 @@ class HomeScreen extends StatelessWidget {
                                 style: GoogleFonts.nunito(
                                     color: Colors.white70,
                                     fontSize: 18,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w700),
                               ),
                               Text("Generate and edit text",
                                   style: GoogleFonts.nunito(
