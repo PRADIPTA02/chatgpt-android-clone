@@ -127,8 +127,9 @@ class ImageGenerateScreen extends StatelessWidget {
                             value.GetImageViewType == 'grid' ? 2 : 1,
                         childAspectRatio:
                             value.GetImageViewType == 'list' ? 1.5 : 1.0,
-                        mainAxisExtent: MediaQuery.of(context).size.height*0.40    
-                            ),
+                        mainAxisExtent: value.GetImageViewType == 'list'
+                            ? MediaQuery.of(context).size.height * 0.375
+                            : MediaQuery.of(context).size.height * 0.26),
                     itemBuilder: (BuildContext context, index) =>
                         ImageFrame(url: value.AllImages[index].url)),
               ),

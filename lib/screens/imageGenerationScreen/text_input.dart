@@ -21,7 +21,7 @@ class SearchTextInput extends StatelessWidget {
 
     return Consumer<ImageGenerationProvider>(
       builder: (context, value, child) => TextField(
-        style: TextStyle(fontSize: 20, color: Colors.white70),
+        style: GoogleFonts.nunito(fontSize: 20, color: Colors.white70),
         minLines: 1,
         maxLines: 5,
         controller: imageGenerationProvider.ImageInputControler,
