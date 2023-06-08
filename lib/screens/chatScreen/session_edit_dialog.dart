@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../providers/text_copletion_provider.dart';
 import '../../util/constants/constants.dart';
@@ -28,7 +29,7 @@ class SessionEditDialog extends StatelessWidget {
           width: 500,
           child: TextField(
             controller: _controller,
-            style: const TextStyle(fontSize: 20, color: Colors.white70),
+            style: GoogleFonts.nunito(fontSize: 20, color: Colors.white70),
             decoration: const InputDecoration(
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.white),
@@ -44,9 +45,9 @@ class SessionEditDialog extends StatelessWidget {
               style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: Colors.white70)),
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text(
+              child: Text(
                 "Cancel",
-                style: TextStyle(
+                style: GoogleFonts.nunito(
                     color: Colors.white70,
                     fontWeight: FontWeight.bold,
                     fontSize: 18),
@@ -61,9 +62,9 @@ class SessionEditDialog extends StatelessWidget {
                         _controller.text.toString()),
                     Navigator.of(context).pop()
                   },
-              child: const Text(
+              child:  Text(
                 "Save",
-                style: TextStyle(
+                style: GoogleFonts.nunito(
                     color: Colors.white70,
                     fontWeight: FontWeight.bold,
                     fontSize: 18),

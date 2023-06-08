@@ -1,5 +1,6 @@
 import 'package:chatgpt/util/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class ConversationItem extends StatelessWidget {
@@ -41,17 +42,17 @@ class ConversationItem extends StatelessWidget {
       ),
       child: ListTile(
         tileColor: secondaryColor,
-        title: const Text(
+        title: Text(
           'ChatBOT',
-          style: TextStyle(color: Colors.white),
+          style: GoogleFonts.nunito(color: Colors.white),
         ),
         subtitle: Text(
           firstMessage,
-          style: const TextStyle(color: Colors.white70),
+          style: GoogleFonts.nunito(color: Colors.white70),
         ),
         trailing: Text(
           getTimeOrDate(timeStamp),
-          style: const TextStyle(fontSize: 14, color: Colors.grey),
+          style: GoogleFonts.nunito(fontSize: 14, color: Colors.grey),
         ),
       ),
     );

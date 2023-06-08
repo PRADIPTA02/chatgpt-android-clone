@@ -25,9 +25,9 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: bgColor,
         elevation: 0,
-        title: const Text(
+        title: Text(
           "OpenAI",
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          style:GoogleFonts.nunito(fontSize: 25, fontWeight: FontWeight.bold),
         ),
         actions: [
           Theme(

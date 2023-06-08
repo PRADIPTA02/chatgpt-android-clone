@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/text_copletion_provider.dart';
@@ -22,7 +23,7 @@ class CustomTextWidget extends StatelessWidget {
         _textCompletionProvider.changeIsloadingState();
     return Text(
       text,
-      style: TextStyle(fontSize: 18, color: Colors.white70),
+      style: GoogleFonts.nunito(fontSize: 18, color: Colors.white70),
     );
   }
 }

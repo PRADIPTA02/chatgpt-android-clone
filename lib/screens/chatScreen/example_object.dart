@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../providers/text_copletion_provider.dart';
 import '../../util/constants/constants.dart';
@@ -16,9 +17,9 @@ class ExampleObject extends StatelessWidget {
           const SizedBox(
             height: 30,
           ),
-          const Center(
+          Center(
               child: Text("ChatGPT",
-                  style: TextStyle(
+                  style: GoogleFonts.nunito(
                       fontSize: 35,
                       fontWeight: FontWeight.bold,
                       color: Colors.white))),
@@ -27,14 +28,14 @@ class ExampleObject extends StatelessWidget {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(
+            children: [
+              const Icon(
                 Icons.light_mode_outlined,
                 color: cgSecondary,
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Text("Examples",
-                  style: TextStyle(
+                  style: GoogleFonts.nunito(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       color: cgSecondary))
@@ -81,14 +82,14 @@ class ExampleObject extends StatelessWidget {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(
+            children: [
+              const Icon(
                 Icons.insights_outlined,
                 color: cgSecondary,
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Text("Capabilities",
-                  style: TextStyle(
+                  style: GoogleFonts.nunito(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       color: cgSecondary))
@@ -118,14 +119,14 @@ class ExampleObject extends StatelessWidget {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(
+            children: [
+              const Icon(
                 Icons.warning_amber,
                 color: cgSecondary,
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Text("Limitations",
-                  style: TextStyle(
+                  style: GoogleFonts.nunito(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       color: cgSecondary))

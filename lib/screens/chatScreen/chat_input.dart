@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../providers/internet_connection_check_provider.dart';
 import '../../providers/text_copletion_provider.dart';
@@ -19,7 +20,7 @@ class ChatInput extends StatelessWidget {
                   onChanged: (text) {
             textCompletionProvider.onChangeTextInput(text);
                   },
-                  style: const TextStyle(fontSize: 20, color: Colors.white70),
+                  style: GoogleFonts.nunito(fontSize: 20, color: Colors.white70),
                   minLines: 1,
                   maxLines: 5,
                   cursorColor: cgSecondary,

@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:chatgpt/screens/chatScreen/chat_avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
 
@@ -87,7 +88,7 @@ class SingleMessageBody extends StatelessWidget {
                           animatedTexts: [
                             TypewriterAnimatedText(
                               text.trim(),
-                              textStyle: TextStyle(
+                              textStyle: GoogleFonts.nunito(
                                   fontSize: 17,
                                   color: isApi
                                       ? Colors.white70
@@ -109,7 +110,7 @@ class SingleMessageBody extends StatelessWidget {
                         )
                       :Text(
                           text.trim(),
-                          style: const TextStyle(fontSize: 17, color: Colors.white70),
+                          style: GoogleFonts.nunito(fontSize: 17, color: Colors.white70),
                         ),
                 ),
                 !isApi
@@ -135,7 +136,7 @@ class SingleMessageBody extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 3),
                         child: Text(
                           formatTime(timeStamp),
-                          style: const TextStyle(fontSize: 16, color: Colors.grey),
+                          style: GoogleFonts.nunito(fontSize: 16, color: Colors.grey),
                         ),
                       ),
                       Row(
@@ -182,9 +183,9 @@ class SingleMessageBody extends StatelessWidget {
                           onPressed: () => {
                             textCompletionProvider.updateMessage(upperMessageIndex,id,sessionIndex,context)
                           },
-                          child: const Text(
+                          child: Text(
                             "Save & Submit",
-                            style: TextStyle(
+                            style: GoogleFonts.nunito(
                                 color: Colors.white70,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18),
@@ -201,9 +202,9 @@ class SingleMessageBody extends StatelessWidget {
                                         id, false,),
                                         textCompletionProvider.setMessageUpdate(false,text),
                               },
-                          child: const Text(
+                          child: Text(
                             "Cancel",
-                            style: TextStyle(
+                            style: GoogleFonts.nunito(
                                 color: Colors.white70,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18),

@@ -1,6 +1,7 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../util/constants/constants.dart';
@@ -20,7 +21,7 @@ class SearchTextInput extends StatelessWidget {
 
     return Consumer<ImageGenerationProvider>(
       builder: (context, value, child) => TextField(
-        style: const TextStyle(fontSize: 20, color: Colors.white70),
+        style: TextStyle(fontSize: 20, color: Colors.white70),
         minLines: 1,
         maxLines: 5,
         controller: imageGenerationProvider.ImageInputControler,
