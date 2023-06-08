@@ -1,4 +1,5 @@
 import 'package:chatgpt/screens/settingsScreen/gender_widget.dart';
+import 'package:chatgpt/screens/settingsScreen/profile_edit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -17,11 +18,12 @@ class AccountInfo extends StatelessWidget {
         elevation: 0,
         actions: [
           IconButton(
-            onPressed: () => showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return const UserDialog();
-                }),
+            onPressed: () =>{
+              Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ProfileEditScreen()))
+            },
             icon: const Icon(
               Icons.edit_note,
               color: Colors.white,

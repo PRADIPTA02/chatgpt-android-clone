@@ -14,6 +14,8 @@ import '../../util/constants/constants.dart';
 import '../imageGenerationScreen/image_generate_screen.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../imageGenerationScreen/resent_images_carousel.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -27,7 +29,7 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
         title: Text(
           "OpenAI",
-          style:GoogleFonts.nunito(fontSize: 25, fontWeight: FontWeight.bold),
+          style: GoogleFonts.nunito(fontSize: 25, fontWeight: FontWeight.bold),
         ),
         actions: [
           Theme(
@@ -87,6 +89,17 @@ class HomeScreen extends StatelessWidget {
         child: Consumer<TextCompletProvider>(
             builder: (context, value, child) => Column(
                   children: [
+                    Text(
+                      "Explore the World of AI",
+                      style: GoogleFonts.nunito(
+                          color: Colors.white70,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.02,
+                    ),
+                    const ResentImagesCarousel(),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.005,
                     ),
@@ -96,38 +109,40 @@ class HomeScreen extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => const ChatScreen()),
                       ),
-                      child: Row(
-                        children: [
-                          Container(
-                            height: 50,
-                            width: 50,
-                            decoration: BoxDecoration(
-                                color: const Color.fromRGBO(51, 196, 145, 1),
-                                borderRadius: BorderRadius.circular(5)),
-                            child: const Icon(
-                              Icons.edit,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Text completion",
-                                style: GoogleFonts.nunito(
-                                    color: Colors.white70,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700),
+                      child: Container(
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  color: const Color.fromRGBO(51, 196, 145, 1),
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: const Icon(
+                                Icons.edit,
+                                color: Colors.white,
                               ),
-                              Text("Generate and edit text",
+                            ),
+                            const SizedBox(width: 8),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Text completion",
                                   style: GoogleFonts.nunito(
-                                      color: Colors.grey,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w300))
-                            ],
-                          )
-                        ],
+                                      color: Colors.white70,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                Text("Generate and edit text",
+                                    style: GoogleFonts.nunito(
+                                        color: Colors.grey,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w300))
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -142,7 +157,8 @@ class HomeScreen extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15),
                           ),
-                    const Flexible(flex: 1, child: ConversationList()),
+                          SizedBox(height: MediaQuery.of(context).size.height*0.01,),
+                    const Flexible(flex: 1,fit: FlexFit.tight, child: ConversationList()),
                     const SizedBox(height: 20),
                     InkWell(
                       onTap: () => Navigator.push(

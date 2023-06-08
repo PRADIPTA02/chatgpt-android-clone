@@ -34,6 +34,7 @@ class ConversationItem extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5),
       decoration: BoxDecoration(
+        color: secondaryColor,
         borderRadius: BorderRadius.circular(8.0),
         border: Border.all(
           color: const Color.fromARGB(255, 72, 70, 70),
@@ -41,7 +42,6 @@ class ConversationItem extends StatelessWidget {
         ),
       ),
       child: ListTile(
-        tileColor: secondaryColor,
         title: Text(
           'ChatBOT',
           style: GoogleFonts.nunito(color: Colors.white),

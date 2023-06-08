@@ -57,6 +57,7 @@ dependencies:
   flutter_otp_text_field: ^1.1.1
   cloud_firestore: ^4.8.0
   image_picker: ^0.8.7+5
+  carousel_slider: ^4.2.1
 dev_dependencies:
   hive_flutter: ^1.1.0
   build_runner: ^2.3.3

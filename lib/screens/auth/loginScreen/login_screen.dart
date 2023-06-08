@@ -1,4 +1,4 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
+// ignore_for_file: no_leading_underscores_for_local_identifiers, must_be_immutable
 
 import 'package:chatgpt/screens/auth/common/authButton.dart';
 import 'package:chatgpt/screens/auth/common/authOptionDevider.dart';
