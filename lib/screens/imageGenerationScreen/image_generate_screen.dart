@@ -101,16 +101,22 @@ class ImageGenerateScreen extends StatelessWidget {
               child: InkWell(
                 onTap: value.giveRandomImageSuggetion,
                 child: Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
                   decoration: const BoxDecoration(
-                      color: cglasscolor,
+                      gradient:LinearGradient(
+                        begin:Alignment.topLeft,
+                        colors: <Color>[
+                        Color(0xffd62507),
+                        Color(0xffe55a32)
+                      ]),
                       borderRadius: BorderRadius.all(Radius.circular(3))),
                   child: Text(
                     'Surprise me',
                     style: GoogleFonts.nunito(
-                        color: cgSecondary,
+                        color: Colors.white70,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16),
+                        fontSize: 18
+                      ),
                   ),
                 ),
               ),
