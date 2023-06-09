@@ -69,6 +69,14 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                 body: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Row(children: [
+                      Switch(
+                        value: authProvider.IsAdvanceModeOn, 
+                        onChanged:(bool value){
+                          authProvider.changeIsAdvanceModeONOF(value);
+                        }
+                      )
+                    ],),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

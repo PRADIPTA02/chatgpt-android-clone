@@ -21,12 +21,14 @@ class AuthProvider extends ChangeNotifier {
   final _forgot_password_email_controller = TextEditingController();
   bool get isLoading => _isLoading;
   String _chat_model = "text-davinci-003";
-  String _app_language ="English";
+  String _app_language = "English";
   String get App_language => _app_language;
   bool _isExpanded = false;
   bool get IsExpanded => _isExpanded;
   //ai advance settings
   //***********************************************************************************************************//
+  bool _is_advance_mode_on = false;
+  bool get IsAdvanceModeOn => _is_advance_mode_on;
   double _temperature = 0;
   int _maximum_length = 0;
   double _top_p = 0;
@@ -37,7 +39,7 @@ class AuthProvider extends ChangeNotifier {
   int get Maximum_length => _maximum_length;
   double get Top_P => _top_p;
   double get Frequency_penalty => _frequency_penalty;
-  double get Presence_penalty =>_presence_penalty;
+  double get Presence_penalty => _presence_penalty;
   int get Best_of => _best_of;
   //***********************************************************************************************************//
   String get Chat_model => _chat_model;
@@ -58,30 +60,43 @@ class AuthProvider extends ChangeNotifier {
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
   final phoneRegex = RegExp(
       r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$');
-  void changeTemperature(double value){
-        _temperature = value;
-        notifyListeners();
+  void changeTemperature(double value) {
+    if (_is_advance_mode_on) {
+      _temperature = value;
+    }
+    notifyListeners();
   }
-  void change_maximum_length(double value){
-      _maximum_length = value.round();
-      notifyListeners();
+
+  void change_maximum_length(double value) {
+    _maximum_length = value.round();
+    notifyListeners();
   }
-  void changeTop_P(double value){
+
+  void changeTop_P(double value) {
     _top_p = value;
     notifyListeners();
   }
-  void changeFrequency_penalty(double value){
+
+  void changeIsAdvanceModeONOF(bool value) {
+    _is_advance_mode_on = value;
+    notifyListeners();
+  }
+
+  void changeFrequency_penalty(double value) {
     _frequency_penalty = value;
     notifyListeners();
   }
-  void changePresence_penalty(double value){
+
+  void changePresence_penalty(double value) {
     _presence_penalty = value;
     notifyListeners();
   }
-  void changeBest_of(double value){
+
+  void changeBest_of(double value) {
     _best_of = value.round();
     notifyListeners();
   }
+
   void changeIsLoading(bool value) {
     _isLoading = value;
     notifyListeners();
@@ -92,17 +107,17 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeChatModel(String model){
+  void changeChatModel(String model) {
     _chat_model = model;
     notifyListeners();
   }
 
-  void changeLanguage(String language){
-    _app_language=language;
+  void changeLanguage(String language) {
+    _app_language = language;
     notifyListeners();
   }
 
-  void changeIsExpanded(bool value){
+  void changeIsExpanded(bool value) {
     _isExpanded = value;
     notifyListeners();
   }
@@ -218,7 +233,7 @@ class AuthProvider extends ChangeNotifier {
       'created_at': FieldValue.serverTimestamp(),
       'user_email': userEmail,
       'user_id': userID,
-      'user_login_date' : FieldValue.serverTimestamp(),
+      'user_login_date': FieldValue.serverTimestamp(),
       'user_name': userName,
       'user_password': userPassword,
       'user_uid': userUID,
@@ -237,13 +252,16 @@ class AuthProvider extends ChangeNotifier {
       final user = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
       final userInDatabase = await adduserDetails(
-          userEmail: email,
-          userName: username,
-          userPassword: password,
-          userUID: user.user?.uid,
-          );
-      await FirebaseFirestore.instance.collection('users').doc(userInDatabase).update({
-        'user_id' : userInDatabase,
+        userEmail: email,
+        userName: username,
+        userPassword: password,
+        userUID: user.user?.uid,
+      );
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userInDatabase)
+          .update({
+        'user_id': userInDatabase,
       });
       changeIsLoading(false);
       _signup_username_controller.text = "";
