@@ -23,6 +23,21 @@ class AuthProvider extends ChangeNotifier {
   String _chat_model = "text-davinci-003";
   bool _isExpanded = false;
   bool get IsExpanded => _isExpanded;
+  //ai advance settings
+  //***********************************************************************************************************//
+  double _temperature = 0;
+  int _maximum_length = 0;
+  double _top_p = 0;
+  double _frequency_penalty = 0;
+  double _presence_penalty = 0;
+  int _best_of = 1;
+  double get Temperature => _temperature;
+  int get Maximum_length => _maximum_length;
+  double get Top_P => _top_p;
+  double get Frequency_penalty => _frequency_penalty;
+  double get Presence_penalty =>_presence_penalty;
+  int get Best_of => _best_of;
+  //***********************************************************************************************************//
   String get Chat_model => _chat_model;
   String get verificationCode => _verificationCode;
   bool get showLoginPassword => _showLoginPassword;
@@ -41,7 +56,30 @@ class AuthProvider extends ChangeNotifier {
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
   final phoneRegex = RegExp(
       r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$');
-
+  void changeTemperature(double value){
+        _temperature = value;
+        notifyListeners();
+  }
+  void change_maximum_length(double value){
+      _maximum_length = value.round();
+      notifyListeners();
+  }
+  void changeTop_P(double value){
+    _top_p = value;
+    notifyListeners();
+  }
+  void changeFrequency_penalty(double value){
+    _frequency_penalty = value;
+    notifyListeners();
+  }
+  void changePresence_penalty(double value){
+    _presence_penalty = value;
+    notifyListeners();
+  }
+  void changeBest_of(double value){
+    _best_of = value.round();
+    notifyListeners();
+  }
   void changeIsLoading(bool value) {
     _isLoading = value;
     notifyListeners();
