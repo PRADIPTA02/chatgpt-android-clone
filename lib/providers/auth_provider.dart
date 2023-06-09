@@ -132,6 +132,15 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void advanceSettingsValus(){
+    print(_temperature);
+    print(_maximum_length);
+    print(_top_p);
+    print(_frequency_penalty);
+    print(_presence_penalty);
+    print(_best_of);
+  }
+
   void SignOut() async {
     _isLoading = true;
     await FirebaseAuth.instance.signOut();

@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
-
 import 'package:chatgpt/providers/auth_provider.dart';
-import 'package:chatgpt/screens/settingsScreen/advance_settings_screen.dart';
 import 'package:chatgpt/util/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -55,15 +53,6 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.05,
                         ),
-                        // CustomBackButton(
-                        //   onTap: () => {
-                        //     Navigator.push(
-                        //         context,
-                        //         MaterialPageRoute(
-                        //             builder: (context) =>
-                        //                 const AdvanceSettingsScreen()))
-                        //   },
-                        // ),
                       ],
                     ),
                 body: Column(
@@ -107,9 +96,13 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                     ),
                     Slider(
                       value: authProvider.Temperature,
-                      activeColor: cgSecondary,
+                      activeColor: authProvider.IsAdvanceModeOn
+                          ? cgSecondary
+                          : const Color.fromARGB(255, 99, 95, 95),
                       thumbColor: Colors.white70,
-                      inactiveColor: cgSecondary.withOpacity(0.2),
+                      inactiveColor: authProvider.IsAdvanceModeOn
+                          ? cgSecondary.withOpacity(0.2)
+                          : const Color.fromARGB(255, 99, 95, 95),
                       max: 1,
                       divisions: 100,
                       onChanged: (value) {
@@ -136,9 +129,13 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                     ),
                     Slider(
                       value: authProvider.Maximum_length.toDouble(),
-                      activeColor: cgSecondary,
+                      activeColor: authProvider.IsAdvanceModeOn
+                          ? cgSecondary
+                          : const Color.fromARGB(255, 99, 95, 95),
                       thumbColor: Colors.white70,
-                      inactiveColor: cgSecondary.withOpacity(0.2),
+                      inactiveColor: authProvider.IsAdvanceModeOn
+                          ? cgSecondary.withOpacity(0.2)
+                          : const Color.fromARGB(255, 99, 95, 95),
                       max: 4000,
                       divisions: 1000,
                       onChanged: (value) {
@@ -165,9 +162,13 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                     ),
                     Slider(
                       value: authProvider.Top_P,
-                      activeColor: cgSecondary,
+                      activeColor: authProvider.IsAdvanceModeOn
+                          ? cgSecondary
+                          : const Color.fromARGB(255, 99, 95, 95),
                       thumbColor: Colors.white70,
-                      inactiveColor: cgSecondary.withOpacity(0.2),
+                      inactiveColor: authProvider.IsAdvanceModeOn
+                          ? cgSecondary.withOpacity(0.2)
+                          : const Color.fromARGB(255, 99, 95, 95),
                       max: 1,
                       divisions: 100,
                       onChanged: (value) {
@@ -194,9 +195,13 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                     ),
                     Slider(
                       value: authProvider.Frequency_penalty,
-                      activeColor: cgSecondary,
+                      activeColor: authProvider.IsAdvanceModeOn
+                          ? cgSecondary
+                          : const Color.fromARGB(255, 99, 95, 95),
                       thumbColor: Colors.white70,
-                      inactiveColor: cgSecondary.withOpacity(0.2),
+                      inactiveColor: authProvider.IsAdvanceModeOn
+                          ? cgSecondary.withOpacity(0.2)
+                          : const Color.fromARGB(255, 99, 95, 95),
                       max: 2,
                       divisions: 100,
                       onChanged: (value) {
@@ -223,9 +228,13 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                     ),
                     Slider(
                       value: authProvider.Presence_penalty,
-                      activeColor: cgSecondary,
+                      activeColor: authProvider.IsAdvanceModeOn
+                          ? cgSecondary
+                          : const Color.fromARGB(255, 99, 95, 95),
                       thumbColor: Colors.white70,
-                      inactiveColor: cgSecondary.withOpacity(0.2),
+                      inactiveColor: authProvider.IsAdvanceModeOn
+                          ? cgSecondary.withOpacity(0.2)
+                          : const Color.fromARGB(255, 99, 95, 95),
                       max: 1,
                       divisions: 100,
                       onChanged: (value) {
@@ -252,9 +261,13 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                     ),
                     Slider(
                       value: authProvider.Best_of.toDouble(),
-                      activeColor: cgSecondary,
+                      activeColor: authProvider.IsAdvanceModeOn
+                          ? cgSecondary
+                          : const Color.fromARGB(255, 99, 95, 95),
                       thumbColor: Colors.white70,
-                      inactiveColor: cgSecondary.withOpacity(0.2),
+                      inactiveColor: authProvider.IsAdvanceModeOn
+                          ? cgSecondary.withOpacity(0.2)
+                          : const Color.fromARGB(255, 99, 95, 95),
                       max: 20,
                       divisions: 10,
                       onChanged: (value) {
@@ -264,6 +277,25 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.01,
                     ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.resolveWith<Color>(
+                            (states) => authProvider.IsAdvanceModeOn? cgSecondary:cgSecondary.withOpacity(0.2)
+                          )),
+                          onPressed: (){
+                            authProvider.advanceSettingsValus();
+                          },
+                          child: Text(
+                            'Save',
+                            style: GoogleFonts.nunito(
+                                color: Colors.white70,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16),
+                          )),
+                    )
                   ],
                 ))
           ],
