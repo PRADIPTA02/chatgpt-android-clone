@@ -21,6 +21,8 @@ class AuthProvider extends ChangeNotifier {
   final _forgot_password_email_controller = TextEditingController();
   bool get isLoading => _isLoading;
   String _chat_model = "text-davinci-003";
+  bool _isExpanded = false;
+  bool get IsExpanded => _isExpanded;
   String get Chat_model => _chat_model;
   String get verificationCode => _verificationCode;
   bool get showLoginPassword => _showLoginPassword;
@@ -52,6 +54,11 @@ class AuthProvider extends ChangeNotifier {
 
   void changeChatModel(String model){
     _chat_model = model;
+    notifyListeners();
+  }
+
+  void changeIsExpanded(bool value){
+    _isExpanded = value;
     notifyListeners();
   }
 
