@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
+import '../../providers/auth_provider.dart';
+import '../../util/constants/constants.dart';
 import 'back_button.dart';
 
 class LanguageSetting extends StatelessWidget {
@@ -31,19 +34,53 @@ class LanguageSetting extends StatelessWidget {
         ),
         Row(
           children: [
-            Text(
-              "English",
-              style: GoogleFonts.nunito(
-                  color: Colors.white30,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+              decoration: const BoxDecoration(
+                  color: secondaryColor,
+                  borderRadius: BorderRadius.all(Radius.circular(5))),
+              child: Consumer<AuthProvider>(builder: (context, value, child) {
+                return Center(
+                  child: DropdownButton<String>(
+                    menuMaxHeight: 200.10,
+                    alignment: Alignment.topCenter,
+                    underline: const SizedBox(),
+                    dropdownColor: secondaryColor,
+                    value: value.App_language,
+                    onChanged: (String? newValue) {
+                      value.changeLanguage(newValue!);
+                    },
+                    items: [
+                      'English',
+                      '国语',
+                      'हिंदी',
+                      'Española',
+                      'Français',
+                      'عربي',
+                      'বাংলা',
+                      'Русский',
+                      'Português',
+                      'bahasa Indonesia',
+                      'اردو',
+                      '日本',
+                      'Deutsch',
+                      'ਪੰਜਾਬੀ',
+                      'basa jawa',
+                    ].map((String language) {
+                      return DropdownMenuItem<String>(
+                        value: language,
+                        child: Text(
+                          language,
+                          style: GoogleFonts.nunito(
+                              color: Colors.white70,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                );
+              }),
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.05,
-            ),
-            CustomBackButton(
-              onTap: () => {},
-            )
           ],
         ),
       ],
