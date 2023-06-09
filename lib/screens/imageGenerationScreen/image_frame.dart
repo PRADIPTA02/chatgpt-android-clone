@@ -120,22 +120,12 @@ class ImageFrame extends StatelessWidget {
                                         ? secondaryColor
                                         : Colors.white70,
                                   )),
-                              Row(
-                                children: const [
-                                  IconButton(
-                                      onPressed: null,
-                                      icon: Icon(
-                                        Icons.download_rounded,
-                                        color: cgSecondary,
-                                      )),
-                                  IconButton(
-                                      onPressed: null,
-                                      icon: Icon(
-                                        Icons.send_rounded,
-                                        color: Colors.white70,
-                                      ))
-                                ],
-                              )
+                              const IconButton(
+                                  onPressed: null,
+                                  icon: Icon(
+                                    Icons.download_rounded,
+                                    color: cgSecondary,
+                                  ))
                             ],
                           ),
                         )

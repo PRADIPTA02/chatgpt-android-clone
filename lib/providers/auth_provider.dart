@@ -4,9 +4,7 @@ import 'package:chatgpt/screens/homescreen/home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../CommonWidgets/custom_snakebar.dart';
-import 'package:animated_snack_bar/animated_snack_bar.dart';
 
 class AuthProvider extends ChangeNotifier {
   bool _isLoading = false;
@@ -22,6 +20,8 @@ class AuthProvider extends ChangeNotifier {
   final _signup_password_controller = TextEditingController();
   final _forgot_password_email_controller = TextEditingController();
   bool get isLoading => _isLoading;
+  String _chat_model = "text-davinci-003";
+  String get Chat_model => _chat_model;
   String get verificationCode => _verificationCode;
   bool get showLoginPassword => _showLoginPassword;
   UserCredential get CurrentUserCredential => _userCredential;
@@ -47,6 +47,11 @@ class AuthProvider extends ChangeNotifier {
 
   void changeLoginPasswordVisibility() {
     _showLoginPassword = !_showLoginPassword;
+    notifyListeners();
+  }
+
+  void changeChatModel(String model){
+    _chat_model = model;
     notifyListeners();
   }
 

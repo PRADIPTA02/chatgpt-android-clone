@@ -1,6 +1,9 @@
+import 'package:chatgpt/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
+import '../../util/constants/constants.dart';
 import 'back_button.dart';
 
 class AiModelSetting extends StatelessWidget {
@@ -31,19 +34,48 @@ class AiModelSetting extends StatelessWidget {
         ),
         Row(
           children: [
-            Text(
-              "text-davinci-001",
-              style: GoogleFonts.nunito(
-                  color: Colors.white30,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+              decoration: const BoxDecoration(
+                  color: secondaryColor,
+                  borderRadius: BorderRadius.all(Radius.circular(5))),
+              child: Consumer<AuthProvider>(builder: (context, value, child) {
+                return Center(
+                  child: DropdownButton<String>(
+                    menuMaxHeight: 200.10,
+                    alignment: Alignment.topCenter,
+                    underline: const SizedBox(),
+                    dropdownColor: secondaryColor,
+                    value: value.Chat_model,
+                    onChanged: (String? newValue) {
+                      value.changeChatModel(newValue!);
+                    },
+                    items: [
+                      'text-davinci-003',
+                      'text-curie-001',
+                      'text-babbage-001',
+                      'text-ada-001',
+                      'text-davinci-002',
+                      'text-davinci-001',
+                      'davinci-instruct-beta',
+                      'davinci',
+                      'curie-instruct-beta',
+                      'curie'
+                    ].map((String model) {
+                      return DropdownMenuItem<String>(
+                        value: model,
+                        child: Text(
+                          model,
+                          style: GoogleFonts.nunito(
+                              color: Colors.white70,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                );
+              }),
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.05,
-            ),
-            CustomBackButton(
-              onTap: () => {},
-            )
           ],
         ),
       ],

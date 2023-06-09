@@ -109,40 +109,38 @@ class HomeScreen extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => const ChatScreen()),
                       ),
-                      child: Container(
-                        child: Row(
-                          children: [
-                            Container(
-                              height: 50,
-                              width: 50,
-                              decoration: BoxDecoration(
-                                  color: const Color.fromRGBO(51, 196, 145, 1),
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: const Icon(
-                                Icons.edit,
-                                color: Colors.white,
-                              ),
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
+                                color: const Color.fromRGBO(51, 196, 145, 1),
+                                borderRadius: BorderRadius.circular(5)),
+                            child: const Icon(
+                              Icons.edit,
+                              color: Colors.white,
                             ),
-                            const SizedBox(width: 8),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Text completion",
+                          ),
+                          const SizedBox(width: 8),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Text completion",
+                                style: GoogleFonts.nunito(
+                                    color: Colors.white70,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              Text("Generate and edit text",
                                   style: GoogleFonts.nunito(
-                                      color: Colors.white70,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                                Text("Generate and edit text",
-                                    style: GoogleFonts.nunito(
-                                        color: Colors.grey,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w300))
-                              ],
-                            )
-                          ],
-                        ),
+                                      color: Colors.grey,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w300))
+                            ],
+                          )
+                        ],
                       ),
                     ),
                     SizedBox(
