@@ -69,14 +69,27 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                 body: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(children: [
-                      Switch(
-                        value: authProvider.IsAdvanceModeOn, 
-                        onChanged:(bool value){
-                          authProvider.changeIsAdvanceModeONOF(value);
-                        }
-                      )
-                    ],),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Advance Mode',
+                          style: GoogleFonts.nunito(
+                              color: Colors.white70,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                        ),
+                        Switch(
+                            activeColor: cgSecondary,
+                            value: authProvider.IsAdvanceModeOn,
+                            onChanged: (bool value) {
+                              authProvider.changeIsAdvanceModeONOF(value);
+                            })
+                      ],
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.01,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -87,7 +100,9 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                               fontSize: 15,
                               fontWeight: FontWeight.bold),
                         ),
-                        ValueBox(value: authProvider.Temperature,)
+                        ValueBox(
+                          value: authProvider.Temperature,
+                        )
                       ],
                     ),
                     Slider(
@@ -114,7 +129,9 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                               fontSize: 15,
                               fontWeight: FontWeight.bold),
                         ),
-                        ValueBox(value: authProvider.Maximum_length,)
+                        ValueBox(
+                          value: authProvider.Maximum_length,
+                        )
                       ],
                     ),
                     Slider(
@@ -141,7 +158,9 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                               fontSize: 15,
                               fontWeight: FontWeight.bold),
                         ),
-                        ValueBox(value: authProvider.Top_P,)
+                        ValueBox(
+                          value: authProvider.Top_P,
+                        )
                       ],
                     ),
                     Slider(
@@ -168,7 +187,9 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                               fontSize: 15,
                               fontWeight: FontWeight.bold),
                         ),
-                        ValueBox(value: authProvider.Frequency_penalty,)
+                        ValueBox(
+                          value: authProvider.Frequency_penalty,
+                        )
                       ],
                     ),
                     Slider(
@@ -195,7 +216,9 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                               fontSize: 15,
                               fontWeight: FontWeight.bold),
                         ),
-                        ValueBox(value: authProvider.Presence_penalty,)
+                        ValueBox(
+                          value: authProvider.Presence_penalty,
+                        )
                       ],
                     ),
                     Slider(
@@ -222,7 +245,9 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                               fontSize: 15,
                               fontWeight: FontWeight.bold),
                         ),
-                        ValueBox(value: authProvider.Best_of,)
+                        ValueBox(
+                          value: authProvider.Best_of,
+                        )
                       ],
                     ),
                     Slider(
