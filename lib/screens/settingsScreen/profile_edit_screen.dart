@@ -1,6 +1,15 @@
+// ignore_for_file: non_constant_identifier_names, avoid_types_as_parameter_names
+
+import 'dart:io';
+
 import 'package:chatgpt/util/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../auth/common/authSubmtButton.dart';
+import 'coustom_image_picker_button.dart';
 
 class ProfileEditScreen extends StatefulWidget {
   const ProfileEditScreen({super.key});
@@ -9,6 +18,8 @@ class ProfileEditScreen extends StatefulWidget {
 }
 
 class _ProfileEditScreenState extends State<ProfileEditScreen> {
+  File? _image;
+
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
@@ -221,6 +232,20 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     return emailRegExp.hasMatch(value);
   }
 
+  Future _pickImage(ImageSource source) async {
+    try {
+      final image = await ImagePicker().pickImage(source: source);
+      if (image == null) return;
+      File? img = File(image.path);
+      setState(() {
+        _image = img;
+      });
+    } on PlatformException catch (e) {
+      print(e);
+      Navigator.of(context).pop;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -258,6 +283,67 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     }
   }
 
+  void _showImageSelectionBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: const Color(0xFF141C1C),
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(25.0))),
+        builder: (BuildContext context) => DraggableScrollableSheet(
+            initialChildSize: 0.25,
+            maxChildSize: 0.4,
+            minChildSize: 0.25,
+            expand: false,
+            builder: (context, ScrollController) {
+              return SingleChildScrollView(
+                controller: ScrollController,
+                child: Stack(
+                  alignment: Alignment.topCenter,
+                  clipBehavior: Clip.none,
+                  children: [
+                    Positioned(
+                        top: -15,
+                        child: Container(
+                          width: 60,
+                          height: 7,
+                          decoration: BoxDecoration(
+                              color: cgSecondary,
+                              borderRadius: BorderRadius.circular(5)),
+                        )),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.05,
+                        ),
+                        ImagePickerButton(
+                          title: "Chose from Gallery",
+                          ontap: ()=> {
+                            _pickImage(ImageSource.gallery),
+                            Navigator.of(context).pop(),
+                          },
+                          icon: Icons.photo_library,
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
+                        ),
+                        ImagePickerButton(
+                          title: "Capture from Camera",
+                          ontap: () => {
+                            _pickImage(ImageSource.camera),
+                            Navigator.of(context).pop(),
+                          },
+                          icon: Icons.camera,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            }));
+  }
+
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       // Form fields are valid, do something with the data
@@ -284,9 +370,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: bgColor,
-        title:  Text("Edit Profile",style: GoogleFonts.nunito(
-          fontWeight: FontWeight.bold
-        ),textAlign: TextAlign.center,),
+        title: Text(
+          "Edit Profile",
+          style: GoogleFonts.nunito(fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ),
       ),
       backgroundColor: bgColor,
       body: SafeArea(
@@ -302,14 +390,24 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                 children: [
                   Stack(
                     alignment: Alignment.bottomRight,
-                    children: const [
-                      CircleAvatar(
-                        radius: 50.0,
-                        backgroundColor: secondaryColor,
-                      ),
+                    children: [
+                      _image == null
+                          ? const CircleAvatar(
+                              radius: 50.0,
+                              backgroundColor: secondaryColor,
+                              backgroundImage: AssetImage(
+                                  'assets/images/defaultAccountIcon.png'),
+                            )
+                          : CircleAvatar(
+                              radius: 50.0,
+                              backgroundColor: secondaryColor,
+                              backgroundImage: FileImage(_image!),
+                            ),
                       IconButton(
-                          onPressed: null,
-                          icon: Icon(
+                          onPressed: () {
+                            _showImageSelectionBottomSheet(context);
+                          },
+                          icon: const Icon(
                             Icons.edit,
                             color: cgSecondary,
                           ))
