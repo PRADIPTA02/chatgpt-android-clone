@@ -68,12 +68,16 @@ class AuthProvider extends ChangeNotifier {
   }
 
   void change_maximum_length(double value) {
-    _maximum_length = value.round();
+    if (_is_advance_mode_on) {
+      _maximum_length = value.round ();
+    }
     notifyListeners();
   }
 
   void changeTop_P(double value) {
-    _top_p = value;
+    if(_is_advance_mode_on){
+      _top_p = value;
+    }
     notifyListeners();
   }
 
@@ -83,17 +87,23 @@ class AuthProvider extends ChangeNotifier {
   }
 
   void changeFrequency_penalty(double value) {
+    if(_is_advance_mode_on){
     _frequency_penalty = value;
+    }
     notifyListeners();
   }
 
   void changePresence_penalty(double value) {
+    if(_is_advance_mode_on){
     _presence_penalty = value;
+    }
     notifyListeners();
   }
 
   void changeBest_of(double value) {
+    if(_is_advance_mode_on){
     _best_of = value.round();
+    }
     notifyListeners();
   }
 
