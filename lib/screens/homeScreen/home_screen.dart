@@ -29,7 +29,10 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
         title: Text(
           "OpenAI",
-          style: GoogleFonts.nunito(fontSize: 25, fontWeight: FontWeight.bold),
+          style: GoogleFonts.nunito(
+            fontSize: 25,
+             fontWeight: FontWeight.bold,
+            ),
         ),
         actions: [
           Theme(
@@ -94,7 +97,7 @@ class HomeScreen extends StatelessWidget {
                       style: GoogleFonts.nunito(
                           color: Colors.white70,
                           fontSize: 16,
-                          fontWeight: FontWeight.w700),
+                          fontWeight: FontWeight.w500),
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.02,
@@ -131,13 +134,13 @@ class HomeScreen extends StatelessWidget {
                                 style: GoogleFonts.nunito(
                                     color: Colors.white70,
                                     fontSize: 18,
-                                    fontWeight: FontWeight.w700),
+                                    fontWeight: FontWeight.w500),
                               ),
                               Text("Generate and edit images",
-                                  style: GoogleFonts.nunito(
+                                  style: GoogleFonts.nunito( 
                                       color: Colors.grey,
                                       fontSize: 16,
-                                      fontWeight: FontWeight.w500))
+                                      fontWeight: FontWeight.w300))
                             ],
                           )
                         ],
@@ -172,7 +175,7 @@ class HomeScreen extends StatelessWidget {
                                 style: GoogleFonts.nunito(
                                     color: Colors.white70,
                                     fontSize: 18,
-                                    fontWeight: FontWeight.w700),
+                                    fontWeight: FontWeight.w500),
                               ),
                               Text("Generate and edit text",
                                   style: GoogleFonts.nunito(
