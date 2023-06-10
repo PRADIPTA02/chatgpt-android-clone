@@ -16,13 +16,17 @@ class AccountInfo extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: bgColor,
         elevation: 0,
+        leading: IconButton(
+            splashColor: Colors.transparent,
+            onPressed: () => Navigator.of(context).pop(),
+            icon: const Icon(Icons.arrow_back)),
         actions: [
           IconButton(
-            onPressed: () =>{
+            onPressed: () => {
               Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ProfileEditScreen()))
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ProfileEditScreen()))
             },
             icon: const Icon(
               Icons.edit_note,

@@ -7,8 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-
-import '../auth/common/authSubmtButton.dart';
+import 'package:intl/intl.dart';
 import 'coustom_image_picker_button.dart';
 
 class ProfileEditScreen extends StatefulWidget {
@@ -26,6 +25,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   late TextEditingController _phoneNumberController;
   late TextEditingController _emailController;
   late TextEditingController _ageController;
+  late TextEditingController _dateTimeController;
   late DateTime _selectedDate;
   late String _selectedCountry = '';
   late String _selectedGender = '';
@@ -254,7 +254,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     _phoneNumberController = TextEditingController();
     _emailController = TextEditingController();
     _ageController = TextEditingController();
-    _selectedDate = DateTime.now();
+    _dateTimeController = TextEditingController();
     _selectedCountry = 'Select Country';
     _selectedGender = 'Gender';
   }
@@ -272,13 +272,13 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: _selectedDate,
+      initialDate: DateTime.now(),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
-    if (picked != null && picked != _selectedDate) {
+    if (picked != null) {
       setState(() {
-        _selectedDate = picked;
+        _dateTimeController.text = DateFormat('dd-mm-yyyy').format(picked);
       });
     }
   }
@@ -319,7 +319,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                         ),
                         ImagePickerButton(
                           title: "Chose from Gallery",
-                          ontap: ()=> {
+                          ontap: () => {
                             _pickImage(ImageSource.gallery),
                             Navigator.of(context).pop(),
                           },
@@ -428,13 +428,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           vertical: 15, horizontal: 12),
                       filled: true,
                       fillColor: secondaryColor,
-                      hintText: 'First Name',
-                      hintStyle: GoogleFonts.nunito(
-                        color: Colors.white30,
+                      labelText: 'First Name',
+                      labelStyle: GoogleFonts.nunito(
+                        color: Colors.white70,
                         fontWeight: FontWeight.w500,
                       ),
-                      errorStyle:
-                          GoogleFonts.nunito(fontWeight: FontWeight.bold),
+                      errorStyle: TextStyle(height: 0),
                       enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(width: 2, color: cglasscolor),
                       ),
@@ -450,7 +449,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                     ),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Please enter your first name';
+                        return '';
                       }
                       return null;
                     },
@@ -467,13 +466,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           vertical: 15, horizontal: 12),
                       filled: true,
                       fillColor: secondaryColor,
-                      hintText: 'Last Name',
-                      hintStyle: GoogleFonts.nunito(
-                        color: Colors.white30,
+                      labelText: 'Last Name',
+                      labelStyle: GoogleFonts.nunito(
+                        color: Colors.white70,
                         fontWeight: FontWeight.w500,
                       ),
-                      errorStyle:
-                          GoogleFonts.nunito(fontWeight: FontWeight.bold),
+                      errorStyle: const TextStyle(height: 0),
                       enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(width: 2, color: cglasscolor),
                       ),
@@ -489,7 +487,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                     ),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Please enter your last name';
+                        return '';
                       }
                       return null;
                     },
@@ -507,13 +505,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           vertical: 15, horizontal: 12),
                       filled: true,
                       fillColor: secondaryColor,
-                      hintText: 'Email ID',
-                      hintStyle: GoogleFonts.nunito(
-                        color: Colors.white30,
+                      labelText: "Email ID",
+                      labelStyle: GoogleFonts.nunito(
+                        color: Colors.white70,
                         fontWeight: FontWeight.w500,
                       ),
-                      errorStyle:
-                          GoogleFonts.nunito(fontWeight: FontWeight.bold),
+                      errorStyle: const TextStyle(height: 0),
                       enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(width: 2, color: cglasscolor),
                       ),
@@ -529,10 +526,10 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                     ),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Please enter your email address';
+                        return '';
                       }
                       if (!_isValidEmail(value)) {
-                        return 'Please enter a valid email address';
+                        return '';
                       }
                       return null;
                     },
@@ -550,13 +547,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           vertical: 15, horizontal: 12),
                       filled: true,
                       fillColor: secondaryColor,
-                      hintText: 'Phone number',
-                      hintStyle: GoogleFonts.nunito(
-                        color: Colors.white30,
+                      labelText: "Phone number",
+                      labelStyle: GoogleFonts.nunito(
+                        color: Colors.white70,
                         fontWeight: FontWeight.w500,
                       ),
-                      errorStyle:
-                          GoogleFonts.nunito(fontWeight: FontWeight.bold),
+                      errorStyle: const TextStyle(height: 0),
                       enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(width: 2, color: cglasscolor),
                       ),
@@ -572,10 +568,10 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                     ),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Please enter your phone number';
+                        return '';
                       }
                       if (!_isValidPhoneNumber(value)) {
-                        return 'Please enter a valid phone number';
+                        return '';
                       }
                       return null;
                     },
@@ -640,13 +636,13 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                             contentPadding: const EdgeInsets.symmetric(
                                 vertical: 15, horizontal: 12),
                             filled: true,
-                            fillColor: secondaryColor,
-                            hintStyle: GoogleFonts.nunito(
-                              color: Colors.white30,
+                            labelText: 'Gander',
+                            labelStyle: GoogleFonts.nunito(
+                              color: Colors.white70,
                               fontWeight: FontWeight.w500,
                             ),
-                            errorStyle:
-                                GoogleFonts.nunito(fontWeight: FontWeight.bold),
+                            fillColor: secondaryColor,
+                            errorStyle: const TextStyle(height: 0),
                             enabledBorder: const OutlineInputBorder(
                               borderSide:
                                   BorderSide(width: 2, color: cglasscolor),
@@ -666,7 +662,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           ),
                           validator: (value) {
                             if (value == null || value == 'Gender') {
-                              return 'Please select a gender';
+                              return '';
                             }
                             return null;
                           },
@@ -682,21 +678,22 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                 color: Colors.white70,
                                 fontWeight: FontWeight.w500,
                               ),
-                              controller: TextEditingController(
-                                text: _selectedDate.toString().split(' ')[0],
-                              ),
+                              controller: _dateTimeController,
                               decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.symmetric(
                                     vertical: 15, horizontal: 12),
                                 filled: true,
                                 fillColor: secondaryColor,
-                                hintText: 'YY-MM-DD',
+                                labelText: 'Date of Birth',
+                                labelStyle: GoogleFonts.nunito(
+                                  color: Colors.white70,
+                                  fontWeight: FontWeight.w500,
+                                ),
                                 hintStyle: GoogleFonts.nunito(
                                   color: Colors.white30,
                                   fontWeight: FontWeight.w500,
                                 ),
-                                errorStyle: GoogleFonts.nunito(
-                                    fontWeight: FontWeight.bold),
+                                errorStyle: const TextStyle(height: 0),
                                 enabledBorder: const OutlineInputBorder(
                                   borderSide:
                                       BorderSide(width: 2, color: cglasscolor),
@@ -715,8 +712,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                 ),
                               ),
                               validator: (value) {
-                                if (value == null) {
-                                  return 'Please Enter Your Age';
+                                if (value == "") {
+                                  return '';
                                 }
                                 return null;
                               },
@@ -742,13 +739,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                 vertical: 15, horizontal: 12),
                             filled: true,
                             fillColor: secondaryColor,
-                            hintText: 'Age',
-                            hintStyle: GoogleFonts.nunito(
-                              color: Colors.white30,
+                            labelText: 'Age',
+                            labelStyle: GoogleFonts.nunito(
+                              color: Colors.white70,
                               fontWeight: FontWeight.w500,
                             ),
-                            errorStyle:
-                                GoogleFonts.nunito(fontWeight: FontWeight.bold),
+                            errorStyle: const TextStyle(height: 0),
                             enabledBorder: const OutlineInputBorder(
                               borderSide:
                                   BorderSide(width: 2, color: cglasscolor),
@@ -768,11 +764,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           ),
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Please enter your age';
+                              return '';
                             }
                             int? age = int.tryParse(value);
                             if (age == null || age <= 0) {
-                              return 'Please enter a valid age';
+                              return '';
                             }
                             return null;
                           },
@@ -807,12 +803,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                 vertical: 15, horizontal: 12),
                             filled: true,
                             fillColor: secondaryColor,
-                            hintStyle: GoogleFonts.nunito(
-                              color: Colors.white30,
+                            labelText: 'Country',
+                            labelStyle: GoogleFonts.nunito(
+                              color: Colors.white70,
                               fontWeight: FontWeight.w500,
                             ),
-                            errorStyle:
-                                GoogleFonts.nunito(fontWeight: FontWeight.bold),
+                            errorStyle: const TextStyle(height: 0),
                             enabledBorder: const OutlineInputBorder(
                               borderSide:
                                   BorderSide(width: 2, color: cglasscolor),
@@ -832,7 +828,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           ),
                           validator: (value) {
                             if (value == null || value == 'Select Country') {
-                              return 'Please select a country';
+                              return '';
                             }
                             return null;
                           },
