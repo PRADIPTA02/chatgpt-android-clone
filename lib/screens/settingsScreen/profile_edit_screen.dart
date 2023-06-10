@@ -278,7 +278,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     );
     if (picked != null) {
       setState(() {
-        _dateTimeController.text = DateFormat('dd-mm-yyyy').format(picked);
+        print(picked);
+        _dateTimeController.text = DateFormat.yMMMd().format(picked);
       });
     }
   }
