@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:chatgpt/providers/auth_provider.dart';
 import 'package:chatgpt/providers/text_copletion_provider.dart';
 import 'package:chatgpt/screens/accountInfo/account_info.dart';
 import 'package:chatgpt/screens/chatScreen/chatScreen.dart';
@@ -23,7 +26,8 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final textCompletionProvider =
         Provider.of<TextCompletProvider>(context, listen: false);
-    return Scaffold(
+    return Consumer2<TextCompletProvider,AuthProvider>(
+            builder: (context, value1,value2, child) => Scaffold(
       appBar: AppBar(
         backgroundColor: bgColor,
         elevation: 0,
@@ -31,8 +35,8 @@ class HomeScreen extends StatelessWidget {
           "OpenAI",
           style: GoogleFonts.nunito(
             fontSize: 25,
-             fontWeight: FontWeight.bold,
-            ),
+            fontWeight: FontWeight.bold,
+          ),
         ),
         actions: [
           Theme(
@@ -71,9 +75,14 @@ class HomeScreen extends StatelessWidget {
                 shape: BeveledRectangleBorder(
                     borderRadius: BorderRadius.circular(3)),
                 color: secondaryColor,
-                icon: const CircleAvatar(
+                icon:value2.User_image==""? const CircleAvatar(
+                  backgroundColor: secondaryColor,
                   backgroundImage:
-                      AssetImage('assets/images/default_avatar.png'),
+                      AssetImage('assets/images/defaultAccountIcon.png'),
+                ):CircleAvatar(
+                  backgroundColor: secondaryColor,
+                  backgroundImage:
+                      FileImage(File(value2.User_image)),
                 ),
                 itemBuilder: (context) => [
                       ...MenuItems.itemsFirst.map(buildItem).toList(),
@@ -88,9 +97,8 @@ class HomeScreen extends StatelessWidget {
       ),
       backgroundColor: bgColor,
       body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: Consumer<TextCompletProvider>(
-            builder: (context, value, child) => Column(
+        padding: const EdgeInsets.only(left: 15,right:15,top:15),
+        child: Column(
                   children: [
                     Text(
                       "Explore the World of AI",
@@ -137,47 +145,6 @@ class HomeScreen extends StatelessWidget {
                                     fontWeight: FontWeight.w500),
                               ),
                               Text("Generate and edit images",
-                                  style: GoogleFonts.nunito( 
-                                      color: Colors.grey,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w300))
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    InkWell(
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ChatScreen()),
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            height: 50,
-                            width: 50,
-                            decoration: BoxDecoration(
-                                color: const Color.fromRGBO(51, 196, 145, 1),
-                                borderRadius: BorderRadius.circular(5)),
-                            child: const Icon(
-                              Icons.edit,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Text completion",
-                                style: GoogleFonts.nunito(
-                                    color: Colors.white70,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              Text("Generate and edit text",
                                   style: GoogleFonts.nunito(
                                       color: Colors.grey,
                                       fontSize: 16,
@@ -187,9 +154,52 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
                     ),
+                    const SizedBox(height: 20),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.01,
+                      child: InkWell(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ChatScreen()),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  color: const Color.fromRGBO(51, 196, 145, 1),
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: const Icon(
+                                Icons.edit,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Text completion",
+                                  style: GoogleFonts.nunito(
+                                      color: Colors.white70,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Text("Generate and edit text",
+                                    style: GoogleFonts.nunito(
+                                        color: Colors.grey,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w300))
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
                     ),
+                    // SizedBox(
+                    //   height: MediaQuery.of(context).size.height * 0.01,
+                    // ),
                     textCompletionProvider.allMessages.isEmpty
                         ? const SizedBox()
                         : Text(
@@ -202,8 +212,7 @@ class HomeScreen extends StatelessWidget {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.01,
                     ),
-                    const Flexible(
-                         child: ConversationList()),
+                    const Flexible(child: ConversationList()),
                   ],
                 )),
       ),

@@ -1,3 +1,4 @@
+import 'package:chatgpt/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,8 @@ class ImageOptionDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return Consumer2<ImageGenerationProvider,AuthProvider>(
+        builder: (context, imageGenerationProvider,authProvider, _)=>AlertDialog(
       backgroundColor: secondaryColor,
       shadowColor: Colors.transparent,
       insetPadding: const EdgeInsets.all(20),
@@ -20,9 +22,7 @@ class ImageOptionDialog extends StatelessWidget {
         style: GoogleFonts.nunito(
             color: Colors.white, fontWeight: FontWeight.bold),
       ),
-      content: Consumer<ImageGenerationProvider>(
-        builder: (context, imageGenerationProvider, _) {
-          return Column(
+      content: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -80,8 +80,6 @@ class ImageOptionDialog extends StatelessWidget {
                 },
               ),
             ],
-          );
-        },
       ),
       actions: [
         TextButton(
@@ -96,9 +94,12 @@ class ImageOptionDialog extends StatelessWidget {
           ),
         ),
         TextButton(
-          onPressed: () {
-            // Add your logic here when the user clicks the "OK" button.
+          onPressed: () async{
             Navigator.of(context).pop();
+            await authProvider.imageSizeUpdate(
+              image_size:imageGenerationProvider.SizeOfImages,
+              num: imageGenerationProvider.numberOfImages,
+            );
           },
           child: Text(
             'OK',
@@ -107,6 +108,6 @@ class ImageOptionDialog extends StatelessWidget {
           ),
         ),
       ],
-    );
+    ));
   }
 }

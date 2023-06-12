@@ -14,6 +14,7 @@ import 'models/message_model.dart';
 import 'models/message_session_list_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'models/user_data_model.dart';
 
 class PostHttpOverrides extends HttpOverrides {
   @override
@@ -34,9 +35,11 @@ void main() async {
   await connectivityService.startMonitoring();
   Directory document = await getApplicationDocumentsDirectory();
   Hive.init(document.path);
+  Hive.registerAdapter(UserDataAdapter());
   Hive.registerAdapter(MessageAdapter());
   Hive.registerAdapter(MessageSessionListAdapter());
   Hive.registerAdapter(ConversationAdapter());
+  await Hive.openBox<UserData>('userData');
   await Hive.openBox<MessageSessionList>('sessionList');
   await Hive.openBox<Conversation>('messageList');
   runApp(MyApp(connectivityService: connectivityService));
@@ -54,9 +57,9 @@ class MyApp extends StatelessWidget {
     ));
     return MultiProvider(
         providers: [
+          ChangeNotifierProvider(create: (_) => AuthProvider()),
           ChangeNotifierProvider(create: (_) => TextCompletProvider()),
           ChangeNotifierProvider(create: (_) => ImageGenerationProvider()),
-          ChangeNotifierProvider(create: (_) => AuthProvider()),
           ChangeNotifierProvider.value(value: connectivityService),
         ],
         child: MaterialApp(

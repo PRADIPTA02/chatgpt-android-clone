@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../util/constants/constants.dart';
-
 class InfoWidget extends StatelessWidget {
   const InfoWidget({super.key,required this.data});
   final String data;

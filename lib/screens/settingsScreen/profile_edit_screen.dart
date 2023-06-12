@@ -1,23 +1,29 @@
 // ignore_for_file: non_constant_identifier_names, avoid_types_as_parameter_names
 
 import 'dart:io';
-
+import 'package:chatgpt/providers/auth_provider.dart';
 import 'package:chatgpt/util/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import '../../CommonWidgets/custom_snakebar.dart';
+import '../../models/user_data_model.dart';
+import '../homeScreen/home_screen.dart';
 import 'coustom_image_picker_button.dart';
 
 class ProfileEditScreen extends StatefulWidget {
-  const ProfileEditScreen({super.key});
+  final List<UserData> user_data;
+  const ProfileEditScreen({super.key, required this.user_data});
   @override
   State<ProfileEditScreen> createState() => _ProfileEditScreenState();
 }
 
 class _ProfileEditScreenState extends State<ProfileEditScreen> {
   File? _image;
+  late DateTime picked_time;
 
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _firstNameController;
@@ -239,9 +245,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       File? img = File(image.path);
       setState(() {
         _image = img;
+        print('${_image}');
       });
     } on PlatformException catch (e) {
-      print(e);
+      CustomSnackeBar.show(
+          context: context, message: e.toString(), status: Status.error);
       Navigator.of(context).pop;
     }
   }
@@ -255,8 +263,28 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     _emailController = TextEditingController();
     _ageController = TextEditingController();
     _dateTimeController = TextEditingController();
-    _selectedCountry = 'Select Country';
-    _selectedGender = 'Gender';
+    if (widget.user_data.isNotEmpty) {
+      final user = widget.user_data[0];
+      _firstNameController.text = user.Firstname;
+      _lastNameController.text = user.Lastname;
+      _phoneNumberController.text = user.Phone_number.toString();
+      _emailController.text = user.Email_id;
+      _ageController.text = user.Age.toString();
+      picked_time = user.Birthday;
+      _dateTimeController.text = DateFormat.yMMMd().format(user.Birthday);
+      _selectedDate = user.Birthday;
+      _image = user.Profile_image != "" ? File(user.Profile_image) : null;
+    }
+    _selectedCountry = widget.user_data.isNotEmpty
+        ? widget.user_data[0].Country != ""
+            ? widget.user_data[0].Country
+            : 'Select Country'
+        : 'Select Country';
+    _selectedGender = widget.user_data.isNotEmpty
+        ? widget.user_data[0].Gender != ""
+            ? widget.user_data[0].Gender
+            : 'Gender'
+        : 'Gender';
   }
 
   @override
@@ -279,6 +307,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     if (picked != null) {
       setState(() {
         _dateTimeController.text = DateFormat.yMMMd().format(picked);
+        picked_time = picked;
       });
     }
   }
@@ -344,551 +373,599 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
             }));
   }
 
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      // Form fields are valid, do something with the data
-      // Example: Save to a database
-      // _firstNameController.text
-      // _lastNameController.text
-      // _phoneNumberController.text
-      // _emailController.text
-      // _ageController.text
-      // _selectedDate
-      // _selectedCountry
-      // _isMale
-      // _isFemale
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Form submitted')),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: bgColor,
-        title: Text(
-          "Edit Profile",
-          style: GoogleFonts.nunito(fontWeight: FontWeight.bold),
-          textAlign: TextAlign.center,
+    return Consumer<AuthProvider>(
+      builder: (context, authProvider, child) => Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: bgColor,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () async {
+              await authProvider.uerFormFillUpUpdate();
+              if (!mounted) return;
+              if (authProvider.User_form_filled) {
+                Navigator.of(context).pop();
+              } else {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('Alert'),
+                        content: const Text('Please fill up the form'),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Ok'))
+                        ],
+                      );
+                    });
+              }
+            },
+          ),
+          title: Text(
+            "Edit Profile",
+            style: GoogleFonts.nunito(fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
         ),
-      ),
-      backgroundColor: bgColor,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(
-                  decelerationRate: ScrollDecelerationRate.normal),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Stack(
-                    alignment: Alignment.bottomRight,
-                    children: [
-                      _image == null
-                          ? const CircleAvatar(
-                              radius: 50.0,
-                              backgroundColor: secondaryColor,
-                              backgroundImage: AssetImage(
-                                  'assets/images/defaultAccountIcon.png'),
-                            )
-                          : CircleAvatar(
-                              radius: 50.0,
-                              backgroundColor: secondaryColor,
-                              backgroundImage: FileImage(_image!),
-                            ),
-                      IconButton(
-                          onPressed: () {
-                            _showImageSelectionBottomSheet(context);
-                          },
-                          icon: const Icon(
-                            Icons.edit,
-                            color: cgSecondary,
-                          ))
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _firstNameController,
-                    cursorColor: cgSecondary,
-                    cursorRadius: const Radius.circular(5),
-                    keyboardType: TextInputType.emailAddress,
-                    style: GoogleFonts.nunito(
-                        color: Colors.white70,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500),
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 12),
-                      filled: true,
-                      fillColor: secondaryColor,
-                      labelText: 'First Name',
-                      labelStyle: GoogleFonts.nunito(
-                        color: Colors.white70,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      errorStyle: TextStyle(height: 0),
-                      enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(width: 2, color: cglasscolor),
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(width: 2, color: cgSecondary),
-                      ),
-                      errorBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(width: 2, color: errorColor),
-                      ),
-                      focusedErrorBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(width: 2, color: errorColor),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return '';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  TextFormField(
-                    controller: _lastNameController,
-                    style: GoogleFonts.nunito(
-                      color: Colors.white70,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 12),
-                      filled: true,
-                      fillColor: secondaryColor,
-                      labelText: 'Last Name',
-                      labelStyle: GoogleFonts.nunito(
-                        color: Colors.white70,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      errorStyle: const TextStyle(height: 0),
-                      enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(width: 2, color: cglasscolor),
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(width: 2, color: cgSecondary),
-                      ),
-                      errorBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(width: 2, color: errorColor),
-                      ),
-                      focusedErrorBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(width: 2, color: errorColor),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return '';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  TextFormField(
-                    style: GoogleFonts.nunito(
-                      color: Colors.white70,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 12),
-                      filled: true,
-                      fillColor: secondaryColor,
-                      labelText: "Email ID",
-                      labelStyle: GoogleFonts.nunito(
-                        color: Colors.white70,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      errorStyle: const TextStyle(height: 0),
-                      enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(width: 2, color: cglasscolor),
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(width: 2, color: cgSecondary),
-                      ),
-                      errorBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(width: 2, color: errorColor),
-                      ),
-                      focusedErrorBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(width: 2, color: errorColor),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return '';
-                      }
-                      if (!_isValidEmail(value)) {
-                        return '';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  TextFormField(
-                    controller: _phoneNumberController,
-                    style: GoogleFonts.nunito(
-                      color: Colors.white70,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 12),
-                      filled: true,
-                      fillColor: secondaryColor,
-                      labelText: "Phone number",
-                      labelStyle: GoogleFonts.nunito(
-                        color: Colors.white70,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      errorStyle: const TextStyle(height: 0),
-                      enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(width: 2, color: cglasscolor),
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(width: 2, color: cgSecondary),
-                      ),
-                      errorBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(width: 2, color: errorColor),
-                      ),
-                      focusedErrorBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(width: 2, color: errorColor),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return '';
-                      }
-                      if (!_isValidPhoneNumber(value)) {
-                        return '';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: DropdownButtonFormField<String>(
-                          dropdownColor: secondaryColor,
-                          alignment: Alignment.topRight,
-                          value: _selectedGender,
-                          onChanged: (String? value) {
-                            setState(() {
-                              _selectedGender = value!;
-                            });
-                          },
-                          items: [
-                            DropdownMenuItem(
-                              value: 'Gender',
-                              child: Text(
-                                'Gender',
-                                style: GoogleFonts.nunito(
-                                  color: Colors.white30,
-                                  fontWeight: FontWeight.w500,
-                                ),
+        backgroundColor: bgColor,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(
+                    decelerationRate: ScrollDecelerationRate.normal),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Stack(
+                      alignment: Alignment.bottomRight,
+                      children: [
+                        _image == null
+                            ? const CircleAvatar(
+                                radius: 50.0,
+                                backgroundColor: secondaryColor,
+                                backgroundImage: AssetImage(
+                                    'assets/images/defaultAccountIcon.png'),
+                              )
+                            : CircleAvatar(
+                                radius: 50.0,
+                                backgroundColor: secondaryColor,
+                                backgroundImage: FileImage(_image!),
                               ),
-                            ),
-                            DropdownMenuItem(
-                              value: 'Male',
-                              child: Text(
-                                'Male',
-                                style: GoogleFonts.nunito(
-                                  color: Colors.white70,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                            DropdownMenuItem(
-                              value: 'Female',
-                              child: Text(
-                                'Female',
-                                style: GoogleFonts.nunito(
-                                  color: Colors.white70,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                            DropdownMenuItem(
-                              value: 'Other',
-                              child: Text(
-                                'Other',
-                                style: GoogleFonts.nunito(
-                                  color: Colors.white70,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ],
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 15, horizontal: 12),
-                            filled: true,
-                            labelText: 'Gander',
-                            labelStyle: GoogleFonts.nunito(
-                              color: Colors.white70,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            fillColor: secondaryColor,
-                            errorStyle: const TextStyle(height: 0),
-                            enabledBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 2, color: cglasscolor),
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 2, color: cgSecondary),
-                            ),
-                            errorBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 2, color: errorColor),
-                            ),
-                            focusedErrorBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 2, color: errorColor),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value == 'Gender') {
-                              return '';
-                            }
-                            return null;
-                          },
+                        IconButton(
+                            onPressed: () {
+                              _showImageSelectionBottomSheet(context);
+                            },
+                            icon: const Icon(
+                              Icons.edit,
+                              color: cgSecondary,
+                            ))
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _firstNameController,
+                      cursorColor: cgSecondary,
+                      cursorRadius: const Radius.circular(5),
+                      keyboardType: TextInputType.emailAddress,
+                      style: GoogleFonts.nunito(
+                          color: Colors.white70,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500),
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 15, horizontal: 12),
+                        filled: true,
+                        fillColor: secondaryColor,
+                        labelText: 'First Name',
+                        labelStyle: GoogleFonts.nunito(
+                          color: Colors.white70,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        errorStyle: const TextStyle(height: 0),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: cglasscolor),
+                        ),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: cgSecondary),
+                        ),
+                        errorBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: errorColor),
+                        ),
+                        focusedErrorBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: errorColor),
                         ),
                       ),
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.02),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () => _selectDate(context),
-                          child: AbsorbPointer(
-                            child: TextFormField(
-                              style: GoogleFonts.nunito(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return '';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    TextFormField(
+                      controller: _lastNameController,
+                      style: GoogleFonts.nunito(
+                        color: Colors.white70,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 15, horizontal: 12),
+                        filled: true,
+                        fillColor: secondaryColor,
+                        labelText: 'Last Name',
+                        labelStyle: GoogleFonts.nunito(
+                          color: Colors.white70,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        errorStyle: const TextStyle(height: 0),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: cglasscolor),
+                        ),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: cgSecondary),
+                        ),
+                        errorBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: errorColor),
+                        ),
+                        focusedErrorBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: errorColor),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return '';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    TextFormField(
+                      style: GoogleFonts.nunito(
+                        color: Colors.white70,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      readOnly: authProvider.primary_address =="email"?true:false,
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 15, horizontal: 12),
+                        filled: true,
+                        fillColor: secondaryColor,
+                        labelText: "Email ID",
+                        labelStyle: GoogleFonts.nunito(
+                          color: Colors.white70,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        errorStyle: const TextStyle(height: 0),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: cglasscolor),
+                        ),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: cgSecondary),
+                        ),
+                        errorBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: errorColor),
+                        ),
+                        focusedErrorBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: errorColor),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return '';
+                        }
+                        if (!_isValidEmail(value)) {
+                          return '';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    TextFormField(
+                      controller: _phoneNumberController,
+                      style: GoogleFonts.nunito(
+                        color: Colors.white70,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      keyboardType: TextInputType.phone,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 15, horizontal: 12),
+                        filled: true,
+                        fillColor: secondaryColor,
+                        labelText: "Phone number",
+                        labelStyle: GoogleFonts.nunito(
+                          color: Colors.white70,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        errorStyle: const TextStyle(height: 0),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: cglasscolor),
+                        ),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: cgSecondary),
+                        ),
+                        errorBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: errorColor),
+                        ),
+                        focusedErrorBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: errorColor),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return '';
+                        }
+                        if (!_isValidPhoneNumber(value)) {
+                          return '';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: DropdownButtonFormField<String>(
+                            dropdownColor: secondaryColor,
+                            alignment: Alignment.topRight,
+                            value: _selectedGender,
+                            onChanged: (String? value) {
+                              setState(() {
+                                _selectedGender = value!;
+                               authProvider.changeUserGender(value);
+                              });
+                            },
+                            items: [
+                              DropdownMenuItem(
+                                value: 'Gender',
+                                child: Text(
+                                  'Gender',
+                                  style: GoogleFonts.nunito(
+                                    color: Colors.white30,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: 'Male',
+                                child: Text(
+                                  'Male',
+                                  style: GoogleFonts.nunito(
+                                    color: Colors.white70,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: 'Female',
+                                child: Text(
+                                  'Female',
+                                  style: GoogleFonts.nunito(
+                                    color: Colors.white70,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              DropdownMenuItem(
+                                value: 'Other',
+                                child: Text(
+                                  'Other',
+                                  style: GoogleFonts.nunito(
+                                    color: Colors.white70,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 12),
+                              filled: true,
+                              labelText: 'Gander',
+                              labelStyle: GoogleFonts.nunito(
                                 color: Colors.white70,
                                 fontWeight: FontWeight.w500,
                               ),
-                              controller: _dateTimeController,
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 15, horizontal: 12),
-                                filled: true,
-                                fillColor: secondaryColor,
-                                labelText: 'Date of Birth',
-                                labelStyle: GoogleFonts.nunito(
-                                  color: Colors.white70,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                hintStyle: GoogleFonts.nunito(
-                                  color: Colors.white30,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                errorStyle: const TextStyle(height: 0),
-                                enabledBorder: const OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(width: 2, color: cglasscolor),
-                                ),
-                                focusedBorder: const OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(width: 2, color: cgSecondary),
-                                ),
-                                errorBorder: const OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(width: 2, color: errorColor),
-                                ),
-                                focusedErrorBorder: const OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(width: 2, color: errorColor),
-                                ),
+                              fillColor: secondaryColor,
+                              errorStyle: const TextStyle(height: 0),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 2, color: cglasscolor),
                               ),
-                              validator: (value) {
-                                if (value == "") {
-                                  return '';
-                                }
-                                return null;
-                              },
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 2, color: cgSecondary),
+                              ),
+                              errorBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 2, color: errorColor),
+                              ),
+                              focusedErrorBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 2, color: errorColor),
+                              ),
                             ),
+                            validator: (value) {
+                              if (value == null || value == 'Gender') {
+                                return '';
+                              }
+                              return null;
+                            },
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: _ageController,
-                          style: GoogleFonts.nunito(
-                            color: Colors.white70,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 15, horizontal: 12),
-                            filled: true,
-                            fillColor: secondaryColor,
-                            labelText: 'Age',
-                            labelStyle: GoogleFonts.nunito(
-                              color: Colors.white70,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            errorStyle: const TextStyle(height: 0),
-                            enabledBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 2, color: cglasscolor),
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 2, color: cgSecondary),
-                            ),
-                            errorBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 2, color: errorColor),
-                            ),
-                            focusedErrorBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 2, color: errorColor),
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return '';
-                            }
-                            int? age = int.tryParse(value);
-                            if (age == null || age <= 0) {
-                              return '';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.03),
-                      Expanded(
-                        flex: 2,
-                        child: DropdownButtonFormField<String>(
-                          value: _selectedCountry,
-                          dropdownColor: secondaryColor,
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              _selectedCountry = newValue!;
-                            });
-                          },
-                          items: countries
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.02),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () => _selectDate(context),
+                            child: AbsorbPointer(
+                              child: TextFormField(
                                 style: GoogleFonts.nunito(
                                   color: Colors.white70,
                                   fontWeight: FontWeight.w500,
                                 ),
+                                controller: _dateTimeController,
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 15, horizontal: 12),
+                                  filled: true,
+                                  fillColor: secondaryColor,
+                                  labelText: 'Date of Birth',
+                                  labelStyle: GoogleFonts.nunito(
+                                    color: Colors.white70,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  hintStyle: GoogleFonts.nunito(
+                                    color: Colors.white30,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  errorStyle: const TextStyle(height: 0),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 2, color: cglasscolor),
+                                  ),
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 2, color: cgSecondary),
+                                  ),
+                                  errorBorder: const OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(width: 2, color: errorColor),
+                                  ),
+                                  focusedErrorBorder: const OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(width: 2, color: errorColor),
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value == "") {
+                                    return '';
+                                  }
+                                  return null;
+                                },
                               ),
-                            );
-                          }).toList(),
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 15, horizontal: 12),
-                            filled: true,
-                            fillColor: secondaryColor,
-                            labelText: 'Country',
-                            labelStyle: GoogleFonts.nunito(
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: _ageController,
+                            style: GoogleFonts.nunito(
                               color: Colors.white70,
                               fontWeight: FontWeight.w500,
                             ),
-                            errorStyle: const TextStyle(height: 0),
-                            enabledBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 2, color: cglasscolor),
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 12),
+                              filled: true,
+                              fillColor: secondaryColor,
+                              labelText: 'Age',
+                              labelStyle: GoogleFonts.nunito(
+                                color: Colors.white70,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              errorStyle: const TextStyle(height: 0),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 2, color: cglasscolor),
+                              ),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 2, color: cgSecondary),
+                              ),
+                              errorBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 2, color: errorColor),
+                              ),
+                              focusedErrorBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 2, color: errorColor),
+                              ),
                             ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 2, color: cgSecondary),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return '';
+                              }
+                              int? age = int.tryParse(value);
+                              if (age == null || age <= 0) {
+                                return '';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.03),
+                        Expanded(
+                          flex: 2,
+                          child: DropdownButtonFormField<String>(
+                            value: _selectedCountry,
+                            dropdownColor: secondaryColor,
+                            menuMaxHeight: 300,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _selectedCountry = newValue!;
+                              });
+                            },
+                            items: countries
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: GoogleFonts.nunito(
+                                    color: Colors.white70,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 12),
+                              filled: true,
+                              fillColor: secondaryColor,
+                              labelText: 'Country',
+                              labelStyle: GoogleFonts.nunito(
+                                color: Colors.white70,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              errorStyle: const TextStyle(height: 0),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 2, color: cglasscolor),
+                              ),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 2, color: cgSecondary),
+                              ),
+                              errorBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 2, color: errorColor),
+                              ),
+                              focusedErrorBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 2, color: errorColor),
+                              ),
                             ),
-                            errorBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 2, color: errorColor),
-                            ),
-                            focusedErrorBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(width: 2, color: errorColor),
+                            validator: (value) {
+                              if (value == null || value == 'Select Country') {
+                                return '';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    Consumer<AuthProvider>(
+                      builder: (context, value, child) => Column(
+                        children: [
+                          InkWell(
+                            onTap: null,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.95,
+                              height: MediaQuery.of(context).size.height * 0.06,
+                              decoration: BoxDecoration(
+                                  color: secondaryColor,
+                                  borderRadius: BorderRadius.circular(5),
+                                  border:
+                                      Border.all(color: cgSecondary, width: 2)),
+                              child: Center(
+                                  child: Text('Cancel',
+                                      style: GoogleFonts.nunito(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w700,
+                                          color: cgSecondary))),
                             ),
                           ),
-                          validator: (value) {
-                            if (value == null || value == 'Select Country') {
-                              return '';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                  Column(
-                    children: [
-                      InkWell(
-                        onTap: null,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * 0.95,
-                          height: MediaQuery.of(context).size.height * 0.06,
-                          decoration: BoxDecoration(
-                              color: secondaryColor,
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: cgSecondary, width: 2)),
-                          child: Center(
-                              child: Text('Cancel',
-                                  style: GoogleFonts.nunito(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w700,
-                                      color: cgSecondary))),
-                        ),
-                      ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02),
-                      InkWell(
-                        onTap: () => {
-                          if (_formKey.currentState!.validate()) {_submitForm()}
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * 0.95,
-                          height: MediaQuery.of(context).size.height * 0.06,
-                          decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                begin: Alignment.topLeft,
+                          SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.02),
+                          InkWell(
+                            onTap: () async {
+                              if (_formKey.currentState!.validate()) {
+                                await value.profileEditForm(
+                                  firstname: _firstNameController.text,
+                                  lastname: _lastNameController.text,
+                                  email_id: _emailController.text,
+                                  gender: _selectedGender,
+                                  dob: picked_time,
+                                  age: _ageController.text,
+                                  country: _selectedCountry,
+                                  img_path: _image?.path,
+                                  phone_number: _phoneNumberController.text,
+                                  context: context,
+                                );
+                                if (!mounted) return;
+                                if (!value.User_form_filled) {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          const HomeScreen()));
+                                }
+                                CustomSnackeBar.show(
+                                    context: context,
+                                    message: 'Profile Updated Successfully',
+                                    status: Status.success);
+                              }
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.95,
+                              height: MediaQuery.of(context).size.height * 0.06,
+                              decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topLeft,
 
-                                colors: <Color>[
-                                  Color(0xffd62507),
-                                  Color(0xffe55a32)
-                                ], // red to yellow
-                                tileMode: TileMode
-                                    .clamp, // repeats the gradient over the canvas
-                              ),
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: cglasscolor, width: 2)),
-                          child: Center(
-                              child: Text('Save',
-                                  style: GoogleFonts.nunito(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.white70))),
-                        ),
+                                    colors: <Color>[
+                                      Color(0xffd62507),
+                                      Color(0xffe55a32)
+                                    ], // red to yellow
+                                    tileMode: TileMode
+                                        .clamp, // repeats the gradient over the canvas
+                                  ),
+                                  borderRadius: BorderRadius.circular(5),
+                                  border:
+                                      Border.all(color: cglasscolor, width: 2)),
+                              child: Center(
+                                  child: value.isLoading
+                                      ? const SizedBox(
+                                          height: 35,
+                                          width: 35,
+                                          child: CircularProgressIndicator(
+                                            color: Colors.white,
+                                          ))
+                                      : Text("Submit",
+                                          style: GoogleFonts.nunito(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.white70))),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

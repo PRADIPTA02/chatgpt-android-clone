@@ -2,7 +2,6 @@ import 'package:chatgpt/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-
 import '../../util/constants/constants.dart';
 import 'back_button.dart';
 
@@ -49,6 +48,7 @@ class AiModelSetting extends StatelessWidget {
                     value: value.Chat_model,
                     onChanged: (String? newValue) {
                       value.changeChatModel(newValue!);
+                      value.aiModelUpdatesingle(ai_model: newValue);
                     },
                     items: [
                       'text-davinci-003',

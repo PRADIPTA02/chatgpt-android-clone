@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chatgpt/providers/auth_provider.dart';
 import 'package:chatgpt/screens/accountInfo/account_info.dart';
 import 'package:chatgpt/screens/settingsScreen/language_setting.dart';
@@ -56,10 +58,17 @@ class SettingsScreen extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          const CircleAvatar(
+                          value.User_image==""?  const CircleAvatar(
                             radius: 30,
+                            backgroundColor: secondaryColor,
                             backgroundImage:
-                                AssetImage('assets/images/default_avatar.png'),
+                                AssetImage('assets/images/defaultAccountIcon.png'),
+                          ):
+                           CircleAvatar(
+                            radius: 30,
+                            backgroundColor: secondaryColor,
+                            backgroundImage:
+                                FileImage(File(value.User_image)),
                           ),
                           SizedBox(
                             width: MediaQuery.of(context).size.width * 0.03,
@@ -68,7 +77,7 @@ class SettingsScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Pradipta Karmakar",
+                                value.user_name,
                                 style: GoogleFonts.nunito(
                                     color: const Color.fromARGB(255, 212, 211, 211),
                                     fontSize: 18,

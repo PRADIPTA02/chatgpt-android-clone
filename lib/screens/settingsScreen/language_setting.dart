@@ -49,6 +49,7 @@ class LanguageSetting extends StatelessWidget {
                     value: value.App_language,
                     onChanged: (String? newValue) {
                       value.changeLanguage(newValue!);
+                      value.userLanguageUpdate(user_language: newValue);
                     },
                     items: [
                       'English',

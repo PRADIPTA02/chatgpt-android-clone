@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
+import 'package:chatgpt/CommonWidgets/custom_snakebar.dart';
 import 'package:chatgpt/providers/auth_provider.dart';
 import 'package:chatgpt/util/constants/constants.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,6 @@ import 'package:provider/provider.dart';
 
 class AdvanceSettings extends StatefulWidget {
   const AdvanceSettings({super.key});
-  // Bool _isExpanded = false;
 
   @override
   State<AdvanceSettings> createState() => _AdvanceSettingsState();
@@ -203,7 +203,7 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                           ? cgSecondary.withOpacity(0.2)
                           : const Color.fromARGB(255, 99, 95, 95),
                       max: 2,
-                      divisions: 100,
+                      divisions: 200,
                       onChanged: (value) {
                         authProvider.changeFrequency_penalty(value);
                       },
@@ -235,8 +235,8 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                       inactiveColor: authProvider.IsAdvanceModeOn
                           ? cgSecondary.withOpacity(0.2)
                           : const Color.fromARGB(255, 99, 95, 95),
-                      max: 1,
-                      divisions: 100,
+                      max: 2,
+                      divisions: 200,
                       onChanged: (value) {
                         authProvider.changePresence_penalty(value);
                       },
@@ -269,7 +269,7 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                           ? cgSecondary.withOpacity(0.2)
                           : const Color.fromARGB(255, 99, 95, 95),
                       max: 20,
-                      divisions: 10,
+                      divisions: 20,
                       onChanged: (value) {
                         authProvider.changeBest_of(value);
                       },
@@ -285,10 +285,11 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                                   MaterialStateProperty.resolveWith<Color>(
                             (states) => authProvider.IsAdvanceModeOn? cgSecondary:cgSecondary.withOpacity(0.2)
                           )),
-                          onPressed: (){
-                            authProvider.advanceSettingsValus();
+                          onPressed: ()async{
+                            await authProvider.advanceSettingsValus();
+                            if(!mounted) return;
                           },
-                          child: Text(
+                          child:  authProvider.isLoading?const CircularProgressIndicator(color: Colors.white,): Text(
                             'Save',
                             style: GoogleFonts.nunito(
                                 color: Colors.white70,
