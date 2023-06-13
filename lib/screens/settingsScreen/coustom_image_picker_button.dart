@@ -27,17 +27,21 @@ class ImagePickerButton extends StatelessWidget {
               border: Border.all(color: cglasscolor, width: 2)),
           child: Center(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(icon,color:cgSecondary,),
-                  const SizedBox(width:10),
-                  Text(title,
-                      style: GoogleFonts.nunito(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white70)),
-                ],
-              )),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                color: cgSecondary,
+                size: 20,
+              ),
+              const SizedBox(width: 10),
+              Text(title,
+                  style: GoogleFonts.nunito(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white70)),
+            ],
+          )),
         ),
       ),
     );

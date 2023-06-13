@@ -62,7 +62,7 @@ class SessionEditDialog extends StatelessWidget {
                         _controller.text.toString()),
                     Navigator.of(context).pop()
                   },
-              child:  Text(
+              child: Text(
                 "Save",
                 style: GoogleFonts.nunito(
                     color: Colors.white70,

@@ -320,8 +320,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(25.0))),
         builder: (BuildContext context) => DraggableScrollableSheet(
-            initialChildSize: 0.25,
-            maxChildSize: 0.4,
+            initialChildSize: 0.35,
+            maxChildSize: 0.5,
             minChildSize: 0.25,
             expand: false,
             builder: (context, ScrollController) {
@@ -365,6 +365,196 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           },
                           icon: Icons.camera,
                         ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
+                        ),
+                        ImagePickerButton(
+                          title: "Remove Photo",
+                          ontap: () => {
+                            setState(() {
+                              _image = null;
+                            }),
+                            Navigator.of(context).pop(),
+                          },
+                          icon: Icons.delete,
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                InkWell(
+                                  splashColor: Colors.transparent,
+                                  onTap: () {
+                                    setState(() {
+                                      _image =
+                                          File("assets/images/avater_1.png");
+                                      Navigator.of(context).pop();
+                                    });
+                                  },
+                                  child: const CircleAvatar(
+                                    radius: 30,
+                                    backgroundColor: Colors.transparent,
+                                    backgroundImage: AssetImage(
+                                        "assets/images/avater_1.png"),
+                                  ),
+                                ),
+                                InkWell(
+                                  splashColor: Colors.transparent,
+                                  onTap: () {
+                                    setState(() {
+                                      _image =
+                                          File("assets/images/avater_2.png");
+                                      Navigator.of(context).pop();
+                                    });
+                                  },
+                                  child: const CircleAvatar(
+                                    radius: 30,
+                                    backgroundColor: Colors.transparent,
+                                    backgroundImage: AssetImage(
+                                        "assets/images/avater_2.png"),
+                                  ),
+                                ),
+                                InkWell(
+                                  splashColor: Colors.transparent,
+                                  onTap: () {
+                                    setState(() {
+                                      _image =
+                                          File("assets/images/avater_3.png");
+                                      Navigator.of(context).pop();
+                                    });
+                                  },
+                                  child: const CircleAvatar(
+                                    radius: 30,
+                                    backgroundColor: Colors.transparent,
+                                    backgroundImage: AssetImage(
+                                        "assets/images/avater_3.png"),
+                                  ),
+                                ),
+                                InkWell(
+                                  splashColor: Colors.transparent,
+                                  onTap: () {
+                                    setState(() {
+                                      _image =
+                                          File("assets/images/avater_4.png");
+                                      Navigator.of(context).pop();
+                                    });
+                                  },
+                                  child: const CircleAvatar(
+                                    radius: 30,
+                                    backgroundColor: Colors.transparent,
+                                    backgroundImage: AssetImage(
+                                        "assets/images/avater_4.png"),
+                                  ),
+                                ),
+                                InkWell(
+                                  splashColor: Colors.transparent,
+                                  onTap: () {
+                                    setState(() {
+                                      _image =
+                                          File("assets/images/avater_5.png");
+                                      Navigator.of(context).pop();
+                                    });
+                                  },
+                                  child: const CircleAvatar(
+                                    radius: 30,
+                                    backgroundColor: Colors.transparent,
+                                    backgroundImage: AssetImage(
+                                        "assets/images/avater_5.png"),
+                                  ),
+                                ),
+                              ]),
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.02,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              InkWell(
+                                splashColor: Colors.transparent,
+                                onTap: () {
+                                  setState(() {
+                                    _image = File("assets/images/avater_6.png");
+                                    Navigator.of(context).pop();
+                                  });
+                                },
+                                child: const CircleAvatar(
+                                  radius: 30,
+                                  backgroundColor: Colors.transparent,
+                                  backgroundImage:
+                                      AssetImage("assets/images/avater_6.png"),
+                                ),
+                              ),
+                              InkWell(
+                                splashColor: Colors.transparent,
+                                onTap: () {
+                                  setState(() {
+                                    _image = File("assets/images/avater_7.png");
+                                    Navigator.of(context).pop();
+                                  });
+                                },
+                                child: const CircleAvatar(
+                                  radius: 30,
+                                  backgroundColor: Colors.transparent,
+                                  backgroundImage:
+                                      AssetImage("assets/images/avater_7.png"),
+                                ),
+                              ),
+                              InkWell(
+                                splashColor: Colors.transparent,
+                                onTap: () {
+                                  setState(() {
+                                    _image = File("assets/images/avater_8.png");
+                                    Navigator.of(context).pop();
+                                  });
+                                },
+                                child: const CircleAvatar(
+                                  radius: 30,
+                                  backgroundColor: Colors.transparent,
+                                  backgroundImage:
+                                      AssetImage("assets/images/avater_8.png"),
+                                ),
+                              ),
+                              InkWell(
+                                splashColor: Colors.transparent,
+                                onTap: () {
+                                  setState(() {
+                                    _image = File("assets/images/avater_9.png");
+                                    Navigator.of(context).pop();
+                                  });
+                                },
+                                child: const CircleAvatar(
+                                  radius: 30,
+                                  backgroundColor: Colors.transparent,
+                                  backgroundImage:
+                                      AssetImage("assets/images/avater_9.png"),
+                                ),
+                              ),
+                              InkWell(
+                                splashColor: Colors.transparent,
+                                onTap: () {
+                                  setState(() {
+                                    _image =
+                                        File("assets/images/avater_10.png");
+                                    Navigator.of(context).pop();
+                                  });
+                                },
+                                child: const CircleAvatar(
+                                  radius: 30,
+                                  backgroundColor: Colors.transparent,
+                                  backgroundImage:
+                                      AssetImage("assets/images/avater_12.png"),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
                       ],
                     ),
                   ],
@@ -392,14 +582,34 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: const Text('Alert'),
-                        content: const Text('Please fill up the form'),
+                        backgroundColor: secondaryColor,
+                        shadowColor: Colors.transparent,
+                        insetPadding: const EdgeInsets.all(20),
+                        actionsAlignment: MainAxisAlignment.spaceAround,
+                        title: Text(
+                          'Alert',
+                          style: GoogleFonts.nunito(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        content: Text(
+                          'Please fill up the form',
+                          style: GoogleFonts.nunito(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                         actions: [
                           TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
-                              child: const Text('Ok'))
+                              child: Text('Ok',
+                                  style: GoogleFonts.nunito(
+                                    color: cgSecondary,
+                                    fontWeight: FontWeight.w600,
+                                  )))
                         ],
                       );
                     });
@@ -408,14 +618,14 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
           ),
           title: Text(
             "Edit Profile",
-            style: GoogleFonts.nunito(fontWeight: FontWeight.bold),
+            style: GoogleFonts.nunito(fontWeight: FontWeight.w700),
             textAlign: TextAlign.center,
           ),
         ),
         backgroundColor: bgColor,
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
             child: Form(
               key: _formKey,
               child: SingleChildScrollView(
@@ -434,22 +644,48 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                 backgroundImage: AssetImage(
                                     'assets/images/defaultAccountIcon.png'),
                               )
-                            : CircleAvatar(
-                                radius: 50.0,
-                                backgroundColor: secondaryColor,
-                                backgroundImage: FileImage(_image!),
-                              ),
-                        IconButton(
-                            onPressed: () {
-                              _showImageSelectionBottomSheet(context);
-                            },
-                            icon: const Icon(
-                              Icons.edit,
-                              color: cgSecondary,
-                            ))
+                            : _image?.path.split('/').toList()[0] == 'assets'
+                                ? CircleAvatar(
+                                    radius: 50,
+                                    backgroundColor: secondaryColor,
+                                    backgroundImage: AssetImage(_image!.path),
+                                  )
+                                : CircleAvatar(
+                                    radius: 50.0,
+                                    backgroundColor: secondaryColor,
+                                    backgroundImage: FileImage(_image!),
+                                  ),
+                        Positioned(
+                          bottom: -8,
+                          right: -2,
+                          child: IconButton(
+                              onPressed: () {
+                                _showImageSelectionBottomSheet(context);
+                              },
+                              icon: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.04,
+                                width:
+                                    MediaQuery.of(context).size.height * 0.04,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: cgSecondary,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.black.withOpacity(0.5),
+                                          blurRadius: 5,
+                                          offset: const Offset(0, 3))
+                                    ]),
+                                child: const Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                  size: 25,
+                                ),
+                              )),
+                        )
                       ],
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                     TextFormField(
                       controller: _firstNameController,
                       cursorColor: cgSecondary,
@@ -495,6 +731,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                       controller: _lastNameController,
                       style: GoogleFonts.nunito(
                         color: Colors.white70,
+                        fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
                       decoration: InputDecoration(
@@ -532,9 +769,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                     TextFormField(
                       style: GoogleFonts.nunito(
                         color: Colors.white70,
+                        fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
-                      readOnly: authProvider.primary_address =="email"?true:false,
+                      readOnly: authProvider.primary_address == "email"
+                          ? true
+                          : false,
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
@@ -576,6 +816,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                       controller: _phoneNumberController,
                       style: GoogleFonts.nunito(
                         color: Colors.white70,
+                        fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
                       keyboardType: TextInputType.phone,
@@ -625,7 +866,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                             onChanged: (String? value) {
                               setState(() {
                                 _selectedGender = value!;
-                               authProvider.changeUserGender(value);
+                                authProvider.changeUserGender(value);
                               });
                             },
                             items: [
@@ -635,6 +876,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                   'Gender',
                                   style: GoogleFonts.nunito(
                                     color: Colors.white30,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -645,6 +887,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                   'Male',
                                   style: GoogleFonts.nunito(
                                     color: Colors.white70,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -655,6 +898,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                   'Female',
                                   style: GoogleFonts.nunito(
                                     color: Colors.white70,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -665,6 +909,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                   'Other',
                                   style: GoogleFonts.nunito(
                                     color: Colors.white70,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -677,6 +922,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                               labelText: 'Gander',
                               labelStyle: GoogleFonts.nunito(
                                 color: Colors.white70,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
                               fillColor: secondaryColor,
@@ -726,6 +972,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                   labelText: 'Date of Birth',
                                   labelStyle: GoogleFonts.nunito(
                                     color: Colors.white70,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                   ),
                                   hintStyle: GoogleFonts.nunito(
@@ -882,7 +1129,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                       builder: (context, value, child) => Column(
                         children: [
                           InkWell(
-                            onTap: null,
+                            onTap: () => {},
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.95,
                               height: MediaQuery.of(context).size.height * 0.06,
@@ -913,7 +1160,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                   dob: picked_time,
                                   age: _ageController.text,
                                   country: _selectedCountry,
-                                  img_path: _image?.path,
+                                  img_path: _image == null ? "" : _image!.path,
                                   phone_number: _phoneNumberController.text,
                                   context: context,
                                 );

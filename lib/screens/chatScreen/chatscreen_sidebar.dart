@@ -121,8 +121,8 @@ class ChatScreenSidebar extends StatelessWidget {
                                             .toString(),
                                         style: GoogleFonts.nunito(
                                             color: Colors.white70,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w600),
                                         maxLines: 1,
                                       ),
                                     ),
@@ -246,14 +246,15 @@ class ChatScreenSidebar extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () => showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return  ConfirmDialogBox(
-                                  confirm_message: "This action will clear all conversations permanently.Are you sure you want to proceed!",
-                                  title: "Clear All Conversations",
-                                  onOK: _textCompletionProvider.clearConversations,
-                                );
-                              }),
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ConfirmDialogBox(
+                          confirm_message:
+                              "This action will clear all conversations permanently.Are you sure you want to proceed!",
+                          title: "Clear All Conversations",
+                          onOK: _textCompletionProvider.clearConversations,
+                        );
+                      }),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
@@ -266,7 +267,7 @@ class ChatScreenSidebar extends StatelessWidget {
                         Text(
                           'Clear conversations',
                           style: GoogleFonts.nunito(
-                              fontSize: 18,
+                              fontSize: 16,
                               color: Colors.white70,
                               fontWeight: FontWeight.bold),
                         )

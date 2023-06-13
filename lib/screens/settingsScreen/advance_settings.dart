@@ -35,7 +35,7 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                           children: [
                             Image.asset(
                               'assets/images/advanceSettingsIcon.png',
-                              height: 30,
+                              height: 25,
                             ),
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.05,
@@ -45,8 +45,8 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                               style: GoogleFonts.nunito(
                                   color:
                                       const Color.fromARGB(255, 212, 211, 211),
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600),
                             ),
                           ],
                         ),
@@ -65,8 +65,8 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                           'Advance Mode',
                           style: GoogleFonts.nunito(
                               color: Colors.white70,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 15),
                         ),
                         Switch(
                             activeColor: cgSecondary,
@@ -86,8 +86,8 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                           'Temperature',
                           style: GoogleFonts.nunito(
                               color: Colors.white70,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
                         ),
                         ValueBox(
                           value: authProvider.Temperature,
@@ -119,8 +119,8 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                           'Maximum length',
                           style: GoogleFonts.nunito(
                               color: Colors.white70,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
                         ),
                         ValueBox(
                           value: authProvider.Maximum_length,
@@ -152,8 +152,8 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                           'Top P',
                           style: GoogleFonts.nunito(
                               color: Colors.white70,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
                         ),
                         ValueBox(
                           value: authProvider.Top_P,
@@ -185,8 +185,8 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                           'Frequency Penalty',
                           style: GoogleFonts.nunito(
                               color: Colors.white70,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
                         ),
                         ValueBox(
                           value: authProvider.Frequency_penalty,
@@ -218,8 +218,8 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                           'Presence penalty',
                           style: GoogleFonts.nunito(
                               color: Colors.white70,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
                         ),
                         ValueBox(
                           value: authProvider.Presence_penalty,
@@ -251,8 +251,8 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                           'Best of',
                           style: GoogleFonts.nunito(
                               color: Colors.white70,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
                         ),
                         ValueBox(
                           value: authProvider.Best_of,
@@ -283,19 +283,24 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                           style: ButtonStyle(
                               backgroundColor:
                                   MaterialStateProperty.resolveWith<Color>(
-                            (states) => authProvider.IsAdvanceModeOn? cgSecondary:cgSecondary.withOpacity(0.2)
-                          )),
-                          onPressed: ()async{
+                                      (states) => authProvider.IsAdvanceModeOn
+                                          ? cgSecondary
+                                          : cgSecondary.withOpacity(0.2))),
+                          onPressed: () async {
                             await authProvider.advanceSettingsValus();
-                            if(!mounted) return;
+                            if (!mounted) return;
                           },
-                          child:  authProvider.isLoading?const CircularProgressIndicator(color: Colors.white,): Text(
-                            'Save',
-                            style: GoogleFonts.nunito(
-                                color: Colors.white70,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
-                          )),
+                          child: authProvider.isLoading
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white,
+                                )
+                              : Text(
+                                  'Save',
+                                  style: GoogleFonts.nunito(
+                                      color: Colors.white70,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                )),
                     )
                   ],
                 ))
@@ -313,14 +318,14 @@ class ValueBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 7),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(3),
           border: Border.all(color: cglasscolor, width: 1)),
       child: Text(
         value.toString(),
         style: GoogleFonts.nunito(
-            color: Colors.white70, fontWeight: FontWeight.bold),
+            color: Colors.white30, fontWeight: FontWeight.w500),
       ),
     );
   }

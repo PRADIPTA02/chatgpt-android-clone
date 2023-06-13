@@ -38,10 +38,12 @@ class MessegeList extends StatelessWidget {
     if (diff.inDays == 0 && inputDate.weekday == now.weekday) {
       // Return time if it's today
       return 'Today';
-    } else if (diff.inDays == 1 && inputDate.weekday == now.weekday-1 || diff.inDays == 0 && inputDate.weekday != now.weekday ) {
+    } else if (diff.inDays == 1 && inputDate.weekday == now.weekday - 1 ||
+        diff.inDays == 0 && inputDate.weekday != now.weekday) {
       // Return "Yesterday" if it's yesterday
       return 'Yesterday';
-    } else if (diff.inDays == 1 && inputDate.weekday != now.weekday-1 || diff.inDays >= 2 && diff.inDays <= 6) {
+    } else if (diff.inDays == 1 && inputDate.weekday != now.weekday - 1 ||
+        diff.inDays >= 2 && diff.inDays <= 6) {
       // Return the day of the week if it's within the past week
       return DateFormat('EEEE').format(inputDate);
     } else {

@@ -17,9 +17,9 @@ class ImageGenerateScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: bgColor,
         elevation: 0,
-        title: const Text(
+        title: Text(
           "Image Generation",
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          style: GoogleFonts.nunito(fontSize: 20, fontWeight: FontWeight.w600),
         ),
         actions: [
           Consumer<ImageGenerationProvider>(
@@ -90,7 +90,7 @@ class ImageGenerateScreen extends StatelessWidget {
       backgroundColor: bgColor,
       body: Consumer<ImageGenerationProvider>(
         builder: (context, value, child) => Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
           child: Column(children: [
             const Padding(
               padding: EdgeInsets.all(5.0),
@@ -101,22 +101,22 @@ class ImageGenerateScreen extends StatelessWidget {
               child: InkWell(
                 onTap: value.giveRandomImageSuggetion,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                   decoration: const BoxDecoration(
-                      gradient:LinearGradient(
-                        begin:Alignment.topLeft,
-                        colors: <Color>[
-                        Color(0xffd62507),
-                        Color(0xffe55a32)
-                      ]),
+                      gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          colors: <Color>[
+                            Color(0xffd62507),
+                            Color(0xffe55a32)
+                          ]),
                       borderRadius: BorderRadius.all(Radius.circular(3))),
                   child: Text(
                     'Surprise me',
                     style: GoogleFonts.nunito(
                         color: Colors.white70,
                         fontWeight: FontWeight.bold,
-                        fontSize: 18
-                      ),
+                        fontSize: 16),
                   ),
                 ),
               ),

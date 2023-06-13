@@ -17,6 +17,7 @@ class _GenderWidgetState extends State<GenderWidget> {
       width: MediaQuery.of(context).size.width * 0.65,
       child: Consumer<AuthProvider>(
         builder: (context, value, child) => Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
               height: 50,
@@ -31,7 +32,7 @@ class _GenderWidgetState extends State<GenderWidget> {
                 color: Colors.white70,
               ),
             ),
-            SizedBox(width: MediaQuery.of(context).size.width * 0.12),
+            // SizedBox(width: MediaQuery.of(context).size.width * 0.12),
             Container(
               height: 50,
               width: 50,
@@ -45,7 +46,7 @@ class _GenderWidgetState extends State<GenderWidget> {
                 color: Colors.white70,
               ),
             ),
-            SizedBox(width: MediaQuery.of(context).size.width * 0.12),
+            // SizedBox(width: MediaQuery.of(context).size.width * 0.12),
             Container(
               height: 50,
               width: 50,

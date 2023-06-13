@@ -17,113 +17,120 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthProvider>(
-      builder:(context, value, child) {
-        return Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
+    return Consumer<AuthProvider>(builder: (context, value, child) {
+      return Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
               splashColor: Colors.transparent,
-              onPressed:(){
-              value.changeIsExpanded(false);
-              Navigator.pop(context);
-            }, icon: const Icon(Icons.arrow_back)),
-            backgroundColor: bgColor,
-            elevation: 0,
-          ),
+              onPressed: () {
+                value.changeIsExpanded(false);
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back)),
           backgroundColor: bgColor,
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 25),
-            child: Scrollbar(
-              child: ListView(
-                physics: const BouncingScrollPhysics(decelerationRate: ScrollDecelerationRate.fast),
-                children: [
-                  Text(
-                    "Settings",
-                    style: GoogleFonts.nunito(
-                        color: const Color.fromARGB(255, 212, 211, 211),
-                        fontSize: 35,
-                        fontWeight: FontWeight.w700),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.08),
-                  Text(
-                    "Account",
-                    style: GoogleFonts.nunito(
-                        color: cgSecondary,
-                        fontSize: 23,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          value.User_image==""?  const CircleAvatar(
-                            radius: 30,
-                            backgroundColor: secondaryColor,
-                            backgroundImage:
-                                AssetImage('assets/images/defaultAccountIcon.png'),
-                          ):
-                           CircleAvatar(
-                            radius: 30,
-                            backgroundColor: secondaryColor,
-                            backgroundImage:
-                                FileImage(File(value.User_image)),
-                          ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.03,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                value.user_name,
-                                style: GoogleFonts.nunito(
-                                    color: const Color.fromARGB(255, 212, 211, 211),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700),
+          elevation: 0,
+        ),
+        backgroundColor: bgColor,
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 25),
+          child: Scrollbar(
+            child: ListView(
+              physics: const BouncingScrollPhysics(
+                  decelerationRate: ScrollDecelerationRate.fast),
+              children: [
+                Text(
+                  "Settings",
+                  style: GoogleFonts.nunito(
+                      color: const Color.fromARGB(255, 212, 211, 211),
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.08),
+                Text(
+                  "Account",
+                  style: GoogleFonts.nunito(
+                      color: cgSecondary,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        value.User_image == ""
+                            ? const CircleAvatar(
+                                radius: 28,
+                                backgroundColor: secondaryColor,
+                                backgroundImage: AssetImage(
+                                    'assets/images/defaultAccountIcon.png'),
+                              )
+                            : value.User_image.split('/').toList()[0]=='assets'?CircleAvatar(
+                                backgroundColor: secondaryColor,
+                                backgroundImage: AssetImage(
+                                    value.User_image),
+                              ):
+                             CircleAvatar(
+                                radius: 28,
+                                backgroundColor: secondaryColor,
+                                backgroundImage:
+                                    FileImage(File(value.User_image)),
                               ),
-                              Text(
-                                "Personal info",
-                                style: GoogleFonts.nunito(
-                                    color: Colors.white30,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      CustomBackButton(
-                        onTap: () => {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const AccountInfo()))
-                        },
-                      )
-                    ],
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                  Text(
-                    "Settings",
-                    style: GoogleFonts.nunito(
-                        color: cgSecondary,
-                        fontSize: 23,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-                  const LanguageSetting(),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                  const AiModelSetting(),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                  const AdvanceSettings(),
-                ],
-              ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.03,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              value.user_name,
+                              style: GoogleFonts.nunito(
+                                  color:
+                                      const Color.fromARGB(255, 212, 211, 211),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            Text(
+                              "Personal info",
+                              style: GoogleFonts.nunito(
+                                  color: Colors.white30,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    CustomBackButton(
+                      onTap: () => {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AccountInfo()))
+                      },
+                    )
+                  ],
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                Text(
+                  "Settings",
+                  style: GoogleFonts.nunito(
+                      color: cgSecondary,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.04),
+                const LanguageSetting(),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                const AiModelSetting(),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                const AdvanceSettings(),
+              ],
             ),
           ),
-        );
-      }
-    );
+        ),
+      );
+    });
   }
 }

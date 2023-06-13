@@ -32,7 +32,7 @@ class ConfirmDialogBox extends StatelessWidget {
       title: Text(
         title,
         style: GoogleFonts.nunito(
-            color: Colors.white, fontWeight: FontWeight.bold),
+            color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18),
       ),
       content: Consumer<TextCompletProvider>(
         builder: (context, value, child) => value.isLoading
@@ -47,6 +47,7 @@ class ConfirmDialogBox extends StatelessWidget {
                 confirm_message,
                 style: GoogleFonts.nunito(
                   color: Colors.white70,
+                  fontSize: 15,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -59,7 +60,7 @@ class ConfirmDialogBox extends StatelessWidget {
           child: Text(
             'CANCEL',
             style: GoogleFonts.nunito(
-                color: Colors.white, fontWeight: FontWeight.bold),
+                color: Colors.white,fontSize: 16, fontWeight: FontWeight.w600),
           ),
         ),
         Container(
@@ -77,7 +78,7 @@ class ConfirmDialogBox extends StatelessWidget {
           child: Text(
             'CONFIRM',
             style: GoogleFonts.nunito(
-                color: cgSecondary, fontWeight: FontWeight.bold),
+               color: cgSecondary ,fontSize: 16, fontWeight: FontWeight.w600),
           ),
         ),
       ],

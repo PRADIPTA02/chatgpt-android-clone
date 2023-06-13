@@ -17,7 +17,7 @@ class AiModelSetting extends StatelessWidget {
           children: [
             Image.asset(
               'assets/images/aiModelIcon.png',
-              height: 30,
+              height: 25,
             ),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.05,
@@ -26,15 +26,14 @@ class AiModelSetting extends StatelessWidget {
               "Ai Model",
               style: GoogleFonts.nunito(
                   color: const Color.fromARGB(255, 212, 211, 211),
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600),
             ),
           ],
         ),
         Row(
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               decoration: const BoxDecoration(
                   color: secondaryColor,
                   borderRadius: BorderRadius.all(Radius.circular(5))),
@@ -68,7 +67,8 @@ class AiModelSetting extends StatelessWidget {
                           model,
                           style: GoogleFonts.nunito(
                               color: Colors.white70,
-                              fontWeight: FontWeight.bold),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
                         ),
                       );
                     }).toList(),

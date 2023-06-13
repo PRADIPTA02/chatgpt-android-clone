@@ -32,10 +32,28 @@ class AuthProvider extends ChangeNotifier {
       _primary_address = user.primary_address;
       _user_form_filled = user.database_updated;
       _user_name = user.Display_name;
-      _fast_name = user.Firstname;
+      _first_name = user.Firstname;
       _last_name = user.Lastname;
     }
   }
+  final List<String>_avater_images =[
+    "assets/images/avater_1.png",
+    "assets/images/avater_2.png",
+    "assets/images/avater_3.png",
+    "assets/images/avater_4.png",
+    "assets/images/avater_5.png",
+    "assets/images/avater_6.png",
+    "assets/images/avater_7.png",
+    "assets/images/avater_8.png",
+    "assets/images/avater_9.png",
+    "assets/images/avater_10.png",
+    "assets/images/avater_11.png",
+    "assets/images/avater_12.png",
+    "assets/images/avater_13.png",
+    "assets/images/avater_14.png",
+    "assets/images/avater_15.png",
+  ];
+  List<String> get Avater_images => _avater_images;
   bool _isLoading = false;
   String _primary_address = "";
   String get primary_address => _primary_address;
@@ -47,9 +65,9 @@ class AuthProvider extends ChangeNotifier {
   String _user_gender = "";
   String _user_email = "";
   String _user_name = "";
-  String _fast_name = "";
+  String _first_name = "";
   String _last_name = "";
-  String get fast_name => _fast_name;
+  String get fast_name => _first_name;
   String get last_name => _last_name;
   String get user_name => _user_name;
   String get user_email => _user_email;
@@ -244,10 +262,10 @@ class AuthProvider extends ChangeNotifier {
         _primary_address = "email";
         _user_email = address;
         _userCredential = userCredential;
-        CustomSnackeBar.show(
-            context: context,
-            message: 'Welcome! You have successfully logged in',
-            status: Status.success);
+        // CustomSnackeBar.show(
+        //     context: context,
+        //     message: 'Welcome! You have successfully logged in',
+        //     status: Status.success);
         await userDataAddDuringSignin(
             uid: userCredential.user?.uid, emailOrPhone: address);
         changeIsLoading(false);
@@ -378,6 +396,7 @@ class AuthProvider extends ChangeNotifier {
     try {
       final user = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+      
       final userInDatabase = await adduserDetails(
         userEmail: email,
         userName: username,
@@ -449,10 +468,12 @@ class AuthProvider extends ChangeNotifier {
       user.Birthday = value['user_dob'].toDate();
       user.Country = value['user_country'];
       user.database_updated = true;
+      user.Profile_image = value['user_image_path'];
       _user_form_filled = true;
-      _fast_name = value['user_firstname'];
+      _first_name = value['user_firstname'];
       _last_name = value['user_lastname'];
       _user_age = value['user_age'];
+      _user_image = value['user_image_path'];
     });
     await user.save();
     notifyListeners();
@@ -518,6 +539,10 @@ class AuthProvider extends ChangeNotifier {
         primary_address: "email");
     if (User_data.values.toList().isEmpty) {
       await User_data.add(user);
+      user.Email_id = address;
+      user.Password = user_password;
+      user.save();
+      _user_name = display_name;
     }
     notifyListeners();
   }
@@ -594,6 +619,10 @@ class AuthProvider extends ChangeNotifier {
       user.save();
       _user_form_filled = true;
       _user_image = img_path;
+      _user_age = age;
+      _first_name = firstname;
+      _last_name = lastname;
+      _user_phone_number = phone_number;
     }
     await userDetailsUpdateInFirebase(
       First_name: firstname,
@@ -676,6 +705,7 @@ class AuthProvider extends ChangeNotifier {
       User_data.values.toList()[0].save();
     }
     _user_image = img!;
+    print(_user_image);
     notifyListeners();
   }
 

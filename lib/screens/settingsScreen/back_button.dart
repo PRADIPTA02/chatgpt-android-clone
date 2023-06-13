@@ -3,23 +3,27 @@ import 'package:flutter/material.dart';
 import '../../util/constants/constants.dart';
 
 class CustomBackButton extends StatelessWidget {
-  const CustomBackButton({super.key,required this.onTap});
+  const CustomBackButton({super.key, required this.onTap});
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return  InkWell(
+    return InkWell(
+      splashColor: cglasscolor,
+      highlightColor: Colors.transparent,
       onTap: onTap,
       child: Container(
-                height: MediaQuery.of(context).size.width * 0.12,
-          width: MediaQuery.of(context).size.width * 0.12,
-          decoration: const BoxDecoration(
+        height: MediaQuery.of(context).size.width * 0.12,
+        width: MediaQuery.of(context).size.width * 0.12,
+        decoration: const BoxDecoration(
             color: secondaryColor,
-            borderRadius: BorderRadius.all(Radius.circular(5))
+            borderRadius: BorderRadius.all(Radius.circular(5))),
+        child: const Center(
+          child: Icon(
+            Icons.keyboard_arrow_right,
+            color: Colors.white,
           ),
-          child: const Center(
-            child: Icon(Icons.keyboard_arrow_right,color: Colors.white,),
-          ),
+        ),
       ),
     );
   }

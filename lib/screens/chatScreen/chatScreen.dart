@@ -32,11 +32,14 @@ class ChatScreen extends StatelessWidget {
               appBar: AppBar(
                 automaticallyImplyLeading: false,
                 title: Text(
-                  _textCompletionProvider.allSesions.isEmpty?"":
-                  _textCompletionProvider
-                      .allSesions[_textCompletionProvider.CurrentSessionIndex]
-                      .sessionName,
-                  style: GoogleFonts.nunito(color: Colors.white70),
+                  _textCompletionProvider.allSesions.isEmpty
+                      ? ""
+                      : _textCompletionProvider
+                          .allSesions[
+                              _textCompletionProvider.CurrentSessionIndex]
+                          .sessionName,
+                  style: GoogleFonts.nunito(
+                      color: Colors.white70, fontWeight: FontWeight.bold),
                 ),
                 backgroundColor: bgColor,
                 elevation: 0,
@@ -70,7 +73,8 @@ class ChatScreen extends StatelessWidget {
               drawer: const ChatScreenSidebar(),
               backgroundColor: bgColor,
               body: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [

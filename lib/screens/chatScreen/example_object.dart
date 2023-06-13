@@ -9,7 +9,7 @@ class ExampleObject extends StatelessWidget {
   const ExampleObject({super.key});
   @override
   Widget build(BuildContext context) {
-    final _textCompletionProvider =
+    final textCompletionProvider =
         Provider.of<TextCompletProvider>(context, listen: false);
     return Consumer<TextCompletProvider>(
       builder: (context, value, child) => Column(
@@ -18,9 +18,9 @@ class ExampleObject extends StatelessWidget {
             height: 30,
           ),
           Center(
-              child: Text("ChatGPT",
+              child: Text("AI BUDDY",
                   style: GoogleFonts.nunito(
-                      fontSize: 35,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.white))),
           const SizedBox(
@@ -41,13 +41,13 @@ class ExampleObject extends StatelessWidget {
                       color: cgSecondary))
             ],
           ),
-          const SizedBox(
-            height: 20,
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.03,
           ),
           Center(
               child: InkWell(
                   onTap: () => {
-                        _textCompletionProvider.onExampleTextPressed(
+                        textCompletionProvider.onExampleTextPressed(
                             "Explain quantum computing in simple terms")
                       },
                   child: const ExampleTextOuterBox(
@@ -59,7 +59,7 @@ class ExampleObject extends StatelessWidget {
           Center(
               child: InkWell(
                   onTap: () => {
-                        _textCompletionProvider.onExampleTextPressed(
+                        textCompletionProvider.onExampleTextPressed(
                             "Got any creative ideas for a 10 year old’s birthday?")
                       },
                   child: const ExampleTextOuterBox(
@@ -71,7 +71,7 @@ class ExampleObject extends StatelessWidget {
           Center(
               child: InkWell(
                   onTap: () => {
-                        _textCompletionProvider.onExampleTextPressed(
+                        textCompletionProvider.onExampleTextPressed(
                             "How do I make an HTTP request in Javascript?")
                       },
                   child: const ExampleTextOuterBox(

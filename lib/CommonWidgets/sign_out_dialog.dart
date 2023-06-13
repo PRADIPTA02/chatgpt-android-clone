@@ -1,4 +1,5 @@
 import 'package:chatgpt/providers/auth_provider.dart';
+import 'package:chatgpt/providers/text_copletion_provider.dart';
 import 'package:chatgpt/util/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -59,20 +60,23 @@ class SignOutDialog extends StatelessWidget {
         ),
         Container(
           width: 2,
-          height: MediaQuery.of(context).size.height*0.03,
-          
-          decoration: BoxDecoration(color: cglasscolor,borderRadius: BorderRadius.circular(5)),
+          height: MediaQuery.of(context).size.height * 0.03,
+          decoration: BoxDecoration(
+              color: cglasscolor, borderRadius: BorderRadius.circular(5)),
         ),
-        TextButton(
-          onPressed: () => {
-            authProvider.SignOut(),
-            Navigator.pop(context),
-          },
-          style: const ButtonStyle(),
-          child: Text(
-            'CONFIRM',
-            style: GoogleFonts.nunito(
-                color: cgSecondary, fontWeight: FontWeight.bold),
+        Consumer<TextCompletProvider>(
+          builder: (context, value, child) => TextButton(
+            onPressed: () async {
+              Navigator.pop(context);
+              await value.clearConversations();
+              authProvider.SignOut();
+            },
+            style: const ButtonStyle(),
+            child: Text(
+              'CONFIRM',
+              style: GoogleFonts.nunito(
+                  color: cgSecondary, fontWeight: FontWeight.bold),
+            ),
           ),
         ),
       ],

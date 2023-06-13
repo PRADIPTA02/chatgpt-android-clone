@@ -19,7 +19,7 @@ class ExampleTextOuterBox extends StatelessWidget {
           child: Text(
         text,
         style: GoogleFonts.nunito(
-            fontSize: 16, color: Colors.white70, fontWeight: FontWeight.w500),
+            fontSize: 15, color: Colors.white70, fontWeight: FontWeight.w500),
         textAlign: TextAlign.center,
       )),
     );
