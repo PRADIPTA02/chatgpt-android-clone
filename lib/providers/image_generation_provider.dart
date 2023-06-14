@@ -37,7 +37,6 @@ class ImageGenerationProvider with ChangeNotifier {
   bool get isImageLoading => _is_image_loading;
   bool get isTyping => _isTyping;
   bool get isSpeaking => _is_speaking;
-  final authProvider = Provider.of<AuthProvider>(context, listen: false);
   final List<String> topImageGenerationSuggetion = [
     "earth reviving after human extinction, a new beginning, nature taking over buildings, animal kingdom, harmony, peace, earth balanced --version 3 --s 1250 --uplight --ar 4:3 --no text, blur",
     "earth after human extinction, a new beginning, nature taking back the planet, harmony, peace, earth balanced --version 3 --s 42000 --uplight --ar 4:3 --no text, blur, people, humans, pollution",
