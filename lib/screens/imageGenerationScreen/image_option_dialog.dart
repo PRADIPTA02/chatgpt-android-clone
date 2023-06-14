@@ -37,7 +37,7 @@ class ImageOptionDialog extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   DropdownButton<String>(
-                    dropdownColor: cbgColor,
+                    dropdownColor: secondaryColor,
                     style: GoogleFonts.nunito(
                         fontSize: 15,
                         color: cgSecondary,

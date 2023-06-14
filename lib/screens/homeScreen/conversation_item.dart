@@ -17,18 +17,20 @@ class ConversationItem extends StatelessWidget {
   final int timeStamp;
   final String index;
   String getTimeOrDate(int timestamp) {
-    DateTime now = DateTime.now();
+DateTime now = DateTime.now();
     DateTime today = DateTime(now.year, now.month, now.day);
     DateTime inputDate = DateTime.fromMillisecondsSinceEpoch(timestamp);
     Duration diff = today.difference(inputDate);
 
-    if (diff.inDays == 0) {
+    if (diff.inDays == 0 && inputDate.weekday == now.weekday) {
       // Return time if it's today
       return 'Today';
-    } else if (diff.inDays == 1) {
+    } else if (diff.inDays == 1 && inputDate.weekday == now.weekday - 1 ||
+        diff.inDays == 0 && inputDate.weekday != now.weekday) {
       // Return "Yesterday" if it's yesterday
       return 'Yesterday';
-    } else if (diff.inDays >= 2 && diff.inDays <= 6) {
+    } else if (diff.inDays == 1 && inputDate.weekday != now.weekday - 1 ||
+        diff.inDays >= 2 && diff.inDays <= 6) {
       // Return the day of the week if it's within the past week
       return DateFormat('EEEE').format(inputDate);
     } else {
@@ -51,9 +53,9 @@ class ConversationItem extends StatelessWidget {
           margin: const EdgeInsets.symmetric(vertical: 5),
           decoration: BoxDecoration(
             color: secondaryColor,
-            borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(5.0),
             border: Border.all(
-              color: const Color.fromARGB(255, 72, 70, 70),
+              color: const Color.fromARGB(255, 60, 60, 60),
               width: 1.0,
             ),
           ),
@@ -61,8 +63,8 @@ class ConversationItem extends StatelessWidget {
             title: Text(
               'AI BUDDY',
               style: GoogleFonts.nunito(
-                  color: Colors.white,
-                  fontSize: 16,
+                  color: Colors.white70,
+                  fontSize: 15,
                   fontWeight: FontWeight.w600),
             ),
             subtitle: Text(
@@ -70,7 +72,7 @@ class ConversationItem extends StatelessWidget {
               style: GoogleFonts.nunito(
                   color: Colors.white70,
                   fontSize: 14,
-                  fontWeight: FontWeight.w500),
+                  fontWeight: FontWeight.w400),maxLines: 2,overflow: TextOverflow.ellipsis
             ),
             trailing: Text(
               getTimeOrDate(timeStamp),
@@ -78,7 +80,7 @@ class ConversationItem extends StatelessWidget {
                   fontSize: 14,
                   
                   color: cgSecondary.withOpacity(0.6),
-                  fontWeight: FontWeight.w500),maxLines: 1,overflow: TextOverflow.ellipsis
+                  fontWeight: FontWeight.w500),
             ),
           ),
         ),

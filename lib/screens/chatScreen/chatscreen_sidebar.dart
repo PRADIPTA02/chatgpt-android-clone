@@ -14,7 +14,7 @@ class ChatScreenSidebar extends StatelessWidget {
         Provider.of<TextCompletProvider>(context, listen: false);
     return Drawer(
       width: MediaQuery.of(context).size.width * 0.75,
-      backgroundColor: bgColor,
+      backgroundColor: const Color.fromARGB(255, 9, 9, 9),
       shadowColor: Colors.transparent,
       child: SafeArea(
         child: Padding(
@@ -22,7 +22,15 @@ class ChatScreenSidebar extends StatelessWidget {
               const EdgeInsets.only(top: 20, bottom: 20, left: 10, right: 10),
           child: Consumer<TextCompletProvider>(
             builder: (context, value, child) => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text("Conversation",
+                    style: GoogleFonts.nunito(
+                        color: Colors.white70,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700)),
+                        // const Divider(color: cglasscolor,thickness: 0.3,),
+                        SizedBox(height:MediaQuery.of(context).size.height*0.03),
                 InkWell(
                   onTap: () => {
                     _textCompletionProvider.addNewSession(),
@@ -31,7 +39,7 @@ class ChatScreenSidebar extends StatelessWidget {
                     padding: const EdgeInsets.only(
                         top: 15, bottom: 15, left: 10, right: 10),
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white70),
+                      border: Border.all(color:Colors.white30),
                       borderRadius: const BorderRadius.all(Radius.circular(5)),
                     ),
                     child: Row(
@@ -39,14 +47,14 @@ class ChatScreenSidebar extends StatelessWidget {
                         const Icon(
                           Icons.add,
                           size: 20,
-                          color: Colors.white70,
+                          color: Colors.white60,
                         ),
                         const SizedBox(width: 10),
                         Text(
                           "New chat",
                           style: GoogleFonts.nunito(
-                              color: Colors.white70,
-                              fontSize: 18,
+                              color: Colors.white60,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold),
                         )
                       ],
@@ -68,7 +76,7 @@ class ChatScreenSidebar extends StatelessWidget {
                           _textCompletionProvider
                               .changeSessionDeletation(false),
                           _textCompletionProvider.setMessageUpdate(false, ""),
-                          _textCompletionProvider.changeIsloadingState(),
+                          _textCompletionProvider.changeIsloadingState(false),
                           _textCompletionProvider.changeCurrentSessionIndex(
                               _textCompletionProvider.allSesions.length -
                                   1 -
@@ -90,7 +98,7 @@ class ChatScreenSidebar extends StatelessWidget {
                                           _textCompletionProvider
                                               .CurrentSessionIndex ==
                                       index
-                                  ? secondaryColor
+                                  ? secondaryColor.withOpacity(0.7)
                                   : Colors.transparent),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -240,9 +248,9 @@ class ChatScreenSidebar extends StatelessWidget {
                     ),
                   ),
                 ),
-                const Divider(
-                  thickness: 2,
-                  color: cglasscolor,
+                 Divider(
+                  thickness: 0.3,
+                  color: cglasscolor.withOpacity(0.2),
                 ),
                 InkWell(
                   onTap: () => showDialog(
@@ -268,8 +276,9 @@ class ChatScreenSidebar extends StatelessWidget {
                           'Clear conversations',
                           style: GoogleFonts.nunito(
                               fontSize: 16,
-                              color: Colors.white70,
-                              fontWeight: FontWeight.bold),
+                              color: Colors.white60,
+                              fontWeight: FontWeight.w600
+                              ),
                         )
                       ],
                     ),

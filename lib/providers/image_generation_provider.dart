@@ -1,9 +1,12 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../models/image_model.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -11,9 +14,14 @@ import 'package:speech_to_text/speech_to_text.dart';
 class ImageGenerationProvider with ChangeNotifier {
   final SpeechToText _speechToText = SpeechToText();
   bool _is_image_loading = false;
+  final Dio dio = Dio();
   bool _is_speaking = false;
   bool _is_avalable = false;
+  double _progress = 0.0;
+  double get progress => _progress;
   bool _isTyping = false;
+  bool _image_downloading = false;
+  bool get isImageDownloading => _image_downloading;
   int _number_of_images = 1;
   String _size_of_images = '256x256';
   String _get_image_view_type = "list";
@@ -80,32 +88,117 @@ class ImageGenerationProvider with ChangeNotifier {
   void getImages(String name) async {
     _images = [];
     setImageLoading();
-    Map<String, String> header = {
-      'Content-Type': 'application/json',
-      'Authorization':
-          'Bearer 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',
-    };
 
-    var response = await http.post(
-        Uri.parse("https://api.openai.com/v1/images/generations"),
-        headers: header,
-        body: jsonEncode({
-          "n": _number_of_images,
-          "size": _size_of_images,
-          "prompt": name,
-        }));
-    if (response.statusCode == 200) {
-      Map<String, dynamic> newResponse = jsonDecode(response.body);
-      for (dynamic item in newResponse['data']) {
-        addImages(
-            Images(url: item['url'], image_height: 256, image_widtht: 256));
-      }
-      setImageLoading();
-      onChangeTextInput("");
-      setImageLoading();
-    } else {}
+    try {
+      var url = 'https://api.openai.com/v1/images/generations';
+
+      var headers = {
+        'Content-Type': 'application/json',
+        'Authorization':
+            'Bearer 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',
+      };
+      var payload = {
+        'n': _number_of_images,
+        'size': _size_of_images,
+        'prompt': name,
+      };
+      var response = await dio.post(
+        url,
+        options: Options(headers: headers),
+        data: jsonEncode(payload),
+      );
+      if (response.statusCode == 200) {
+        Map<String, dynamic> newResponse = response.data;
+        for (dynamic item in newResponse['data']) {
+          addImages(Images(
+              url: item['url'],
+              imageHeight: _size_of_images,
+              imageWidtht: _size_of_images));
+        }
+
+        setImageLoading();
+        onChangeTextInput("");
+        setImageLoading();
+      } else {}
+    } catch (e) {
+      Fluttertoast.showToast(
+          msg: "Error: Something went wrong",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.redAccent,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
     setImageLoading();
     notifyListeners();
+  }
+
+  Future<void> downloadFile(String url) async {
+    bool downloaded = await saveFile(imageUrl: url);
+    if (downloaded) {
+      changeProgress(0.0);
+      Fluttertoast.showToast(
+          msg: "Image Downloaded",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 1,
+          backgroundColor: const Color.fromARGB(178, 85, 231, 85),
+          textColor: Colors.white,
+          fontSize: 16.0);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Error: Something went wrong",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 1,
+          backgroundColor: const Color.fromARGB(178, 231, 85, 85),
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+
+    notifyListeners();
+  }
+
+  Future<bool> saveFile({required String imageUrl}) async {
+    Directory? directory;
+    try {
+      if (await _requestPermission(Permission.storage)) {
+        var time = DateTime.now().millisecondsSinceEpoch;
+        var newPath = "/storage/emulated/0/Download/image-AIBuddy-$time.jpg";
+        directory = Directory(newPath);
+        debugPrint(directory.path);
+      } else {
+        return false;
+      }
+      File saveFile = File(directory.path);
+      await dio.download(imageUrl, saveFile.path,
+          onReceiveProgress: (rec, total) {
+        changeProgress(rec / total);
+      });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> _requestPermission(Permission permission) async {
+    if (await permission.isGranted) {
+      return true;
+    } else {
+      var result = await permission.request();
+      if (result == PermissionStatus.granted) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  Future<void> downloadImage({required String url}) async {
+    changeIsImageDownloading(true);
+    await downloadFile(url);
+    changeIsImageDownloading(false);
   }
 
   void giveRandomImageSuggetion() {
@@ -117,6 +210,11 @@ class ImageGenerationProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void changeProgress(double value) {
+    _progress = value;
+    notifyListeners();
+  }
+
   void changeImageViewType(String type) {
     _get_image_view_type = type;
     notifyListeners();
@@ -124,6 +222,11 @@ class ImageGenerationProvider with ChangeNotifier {
 
   void onChangeTextInput(String text) {
     _isTyping = text != "" ? true : false;
+    notifyListeners();
+  }
+
+  void changeIsImageDownloading(bool value) {
+    _image_downloading = value;
     notifyListeners();
   }
 

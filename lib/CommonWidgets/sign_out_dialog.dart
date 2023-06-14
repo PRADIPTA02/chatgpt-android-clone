@@ -28,7 +28,7 @@ class SignOutDialog extends StatelessWidget {
       title: Text(
         "Sign Out",
         style: GoogleFonts.nunito(
-            color: Colors.white, fontWeight: FontWeight.bold),
+            color: Colors.white, ),
       ),
       content: Consumer<AuthProvider>(
         builder: (context, value, child) => value.isLoading
@@ -43,7 +43,6 @@ class SignOutDialog extends StatelessWidget {
                 "Are you sure you want to log-out? ",
                 style: GoogleFonts.nunito(
                   color: Colors.white70,
-                  fontWeight: FontWeight.w500,
                 ),
               ),
       ),
@@ -55,7 +54,7 @@ class SignOutDialog extends StatelessWidget {
           child: Text(
             'CANCEL',
             style: GoogleFonts.nunito(
-                color: Colors.white, fontWeight: FontWeight.bold),
+                color: Colors.white, ),
           ),
         ),
         Container(
@@ -75,7 +74,7 @@ class SignOutDialog extends StatelessWidget {
             child: Text(
               'CONFIRM',
               style: GoogleFonts.nunito(
-                  color: cgSecondary, fontWeight: FontWeight.bold),
+                  color: cgSecondary, fontWeight: FontWeight.w500),
             ),
           ),
         ),

@@ -25,7 +25,7 @@ class InfoWidget extends StatelessWidget {
                   fontWeight: FontWeight.w700),
             ),
           ),
-          SizedBox(height: MediaQuery.of(context).size.width * 0.03),
+          SizedBox(height: MediaQuery.of(context).size.width * 0.020),
           Container(
             color: const Color.fromARGB(20, 158, 158, 158),
             height: MediaQuery.of(context).size.width * 0.002,

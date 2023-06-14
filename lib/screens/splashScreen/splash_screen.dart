@@ -50,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     final screenHight = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: secondaryColor,
+      backgroundColor: bgColor,
       body: Padding(
         padding: const EdgeInsets.only(left: 8.0, top: 80, right: 8.0),
         child: Column(
@@ -63,12 +63,29 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                 height: screenHight * 0.4,
               )),
             ),
+             SizedBox(
+              height: MediaQuery.of(context).size.height * 0.06,
+            ),
             Text(
               "AI BUDDY",
-              style: GoogleFonts.nunito(
+              style: GoogleFonts.righteous(
                 color: Colors.white,
-                fontSize: 30,
+                fontSize: 35,
                 fontWeight: FontWeight.bold,
+              ),
+            ),
+             SizedBox(
+              height: MediaQuery.of(context).size.height * 0.3,
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Text(
+                "V_1.0.0",
+                style: GoogleFonts.nunito(
+                  color: Colors.white70,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],

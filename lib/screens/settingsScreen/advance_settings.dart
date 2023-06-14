@@ -1,5 +1,4 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
-import 'package:chatgpt/CommonWidgets/custom_snakebar.dart';
 import 'package:chatgpt/providers/auth_provider.dart';
 import 'package:chatgpt/util/constants/constants.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +21,7 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
         child: ExpansionPanelList(
           expansionCallback: (panelIndex, isExpanded) {
             authProvider.changeIsExpanded(!isExpanded);
+            authProvider.changeIsAdvanceModeONOF(false);
           },
           elevation: 0,
           children: [

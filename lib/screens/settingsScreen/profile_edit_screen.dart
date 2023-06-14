@@ -625,7 +625,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
         backgroundColor: bgColor,
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+            padding: const EdgeInsets.all(8),
             child: Form(
               key: _formKey,
               child: SingleChildScrollView(
@@ -1168,7 +1168,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                 if (!value.User_form_filled) {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) =>
-                                          const HomeScreen()));
+                                           HomeScreen()));
                                 }
                                 CustomSnackeBar.show(
                                     context: context,

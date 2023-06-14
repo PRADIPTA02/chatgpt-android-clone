@@ -90,55 +90,52 @@ class ImageGenerateScreen extends StatelessWidget {
       backgroundColor: bgColor,
       body: Consumer<ImageGenerationProvider>(
         builder: (context, value, child) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+          padding: const EdgeInsets.all(8),
           child: Column(children: [
-            const Padding(
-              padding: EdgeInsets.all(5.0),
-              child: SearchTextInput(),
+            const SearchTextInput(),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.02,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: InkWell(
-                onTap: value.giveRandomImageSuggetion,
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                  decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          colors: <Color>[
-                            Color(0xffd62507),
-                            Color(0xffe55a32)
-                          ]),
-                      borderRadius: BorderRadius.all(Radius.circular(3))),
-                  child: Text(
-                    'Surprise me',
-                    style: GoogleFonts.nunito(
-                        color: Colors.white70,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                  ),
+            InkWell(
+              onTap: value.giveRandomImageSuggetion,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        colors: <Color>[
+                          Color(0xffd62507),
+                          Color(0xffe55a32)
+                        ]),
+                    borderRadius: BorderRadius.all(Radius.circular(3))),
+                child: Text(
+                  'Surprise me',
+                  style: GoogleFonts.nunito(
+                      color: Colors.white70,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
                 ),
               ),
             ),
+             SizedBox(
+              height: MediaQuery.of(context).size.height * 0.02,
+            ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GridView.builder(
-                    itemCount: value.AllImages.length,
-                    physics: const BouncingScrollPhysics(
-                        decelerationRate: ScrollDecelerationRate.normal),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount:
-                            value.GetImageViewType == 'grid' ? 2 : 1,
-                        childAspectRatio:
-                            value.GetImageViewType == 'list' ? 1.5 : 1.0,
-                        mainAxisExtent: value.GetImageViewType == 'list'
-                            ? MediaQuery.of(context).size.height * 0.375
-                            : MediaQuery.of(context).size.height * 0.26),
-                    itemBuilder: (BuildContext context, index) =>
-                        ImageFrame(url: value.AllImages[index].url)),
-              ),
+              child: GridView.builder(
+                  itemCount: value.AllImages.length,
+                  physics: const BouncingScrollPhysics(
+                      decelerationRate: ScrollDecelerationRate.normal),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount:
+                          value.GetImageViewType == 'grid' ? 2 : 1,
+                      childAspectRatio:
+                          value.GetImageViewType == 'list' ? 1.5 : 1.0,
+                      mainAxisExtent: value.GetImageViewType == 'list'
+                          ? MediaQuery.of(context).size.height * 0.375
+                          : MediaQuery.of(context).size.height * 0.30),
+                  itemBuilder: (BuildContext context, index) =>
+                      ImageFrame(url: value.AllImages[index].url)),
             )
           ]),
         ),

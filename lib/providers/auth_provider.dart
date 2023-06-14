@@ -34,6 +34,7 @@ class AuthProvider extends ChangeNotifier {
       _user_name = user.Display_name;
       _first_name = user.Firstname;
       _last_name = user.Lastname;
+      _user_dob = user.Birthday;
     }
   }
   final List<String>_avater_images =[
@@ -67,12 +68,15 @@ class AuthProvider extends ChangeNotifier {
   String _user_name = "";
   String _first_name = "";
   String _last_name = "";
+
   String get fast_name => _first_name;
   String get last_name => _last_name;
   String get user_name => _user_name;
   String get user_email => _user_email;
   String get user_gender => _user_gender;
   String get User_image => _user_image;
+  DateTime _user_dob = DateTime.now();
+  DateTime get user_dob => _user_dob;
   String _user_age = "";
   String get user_age => _user_age;
   String _user_phone_number = "";
@@ -474,6 +478,7 @@ class AuthProvider extends ChangeNotifier {
       _last_name = value['user_lastname'];
       _user_age = value['user_age'];
       _user_image = value['user_image_path'];
+      _user_dob = value['user_dob'].toDate();
     });
     await user.save();
     notifyListeners();
@@ -623,6 +628,7 @@ class AuthProvider extends ChangeNotifier {
       _first_name = firstname;
       _last_name = lastname;
       _user_phone_number = phone_number;
+      _user_dob = dob;
     }
     await userDetailsUpdateInFirebase(
       First_name: firstname,

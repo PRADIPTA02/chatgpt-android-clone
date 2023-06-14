@@ -3,7 +3,6 @@ import 'package:chatgpt/providers/auth_provider.dart';
 import 'package:chatgpt/providers/image_generation_provider.dart';
 import 'package:chatgpt/providers/internet_connection_check_provider.dart';
 import 'package:chatgpt/providers/text_copletion_provider.dart';
-import 'package:chatgpt/screens/auth/AuthScreen/auth_screen.dart';
 import 'package:chatgpt/screens/splashScreen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -66,7 +65,7 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           useInheritedMediaQuery: true,
           debugShowCheckedModeBanner: false,
-          title: 'ChatGPT',
+          title: 'AI BUDDY',
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),

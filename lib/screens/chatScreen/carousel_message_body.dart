@@ -1,5 +1,6 @@
 import 'package:chatgpt/models/message_model.dart';
 import 'package:chatgpt/screens/chatScreen/single_message_body.dart';
+import 'package:chatgpt/util/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -49,33 +50,34 @@ class CarouselMessageBody extends StatelessWidget {
                   icon: const Icon(
                     Icons.arrow_back_ios,
                     color: Colors.white70,
+                    size: 20,
                   )),
               Text(
                 "${messageIndex + 1} ",
                 style: GoogleFonts.nunito(
-                    color: Colors.white70,
-                    fontSize: 20,
+                    color: cgSecondary,
+                    fontSize: 15,
                     fontWeight: FontWeight.bold),
               ),
               Text(
                 "/",
                 style:  GoogleFonts.nunito(
                     color: Colors.white70,
-                    fontSize: 20,
+                    fontSize: 15,
                     fontWeight: FontWeight.bold),
               ),
               Text(
                 " ${ms.length}",
                 style: GoogleFonts.nunito(
-                    color: Colors.white70,
-                    fontSize: 20,
+                    color: cgSecondary,
+                    fontSize: 15,
                     fontWeight: FontWeight.bold),
               ),
               IconButton(
                   onPressed: () => {
                       _textCompletionProvider.updateCarouselMessageLowerIndex(sessionIndex,upeerMessageIndex,(1+messageIndex)%ms.length)
                       },
-                  icon: const Icon(Icons.arrow_forward_ios, color: Colors.white70))
+                  icon: const Icon(Icons.arrow_forward_ios, color: Colors.white70,size: 20,))
             ],
           ):const SizedBox()
         ],

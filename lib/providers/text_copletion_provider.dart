@@ -1,11 +1,12 @@
 // ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, prefer_final_fields
 import 'dart:convert';
 import 'package:chatgpt/models/error_message_model.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_list_view/flutter_list_view.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive/hive.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
-import 'package:http/http.dart' as http;
 import 'package:speech_to_text/speech_to_text.dart';
 import '../CommonWidgets/custom_snakebar.dart';
 import '../models/message_list_conversation.dart';
@@ -39,6 +40,7 @@ class TextCompletProvider with ChangeNotifier {
     // }
     notifyListeners();
   }
+  final Dio dio = Dio();
   final uuid = const Uuid();
   double maxPosition = double.minPositive;
   int _message_no = 0;
@@ -130,63 +132,72 @@ class TextCompletProvider with ChangeNotifier {
 
 //Get the api response from api endpoint and add this to message list
   Future<String> getAiResponse(
-      String question, int index, bool isupdate, BuildContext context) async {
+      String question, int index, bool isupdate) async {
     _isLoading = true;
-    Map<String, String> header = {
+    var headers = {
       'Content-Type': 'application/json',
       'Authorization':
           'Bearer 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',
     };
-    http.Response response;
     try {
-      response =
-          await http.post(Uri.parse("https://api.openai.com/v1/completions"),
-              headers: header,
-              body: jsonEncode(
-                {
-                  "model": "text-davinci-003",
-                  "prompt": question,
-                  "temperature": 0.6,
-                  "max_tokens": 3457,
-                  "top_p": 0.1,
-                  "frequency_penalty": 1,
-                  "presence_penalty": 1
-                },
-              ));
+      var url = "https://api.openai.com/v1/completions";
+      var payload = {
+        "model": "text-davinci-003",
+        "prompt": question,
+        "temperature": 0.6,
+        "max_tokens": 3457,
+        "top_p": 0.1,
+        "frequency_penalty": 1,
+        "presence_penalty": 1
+      };
+      var response = await dio.post(url,
+          data: jsonEncode(payload),
+          options: Options(
+            headers: headers,
+          ));
+
+      if (response.statusCode == 200 && !isupdate) {
+        Map<String, dynamic> newResponse = response.data;
+        addMessage(<Message>[
+          Message(
+              message_text: newResponse['choices'][0]['text'],
+              isApi: true,
+              id: uuid.v1(),
+              sessionId: sessions.values.toList()[index].sessionId,
+              timeStamp:
+                  int.parse(DateTime.now().millisecondsSinceEpoch.toString())),
+        ], index);
+        _isLoading = false;
+        onChangeTextInput("");
+      } else if (!isupdate) {
+        Map<String, dynamic> newResponse = response.data;
+        _isLoading = false;
+        Fluttertoast.showToast(
+            msg: newResponse['choices'][0]['text'],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.TOP,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+        onChangeTextInput("");
+      }
+      if (isupdate) {
+        Map<String, dynamic> newResponse = response.data;
+        _isLoading = false;
+        return newResponse['choices'][0]['text'];
+      } else {
+        return "";
+      }
     } catch (e) {
-      CustomSnackeBar.show(
-          context: context, message: e.toString(), status: Status.error);
-      _isLoading = false;
+      changeIsloadingState(false);
+      Fluttertoast.showToast(
+          msg: "Something went wrong",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
       notifyListeners();
-      return "";
-    }
-    if (response.statusCode == 200 && !isupdate) {
-      Map<String, dynamic> newResponse = jsonDecode(response.body);
-      addMessage(<Message>[
-        Message(
-            message_text: newResponse['choices'][0]['text'],
-            isApi: true,
-            id: uuid.v1(),
-            sessionId: sessions.values.toList()[index].sessionId,
-            timeStamp:
-                int.parse(DateTime.now().millisecondsSinceEpoch.toString())),
-      ], index);
-      _isLoading = false;
-      onChangeTextInput("");
-    } else if (response != null && !isupdate) {
-      Map<String, dynamic> newResponse = jsonDecode(response.body);
-      _isLoading = false;
-      CustomSnackeBar.show(
-          context: context,
-          message: newResponse['error']['message'].toString(),
-          status: Status.error);
-      onChangeTextInput("");
-    }
-    if (response != null && isupdate) {
-      Map<String, dynamic> newResponse = jsonDecode(response.body);
-      _isLoading = false;
-      return newResponse['choices'][0]['text'];
-    } else {
       return "";
     }
   }
@@ -248,7 +259,7 @@ class TextCompletProvider with ChangeNotifier {
           Message tempApiMessage = Message(
             sessionId: sessions.values.toList()[sessionIndex].sessionId,
             message_text:
-                await getAiResponse(messageText, sessionIndex, true, context),
+                await getAiResponse(messageText, sessionIndex, true),
             isApi: true,
             id: uuid.v4(),
             timeStamp:
@@ -288,6 +299,15 @@ class TextCompletProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void isSassionAvailable() {
+    if (listOfAllMessages.values.length == sessions.values.length) {
+      addNewSession();
+    } else {
+      _all_sessions = sessions.values.toList();
+      _current_session_index = sessions.values.toList().length - 1;
+    }
+  }
+
 // Delete a session along with messagelist linked with session
   Future<void> deleteSession(MessageSessionList session, int index) async {
     if (sessions.values.toList().length == 1 &&
@@ -324,8 +344,8 @@ class TextCompletProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> clearConversations() async{
-    _isLoading =true;
+  Future<void> clearConversations() async {
+    _isLoading = true;
     for (int i = allSesions.length - 1; i >= 0; i--) {
       await deleteSession(allSesions[i], i);
     }
@@ -333,7 +353,7 @@ class TextCompletProvider with ChangeNotifier {
       addNewSession();
     }
     _current_session_index = 0;
-        _isLoading =false;
+    _isLoading = false;
     notifyListeners();
   }
 
@@ -398,6 +418,7 @@ class TextCompletProvider with ChangeNotifier {
           .isAnimate = false;
     }
     listOfAllMessages.values.toList()[sessionIndex].save();
+    notifyListeners();
   }
 
   void likeMessage(int index, String id, int sessionIndex, int upperIndex,
@@ -535,8 +556,8 @@ class TextCompletProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void changeIsloadingState() {
-    _isLoading = false;
+  void changeIsloadingState(bool value) {
+    _isLoading = value;
     notifyListeners();
   }
 }

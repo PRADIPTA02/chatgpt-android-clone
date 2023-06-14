@@ -29,7 +29,7 @@ class SearchTextInput extends StatelessWidget {
                   Scrollbar(
                     child: TextField(
                       style: GoogleFonts.nunito(
-                          fontSize: 20, color: Colors.white70),
+                          fontSize: 16, color: Colors.white70),
                       minLines: 1,
                       maxLines: 5,
                       controller: imageGenerationProvider.ImageInputControler,
@@ -68,8 +68,8 @@ class SearchTextInput extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.02,
           ),
           Container(
-            height: MediaQuery.of(context).size.height * 0.06,
-            width: MediaQuery.of(context).size.width * 0.13,
+            height: MediaQuery.of(context).size.height * 0.055,
+            width: MediaQuery.of(context).size.width * 0.12,
             decoration: BoxDecoration(
               color: cgSecondary,
               borderRadius: BorderRadius.circular(3),

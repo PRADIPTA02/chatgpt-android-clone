@@ -20,7 +20,7 @@ class CustomTextWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final _textCompletionProvider =
         Provider.of<TextCompletProvider>(context, listen: false);
-    _textCompletionProvider.changeIsloadingState();
+    _textCompletionProvider.changeIsloadingState(false);
     return Text(
       text,
       style: GoogleFonts.nunito(fontSize: 18, color: Colors.white70),

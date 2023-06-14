@@ -51,14 +51,6 @@ class ChatScreen extends StatelessWidget {
                   ),
                 ),
                 actions: [
-                  IconButton(
-                      onPressed: () =>
-                          {_textCompletionProvider.addNewSession()},
-                      icon: const Icon(
-                        Icons.add,
-                        size: 28,
-                        color: Colors.white70,
-                      )),
                   Builder(builder: (context) {
                     return IconButton(
                         onPressed: () => {Scaffold.of(context).openDrawer()},
@@ -73,8 +65,7 @@ class ChatScreen extends StatelessWidget {
               drawer: const ChatScreenSidebar(),
               backgroundColor: bgColor,
               body: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                padding: const EdgeInsets.all(8),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -190,8 +181,7 @@ class ChatScreen extends StatelessWidget {
                                                               .text,
                                                           _textCompletionProvider
                                                               .CurrentSessionIndex,
-                                                          false,
-                                                          context),
+                                                          false),
                                                       _textCompletionProvider
                                                           .chat_imput_Controler
                                                           .clear()
@@ -230,7 +220,7 @@ class ChatScreen extends StatelessWidget {
                           shape: const BeveledRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(3))),
-                          backgroundColor: cbgColor,
+                          backgroundColor: Color.fromARGB(255, 33, 33, 33),
                           elevation: 0,
                           mini: true,
                           onPressed: () =>

@@ -18,6 +18,7 @@ class MenuItems {
         child: Consumer<AuthProvider>(
             builder: (context, value, child) => value.User_image == ""
                 ? const CircleAvatar(
+                    backgroundColor: secondaryColor,
                     backgroundImage:
                         AssetImage('assets/images/defaultAccountIcon.png'),
                   )
@@ -34,18 +35,18 @@ class MenuItems {
       text: 'Settings',
       icon: Icon(
         Icons.settings,
-        color: Colors.white,
+        color: Colors.white70,
       ));
   static const itemShare = MenuItem(
       text: 'Share',
       icon: Icon(
         Icons.share,
-        color: Colors.white,
+        color: Colors.white70,
       ));
   static const itemSignOut = MenuItem(
       text: 'Sign Out',
       icon: Icon(
         Icons.logout_rounded,
-        color: Colors.white,
+        color: Colors.white70,
       ));
 }
