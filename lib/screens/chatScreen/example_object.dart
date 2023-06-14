@@ -18,11 +18,14 @@ class ExampleObject extends StatelessWidget {
             height: 30,
           ),
           Center(
-              child: Text("AI BUDDY",
-                  style: GoogleFonts.nunito(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white))),
+              child: Text(
+              "AI BUDDY",
+              style: GoogleFonts.righteous(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),),
           const SizedBox(
             height: 40,
           ),

@@ -3,10 +3,12 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:chatgpt/providers/auth_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import '../models/image_model.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -35,6 +37,7 @@ class ImageGenerationProvider with ChangeNotifier {
   bool get isImageLoading => _is_image_loading;
   bool get isTyping => _isTyping;
   bool get isSpeaking => _is_speaking;
+  final authProvider = Provider.of<AuthProvider>(context, listen: false);
   final List<String> topImageGenerationSuggetion = [
     "earth reviving after human extinction, a new beginning, nature taking over buildings, animal kingdom, harmony, peace, earth balanced --version 3 --s 1250 --uplight --ar 4:3 --no text, blur",
     "earth after human extinction, a new beginning, nature taking back the planet, harmony, peace, earth balanced --version 3 --s 42000 --uplight --ar 4:3 --no text, blur, people, humans, pollution",
@@ -132,73 +135,6 @@ class ImageGenerationProvider with ChangeNotifier {
     }
     setImageLoading();
     notifyListeners();
-  }
-
-  Future<void> downloadFile(String url) async {
-    bool downloaded = await saveFile(imageUrl: url);
-    if (downloaded) {
-      changeProgress(0.0);
-      Fluttertoast.showToast(
-          msg: "Image Downloaded",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: const Color.fromARGB(178, 85, 231, 85),
-          textColor: Colors.white,
-          fontSize: 16.0);
-    } else {
-      Fluttertoast.showToast(
-          msg: "Error: Something went wrong",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 1,
-          backgroundColor: const Color.fromARGB(178, 231, 85, 85),
-          textColor: Colors.white,
-          fontSize: 16.0);
-    }
-
-    notifyListeners();
-  }
-
-  Future<bool> saveFile({required String imageUrl}) async {
-    Directory? directory;
-    try {
-      if (await _requestPermission(Permission.storage)) {
-        var time = DateTime.now().millisecondsSinceEpoch;
-        var newPath = "/storage/emulated/0/Download/image-AIBuddy-$time.jpg";
-        directory = Directory(newPath);
-        debugPrint(directory.path);
-      } else {
-        return false;
-      }
-      File saveFile = File(directory.path);
-      await dio.download(imageUrl, saveFile.path,
-          onReceiveProgress: (rec, total) {
-        changeProgress(rec / total);
-      });
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  Future<bool> _requestPermission(Permission permission) async {
-    if (await permission.isGranted) {
-      return true;
-    } else {
-      var result = await permission.request();
-      if (result == PermissionStatus.granted) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
-
-  Future<void> downloadImage({required String url}) async {
-    changeIsImageDownloading(true);
-    await downloadFile(url);
-    changeIsImageDownloading(false);
   }
 
   void giveRandomImageSuggetion() {

@@ -12,26 +12,27 @@ class ImageFrame extends StatefulWidget {
   const ImageFrame({super.key, required this.url});
   final String url;
 
-
   @override
   State<ImageFrame> createState() => _ImageFrameState();
 }
 
 class _ImageFrameState extends State<ImageFrame> {
   var time = DateTime.now().millisecondsSinceEpoch;
-  final bool isFavourit = false;
+  late bool isFavourit = false;
   final dio = Dio();
-  late double downloadProgross =0.0;
-  late bool isDownload = false;
+  late double downloadProgross = 0.0;
+  late bool isDownloaded = false;
   late bool isDownloading = false;
 
-   Future<bool> saveFile({required String imageUrl}) async {
+  Future<void> downloadImage({required String imageUrl}) async {
     Directory? directory;
     try {
       if (await _requestPermission(Permission.storage)) {
+        setState(() {
+          isDownloading = true;
+        });
         var newPath = "/storage/emulated/0/Download/image-AIBuddy-$time.jpg";
         directory = Directory(newPath);
-        debugPrint(directory.path);
       } else {
         Fluttertoast.showToast(
             msg: "Permission Denied",
@@ -49,13 +50,24 @@ class _ImageFrameState extends State<ImageFrame> {
           downloadProgross = (rec / total);
         });
       });
-      return true;
+      setState(() {
+        downloadProgross = 0.0;
+        isDownloading = false;
+        isDownloaded = true;
+      });
     } catch (e) {
-      return false;
+      Fluttertoast.showToast(
+          msg: "Error Occured",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.white.withOpacity(0.1),
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
   }
-  
-   Future<bool> _requestPermission(Permission permission) async {
+
+  Future<bool> _requestPermission(Permission permission) async {
     if (await permission.isGranted) {
       return true;
     } else {
@@ -119,26 +131,36 @@ class _ImageFrameState extends State<ImageFrame> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconButton(
-                            onPressed: null,
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                            onPressed: () {
+                              setState(() {
+                                isFavourit = !isFavourit; 
+                              });
+                            },
                             icon: Icon(
                               Icons.favorite_rounded,
                               color:
-                                  isFavourit ? secondaryColor : Colors.white30,
+                                  isFavourit ? const Color.fromARGB(255, 244, 67, 54) : Colors.white30,
                             )),
-                        value.isImageDownloading
-                            ? SizedBox(
+                        isDownloaded
+                            ? const Icon(Icons.download_done_rounded,color:cgSecondary):
+                            isDownloading?
+                            SizedBox(
                                 height: 30,
                                 width: 30,
                                 child: CircularProgressIndicator(
                                   backgroundColor: cgSecondary.withOpacity(0.2),
-                                  value: value.progress,
+                                  value: downloadProgross,
                                   valueColor:
                                       const AlwaysStoppedAnimation<Color>(
                                           cgSecondary),
                                 ),
                               )
-                            : IconButton(
-                                onPressed: () => value.downloadImage(url: widget.url),
+                             :IconButton(
+                              splashColor: Colors.transparent,
+                                onPressed: () =>
+                                    downloadImage(imageUrl: widget.url),
                                 icon: const Icon(
                                   Icons.download_rounded,
                                   color: cgSecondary,

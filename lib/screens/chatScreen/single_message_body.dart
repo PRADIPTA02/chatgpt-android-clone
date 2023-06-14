@@ -126,6 +126,7 @@ class SingleMessageBody extends StatelessWidget {
                 ),
                 !isApi
                     ? IconButton(
+                      splashRadius: 20,
                         onPressed: () => {
                               textCompletionProvider
                                   .changeShowSaveAndCancelButton(id, true),
@@ -183,6 +184,7 @@ class SingleMessageBody extends StatelessWidget {
                                             false),
                                   },
                               splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
                               icon: isDisLiked
                                   ? const Icon(
                                       Icons.thumb_down_alt,

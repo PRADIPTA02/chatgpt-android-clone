@@ -43,6 +43,8 @@ DateTime now = DateTime.now();
   Widget build(BuildContext context) {
     return Consumer<TextCompletProvider>(
       builder: (context, value, child) => InkWell(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
         onTap: () {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const ChatScreen()));
