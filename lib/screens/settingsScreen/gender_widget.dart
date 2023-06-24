@@ -3,16 +3,13 @@ import 'package:chatgpt/util/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class GenderWidget extends StatefulWidget {
-  final String gender;
-  const GenderWidget({super.key, required this.gender});
-  @override
-  State<GenderWidget> createState() => _GenderWidgetState();
-}
+class GenderWidget extends StatelessWidget {
+  const GenderWidget({required this.gender, Key? key}) : super(key: key);
+    final String gender;
 
-class _GenderWidgetState extends State<GenderWidget> {
   @override
   Widget build(BuildContext context) {
+        print(gender);
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.65,
       child: Consumer<AuthProvider>(
@@ -24,7 +21,7 @@ class _GenderWidgetState extends State<GenderWidget> {
               width: 50,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
-                  color: widget.gender == "Male"
+                  color: gender == "Male"
                       ? cgSecondary
                       : const Color.fromARGB(20, 158, 158, 158)),
               child: const Icon(
@@ -38,7 +35,7 @@ class _GenderWidgetState extends State<GenderWidget> {
               width: 50,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
-                  color: widget.gender == "Female"
+                  color: gender == "Female"
                       ? cgSecondary
                       : const Color.fromARGB(20, 158, 158, 158)),
               child: const Icon(
@@ -52,7 +49,7 @@ class _GenderWidgetState extends State<GenderWidget> {
               width: 50,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
-                  color: widget.gender == "Other"
+                  color: gender == "Other"
                       ? cgSecondary
                       : const Color.fromARGB(20, 158, 158, 158)),
               child: const Icon(

@@ -1,17 +1,15 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:convert';
-import 'dart:io';
 import 'dart:math';
-import 'package:chatgpt/providers/auth_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
 import '../models/image_model.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+
+import '../util/constants/constants.dart';
 
 class ImageGenerationProvider with ChangeNotifier {
   final SpeechToText _speechToText = SpeechToText();
@@ -128,7 +126,7 @@ class ImageGenerationProvider with ChangeNotifier {
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 1,
-          backgroundColor: Colors.redAccent,
+          backgroundColor: errorColor,
           textColor: Colors.white,
           fontSize: 16.0);
     }
@@ -190,6 +188,10 @@ class ImageGenerationProvider with ChangeNotifier {
     if (_is_avalable) {
       _speechToText.listen(onResult: _onSpeechResult, partialResults: false);
     }
+    notifyListeners();
+  }
+  void clearAllImages(){
+    _images = [];
     notifyListeners();
   }
 

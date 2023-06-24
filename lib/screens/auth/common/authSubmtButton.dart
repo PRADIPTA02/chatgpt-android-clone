@@ -15,7 +15,6 @@ class AuthSubmitButton extends StatelessWidget {
       builder: (context, value, child) => InkWell(
         onTap: ontap,
         child: Container(
-          width: MediaQuery.of(context).size.width * 0.95,
           height: MediaQuery.of(context).size.height * 0.06,
           decoration: BoxDecoration(
               gradient: const LinearGradient(

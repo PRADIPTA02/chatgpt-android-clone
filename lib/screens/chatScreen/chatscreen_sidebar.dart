@@ -10,7 +10,7 @@ class ChatScreenSidebar extends StatelessWidget {
   const ChatScreenSidebar({super.key});
   @override
   Widget build(BuildContext context) {
-    final _textCompletionProvider =
+    final textCompletionProvider =
         Provider.of<TextCompletProvider>(context, listen: false);
     return Drawer(
       width: MediaQuery.of(context).size.width * 0.75,
@@ -33,11 +33,11 @@ class ChatScreenSidebar extends StatelessWidget {
                         SizedBox(height:MediaQuery.of(context).size.height*0.03),
                 InkWell(
                   onTap: () => {
-                    _textCompletionProvider.addNewSession(),
+                    textCompletionProvider.addNewSession(),
                   },
                   child: Container(
                     padding: const EdgeInsets.only(
-                        top: 15, bottom: 15, left: 10, right: 10),
+                        top: 12, bottom: 12, left: 10, right: 10),
                     decoration: BoxDecoration(
                       border: Border.all(color:Colors.white30),
                       borderRadius: const BorderRadius.all(Radius.circular(5)),
@@ -67,21 +67,22 @@ class ChatScreenSidebar extends StatelessWidget {
                       scrollDirection: Axis.vertical,
                       physics: const BouncingScrollPhysics(
                           decelerationRate: ScrollDecelerationRate.fast),
-                      itemCount: _textCompletionProvider.allSesions.length,
+                      itemCount: textCompletionProvider.allSesions.length,
                       itemBuilder: (context, index) => InkWell(
                         splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
                         onTap: () => {
-                          _textCompletionProvider.changeShowSaveAndCancelButton(
+                          textCompletionProvider.changeShowSaveAndCancelButton(
                               "", false),
-                          _textCompletionProvider
+                          textCompletionProvider
                               .changeSessionDeletation(false),
-                          _textCompletionProvider.setMessageUpdate(false, ""),
-                          _textCompletionProvider.changeIsloadingState(false),
-                          _textCompletionProvider.changeCurrentSessionIndex(
-                              _textCompletionProvider.allSesions.length -
+                          textCompletionProvider.setMessageUpdate(false, ""),
+                          textCompletionProvider.changeIsloadingState(false),
+                          textCompletionProvider.changeCurrentSessionIndex(
+                              textCompletionProvider.allSesions.length -
                                   1 -
                                   index),
-                          _textCompletionProvider
+                          textCompletionProvider
                               .changeSafetoScrollButton(false),
                           FocusManager.instance.primaryFocus?.unfocus(),
                           Navigator.pop(context),
@@ -93,9 +94,9 @@ class ChatScreenSidebar extends StatelessWidget {
                           decoration: BoxDecoration(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(5)),
-                              color: _textCompletionProvider.allSesions.length -
+                              color: textCompletionProvider.allSesions.length -
                                           1 -
-                                          _textCompletionProvider
+                                          textCompletionProvider
                                               .CurrentSessionIndex ==
                                       index
                                   ? secondaryColor.withOpacity(0.7)
@@ -107,9 +108,9 @@ class ChatScreenSidebar extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     Icon(
-                                      _textCompletionProvider
+                                      textCompletionProvider
                                                   .isSessionDeleting &&
-                                              _textCompletionProvider
+                                              textCompletionProvider
                                                       .sessionIndex ==
                                                   index
                                           ? Icons.delete_forever
@@ -120,8 +121,8 @@ class ChatScreenSidebar extends StatelessWidget {
                                     const SizedBox(width: 10),
                                     Expanded(
                                       child: Text(
-                                        _textCompletionProvider
-                                            .allSesions[_textCompletionProvider
+                                        textCompletionProvider
+                                            .allSesions[textCompletionProvider
                                                     .allSesions.length -
                                                 1 -
                                                 index]
@@ -137,36 +138,36 @@ class ChatScreenSidebar extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              _textCompletionProvider.allSesions.length -
+                              textCompletionProvider.allSesions.length -
                                           1 -
-                                          _textCompletionProvider
+                                          textCompletionProvider
                                               .CurrentSessionIndex ==
                                       index
                                   ? Row(
                                       children: [
                                         InkWell(
                                           onTap: () => {
-                                            if (_textCompletionProvider
+                                            if (textCompletionProvider
                                                 .isSessionDeleting)
                                               {
-                                                _textCompletionProvider
+                                                textCompletionProvider
                                                     .deleteSession(
-                                                        _textCompletionProvider
+                                                        textCompletionProvider
                                                                 .allSesions[
-                                                            _textCompletionProvider
+                                                            textCompletionProvider
                                                                     .allSesions
                                                                     .length -
                                                                 1 -
                                                                 index],
-                                                        _textCompletionProvider
+                                                        textCompletionProvider
                                                                 .allSesions
                                                                 .length -
                                                             1 -
                                                             index),
-                                                _textCompletionProvider
+                                                textCompletionProvider
                                                     .changeSessionDeletation(
                                                         false),
-                                                _textCompletionProvider
+                                                textCompletionProvider
                                                     .setSessionIndex(-1),
                                               }
                                             else
@@ -176,16 +177,16 @@ class ChatScreenSidebar extends StatelessWidget {
                                                   builder:
                                                       (BuildContext context) {
                                                     return SessionEditDialog(
-                                                        sessionName: _textCompletionProvider
+                                                        sessionName: textCompletionProvider
                                                             .allSesions[
-                                                                _textCompletionProvider
+                                                                textCompletionProvider
                                                                         .allSesions
                                                                         .length -
                                                                     1 -
                                                                     index]
                                                             .sessionName,
                                                         sessionIndex:
-                                                            _textCompletionProvider
+                                                            textCompletionProvider
                                                                     .allSesions
                                                                     .length -
                                                                 1 -
@@ -195,9 +196,9 @@ class ChatScreenSidebar extends StatelessWidget {
                                               }
                                           },
                                           child: Icon(
-                                            _textCompletionProvider
+                                            textCompletionProvider
                                                         .isSessionDeleting &&
-                                                    _textCompletionProvider
+                                                    textCompletionProvider
                                                             .sessionIndex ==
                                                         index
                                                 ? Icons.done
@@ -211,28 +212,28 @@ class ChatScreenSidebar extends StatelessWidget {
                                         ),
                                         InkWell(
                                           onTap: () => {
-                                            _textCompletionProvider
+                                            textCompletionProvider
                                                 .changeSessionDeletation(
-                                                    _textCompletionProvider
+                                                    textCompletionProvider
                                                             .isSessionDeleting
                                                         ? false
                                                         : true),
-                                            _textCompletionProvider
+                                            textCompletionProvider
                                                 .setSessionIndex(index)
                                           },
                                           child: Icon(
-                                              _textCompletionProvider
+                                              textCompletionProvider
                                                           .isSessionDeleting &&
-                                                      _textCompletionProvider
+                                                      textCompletionProvider
                                                               .sessionIndex ==
                                                           index
                                                   ? Icons.close
                                                   : Icons
                                                       .delete_outline_rounded,
                                               size: 20,
-                                              color: _textCompletionProvider
+                                              color: textCompletionProvider
                                                           .isSessionDeleting &&
-                                                      _textCompletionProvider
+                                                      textCompletionProvider
                                                               .sessionIndex ==
                                                           index
                                                   ? Colors.white70
@@ -253,6 +254,8 @@ class ChatScreenSidebar extends StatelessWidget {
                   color: cglasscolor.withOpacity(0.2),
                 ),
                 InkWell(
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
                   onTap: () => showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -260,7 +263,7 @@ class ChatScreenSidebar extends StatelessWidget {
                           confirm_message:
                               "This action will clear all conversations permanently.Are you sure you want to proceed!",
                           title: "Clear All Conversations",
-                          onOK: _textCompletionProvider.clearConversations,
+                          onOK: textCompletionProvider.clearConversations,
                         );
                       }),
                   child: Padding(

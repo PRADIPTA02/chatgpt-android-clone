@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../util/constants/constants.dart';
-import 'back_button.dart';
 
 class AiModelSetting extends StatelessWidget {
   const AiModelSetting({super.key});

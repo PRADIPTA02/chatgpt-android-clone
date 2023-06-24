@@ -18,9 +18,9 @@ class CustomTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _textCompletionProvider =
+    final textCompletionProvider =
         Provider.of<TextCompletProvider>(context, listen: false);
-    _textCompletionProvider.changeIsloadingState(false);
+    textCompletionProvider.changeIsloadingState(false);
     return Text(
       text,
       style: GoogleFonts.nunito(fontSize: 18, color: Colors.white70),

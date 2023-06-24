@@ -5,6 +5,7 @@ import 'package:chatgpt/providers/auth_provider.dart';
 import 'package:chatgpt/util/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -245,7 +246,6 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       File? img = File(image.path);
       setState(() {
         _image = img;
-        print('${_image}');
       });
     } on PlatformException catch (e) {
       CustomSnackeBar.show(
@@ -268,8 +268,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       _firstNameController.text = user.Firstname;
       _lastNameController.text = user.Lastname;
       _phoneNumberController.text = user.Phone_number.toString();
-      _emailController.text = user.Email_id;
-      _ageController.text = user.Age.toString();
+      _emailController.text = user.Email_id!;
+      // _ageController.text = user.Age.toString();
       picked_time = user.Birthday;
       _dateTimeController.text = DateFormat.yMMMd().format(user.Birthday);
       _selectedDate = user.Birthday;
@@ -573,47 +573,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () async {
-              await authProvider.uerFormFillUpUpdate();
-              if (!mounted) return;
-              if (authProvider.User_form_filled) {
-                Navigator.of(context).pop();
-              } else {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        backgroundColor: secondaryColor,
-                        shadowColor: Colors.transparent,
-                        insetPadding: const EdgeInsets.all(20),
-                        actionsAlignment: MainAxisAlignment.spaceAround,
-                        title: Text(
-                          'Alert',
-                          style: GoogleFonts.nunito(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        content: Text(
-                          'Please fill up the form',
-                          style: GoogleFonts.nunito(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        actions: [
-                          TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text('Ok',
-                                  style: GoogleFonts.nunito(
-                                    color: cgSecondary,
-                                    fontWeight: FontWeight.w600,
-                                  )))
-                        ],
-                      );
-                    });
-              }
+              Navigator.of(context).pop();
             },
           ),
           title: Text(
@@ -772,9 +732,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
-                      readOnly: authProvider.primary_address == "email"
-                          ? true
-                          : false,
+                      readOnly: false,
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
@@ -1048,16 +1006,6 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                     BorderSide(width: 2, color: errorColor),
                               ),
                             ),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return '';
-                              }
-                              int? age = int.tryParse(value);
-                              if (age == null || age <= 0) {
-                                return '';
-                              }
-                              return null;
-                            },
                           ),
                         ),
                         SizedBox(
@@ -1152,28 +1100,32 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           InkWell(
                             onTap: () async {
                               if (_formKey.currentState!.validate()) {
-                                await value.profileEditForm(
-                                  firstname: _firstNameController.text,
-                                  lastname: _lastNameController.text,
-                                  email_id: _emailController.text,
-                                  gender: _selectedGender,
-                                  dob: picked_time,
-                                  age: _ageController.text,
-                                  country: _selectedCountry,
-                                  img_path: _image == null ? "" : _image!.path,
-                                  phone_number: _phoneNumberController.text,
-                                  context: context,
-                                );
+                                // await value.profileEditForm(
+                                //   firstname: _firstNameController.text,
+                                //   lastname: _lastNameController.text,
+                                //   email_id: _emailController.text,
+                                //   gender: _selectedGender,
+                                //   dob: picked_time,
+                                //   age: _ageController.text,
+                                //   country: _selectedCountry,
+                                //   img_path: _image == null ? "" : _image!.path,
+                                //   phone_number: _phoneNumberController.text,
+                                //   context: context,
+                                // );
                                 if (!mounted) return;
-                                if (!value.User_form_filled) {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                           HomeScreen()));
-                                }
-                                CustomSnackeBar.show(
-                                    context: context,
-                                    message: 'Profile Updated Successfully',
-                                    status: Status.success);
+                                // if (!value.User_form_filled) {
+                                //   Navigator.of(context).push(MaterialPageRoute(
+                                //       builder: (context) =>
+                                //           const HomeScreen()));
+                                // }
+                                Fluttertoast.showToast(
+                                    msg: 'Profile Updated Successfully',
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.TOP,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: successColor,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
                               }
                             },
                             child: Container(

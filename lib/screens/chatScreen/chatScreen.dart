@@ -1,6 +1,3 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers, non_constant_identifier_names, avoid_types_as_parameter_names
-
-import 'package:chatgpt/screens/chatScreen/chat_input.dart';
 import 'package:chatgpt/screens/chatScreen/chatscreen_sidebar.dart';
 import 'package:chatgpt/screens/chatScreen/message_list.dart';
 import 'package:flutter/material.dart';
@@ -14,29 +11,30 @@ import 'package:chatgpt/models/message_model.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:uuid/uuid.dart';
 import '../../util/constants/constants.dart';
+import 'chat_input.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
   @override
   Widget build(BuildContext context) {
     const uuid = Uuid();
-    final _textCompletionProvider =
+    final textCompletionProvider =
         Provider.of<TextCompletProvider>(context, listen: false);
     const spinKit = SpinKitThreeBounce(
       color: Colors.white70,
       size: 20.00,
     );
     return Consumer2<TextCompletProvider, InterNetConnectionCheck>(
-      builder: (context, TextCompletProvider, InterNetConnectionCheck, child) =>
+      builder: (context, textCompletProvider, interNetConnectionCheck, child) =>
           Scaffold(
               appBar: AppBar(
                 automaticallyImplyLeading: false,
                 title: Text(
-                  _textCompletionProvider.allSesions.isEmpty
+                  textCompletionProvider.allSesions.isEmpty
                       ? ""
-                      : _textCompletionProvider
+                      : textCompletionProvider
                           .allSesions[
-                              _textCompletionProvider.CurrentSessionIndex]
+                              textCompletionProvider.CurrentSessionIndex]
                           .sessionName,
                   style: GoogleFonts.nunito(
                       color: Colors.white70, fontWeight: FontWeight.bold),
@@ -44,6 +42,8 @@ class ChatScreen extends StatelessWidget {
                 backgroundColor: bgColor,
                 elevation: 0,
                 leading: IconButton(
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
                   onPressed: () => {Navigator.pop(context)},
                   icon: const Icon(
                     Icons.arrow_back,
@@ -88,9 +88,9 @@ class ChatScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(3),
                                 ),
                                 child: Center(
-                                    child: _textCompletionProvider.isLoading
+                                    child: textCompletionProvider.isLoading
                                         ? spinKit
-                                        : !_textCompletionProvider.isTyping
+                                        : !textCompletionProvider.isTyping
                                             ? AvatarGlow(
                                                 glowColor: Colors.white70,
                                                 endRadius: 75.0,
@@ -98,18 +98,18 @@ class ChatScreen extends StatelessWidget {
                                                     milliseconds: 2000),
                                                 repeat: true,
                                                 showTwoGlows: true,
-                                                animate: TextCompletProvider
+                                                animate: textCompletProvider
                                                     .isSpeaking,
                                                 repeatPauseDuration:
                                                     const Duration(
                                                         milliseconds: 100),
                                                 child: InkWell(
                                                     onTapDown:
-                                                        TextCompletProvider
+                                                        textCompletProvider
                                                             .startListening,
                                                     onTapUp: (TapUpDetails
                                                             details) =>
-                                                        _textCompletionProvider
+                                                        textCompletionProvider
                                                             .stopListening(),
                                                     child: const Icon(
                                                       Icons.mic_none_outlined,
@@ -123,7 +123,7 @@ class ChatScreen extends StatelessWidget {
                                                   color: Colors.white,
                                                 ),
                                                 onPressed: () => {
-                                                  if (!InterNetConnectionCheck
+                                                  if (!interNetConnectionCheck
                                                       .isOnline)
                                                     {
                                                       showDialog(
@@ -134,36 +134,36 @@ class ChatScreen extends StatelessWidget {
                                                         },
                                                       )
                                                     }
-                                                  else if (_textCompletionProvider
+                                                  else if (textCompletionProvider
                                                               .chat_imput_Controler
                                                               .text !=
                                                           "" &&
-                                                      !_textCompletionProvider
+                                                      !textCompletionProvider
                                                           .messageUpdateAvalable)
                                                     {
-                                                      _textCompletionProvider
+                                                      textCompletionProvider
                                                                   .allMessages
                                                                   .length <
-                                                              _textCompletionProvider
+                                                              textCompletionProvider
                                                                   .allSesions
                                                                   .length
-                                                          ? _textCompletionProvider
+                                                          ? textCompletionProvider
                                                               .changeSafetoScrollButton(
                                                                   false)
                                                           : null,
-                                                      _textCompletionProvider
+                                                      textCompletionProvider
                                                           .addMessage(
                                                         <Message>[
                                                           Message(
                                                               message_text:
-                                                                  _textCompletionProvider
+                                                                  textCompletionProvider
                                                                       .chat_imput_Controler
                                                                       .text,
                                                               isApi: false,
                                                               id: uuid.v1(),
-                                                              sessionId: _textCompletionProvider
+                                                              sessionId: textCompletionProvider
                                                                   .allSesions[
-                                                                      _textCompletionProvider
+                                                                      textCompletionProvider
                                                                           .CurrentSessionIndex]
                                                                   .sessionId,
                                                               timeStamp: int
@@ -172,17 +172,17 @@ class ChatScreen extends StatelessWidget {
                                                                       .millisecondsSinceEpoch
                                                                       .toString())),
                                                         ],
-                                                        _textCompletionProvider
+                                                        textCompletionProvider
                                                             .CurrentSessionIndex,
                                                       ),
-                                                      _textCompletionProvider.getAiResponse(
-                                                          _textCompletionProvider
+                                                      textCompletionProvider.getAiResponse(
+                                                          textCompletionProvider
                                                               .chat_imput_Controler
                                                               .text,
-                                                          _textCompletionProvider
+                                                          textCompletionProvider
                                                               .CurrentSessionIndex,
                                                           false),
-                                                      _textCompletionProvider
+                                                      textCompletionProvider
                                                           .chat_imput_Controler
                                                           .clear()
                                                     },
@@ -192,7 +192,7 @@ class ChatScreen extends StatelessWidget {
                             ],
                           ),
                           Visibility(
-                            visible: _textCompletionProvider.isSpeaking,
+                            visible: textCompletionProvider.isSpeaking,
                             child: Container(
                               height: 10,
                               width: 10,
@@ -212,7 +212,7 @@ class ChatScreen extends StatelessWidget {
               ),
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.miniEndFloat,
-              floatingActionButton: _textCompletionProvider.safeToScroll
+              floatingActionButton: textCompletionProvider.safeToScroll
                   ? Container(
                       height: 35,
                       margin: const EdgeInsets.only(bottom: 100),
@@ -220,11 +220,11 @@ class ChatScreen extends StatelessWidget {
                           shape: const BeveledRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(3))),
-                          backgroundColor: Color.fromARGB(255, 33, 33, 33),
+                          backgroundColor: const Color.fromARGB(255, 33, 33, 33),
                           elevation: 0,
                           mini: true,
                           onPressed: () =>
-                              {_textCompletionProvider.scrollToTop()},
+                              {textCompletionProvider.scrollToTop()},
                           child: const Icon(
                             Icons.keyboard_double_arrow_down,
                             color: Colors.white,

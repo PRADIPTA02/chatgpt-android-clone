@@ -11,7 +11,7 @@ class Heading extends StatelessWidget {
       style: GoogleFonts.nunito(
         color: Colors.white,
         fontWeight: FontWeight.w700,
-        fontSize: 30,
+        fontSize: 24,
       ),
     );
   }

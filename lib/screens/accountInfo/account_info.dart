@@ -6,13 +6,9 @@ import 'package:chatgpt/providers/auth_provider.dart';
 import 'package:chatgpt/screens/settingsScreen/gender_widget.dart';
 import 'package:chatgpt/screens/settingsScreen/profile_edit_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import '../../CommonWidgets/custom_snakebar.dart';
 import '../../util/constants/constants.dart';
-import '../settingsScreen/coustom_image_picker_button.dart';
 import '../settingsScreen/info_widgets.dart';
 
 class AccountInfo extends StatefulWidget {
@@ -23,22 +19,8 @@ class AccountInfo extends StatefulWidget {
 }
 
 class _AccountInfoState extends State<AccountInfo> {
-  File? _image;
+  File? _image; 
 
-  Future<void> _pickImage(ImageSource source) async {
-    try {
-      final image = await ImagePicker().pickImage(source: source);
-      if (image == null) return;
-      File? img = File(image.path);
-      setState(() {
-        _image = img;
-      });
-    } on PlatformException catch (e) {
-      CustomSnackeBar.show(
-          context: context, message: e.toString(), status: Status.error);
-      Navigator.of(context).pop;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -164,7 +146,7 @@ class _AccountInfoState extends State<AccountInfo> {
                   ),
                   GenderWidget(
                       gender:
-                          value.user_gender != "" ? value.user_gender : "male"),
+                          value.user_gender != "" ? value.user_gender : "Male"),
                 ],
               ),
               SizedBox(height: MediaQuery.of(context).size.width * 0.15),
@@ -180,7 +162,7 @@ class _AccountInfoState extends State<AccountInfo> {
                         fontWeight: FontWeight.w700),
                   ),
                   InfoWidget(
-                    data: value.user_age.toString(),
+                    data:  (DateTime.now().year-value.user_dob.year).toString(),
                   )
                 ],
               ),
@@ -214,7 +196,7 @@ class _AccountInfoState extends State<AccountInfo> {
                         fontWeight: FontWeight.w700),
                   ),
                   InfoWidget(
-                    data: value.user_email,
+                    data: value.user_email!,
                   ),
                 ],
               ),

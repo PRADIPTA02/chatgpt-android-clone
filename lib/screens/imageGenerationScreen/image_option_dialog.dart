@@ -37,7 +37,7 @@ class ImageOptionDialog extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   DropdownButton<String>(
-                    dropdownColor: secondaryColor,
+                    dropdownColor: bgColor,
                     style: GoogleFonts.nunito(
                         fontSize: 15,
                         color: cgSecondary,
@@ -69,7 +69,7 @@ class ImageOptionDialog extends StatelessWidget {
                         fontWeight: FontWeight.w600),
                     dropdownColor: bgColor,
                     value: imageGenerationProvider.numberOfImages,
-                    items: List.generate(10, (index) => index + 1)
+                    items: List.generate(5, (index) => index + 1)
                         .map((number) => DropdownMenuItem<int>(
                               value: number,
                               child: Text(number.toString()),

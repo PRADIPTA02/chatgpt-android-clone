@@ -83,7 +83,7 @@ class SettingsScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            value.user_name,
+                            "",
                             style: GoogleFonts.nunito(
                                 color:
                                     const Color.fromARGB(255, 212, 211, 211),

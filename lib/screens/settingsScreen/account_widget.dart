@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../util/constants/constants.dart';
-
 class AccountWidget extends StatelessWidget {
   const AccountWidget({super.key, required this.accountImage});
   final String accountImage;

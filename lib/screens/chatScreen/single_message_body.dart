@@ -39,7 +39,6 @@ class SingleMessageBody extends StatelessWidget {
     String amOrPm = dateTime.hour < 12 ? 'AM' : 'PM';
     int hour = dateTime.hour > 12 ? dateTime.hour - 12 : dateTime.hour;
     String minute = dateTime.minute.toString().padLeft(2, '0');
-    String second = dateTime.second.toString().padLeft(2, '0');
 
     return '$hour:$minute $amOrPm';
   }

@@ -5,7 +5,18 @@ part 'user_data_model.g.dart';
 
 @HiveType(typeId: 3)
 class UserData extends HiveObject {
-  UserData({required this.User_id,required this.User_uid,required this.Display_name,required this.primary_address});
+  UserData({
+    required this.Profile_image,
+    required this.User_id,
+    required this.User_uid,
+    required this.Firstname,
+    required this.Lastname,
+    required this.Email_id,
+    required this.Password,
+    required this.Birthday,
+    required this.Country,
+    required this.Gender,
+    });
   @HiveField(0)
   String Profile_image = "";
   @HiveField(1)
@@ -13,7 +24,7 @@ class UserData extends HiveObject {
   @HiveField(2)
   String Lastname = "";
   @HiveField(3)
-  String Email_id = "";
+  final String? Email_id;
   @HiveField(4)
   String Phone_number = "";
   @HiveField(5)
@@ -23,40 +34,31 @@ class UserData extends HiveObject {
   @HiveField(7)
   DateTime Birthday = DateTime.now();
   @HiveField(8)
-  String Age = "";
-  @HiveField(9)
   String Country = "";
-  @HiveField(10)
+  @HiveField(9)
   double Temperature = 0.6;
-  @HiveField(11)
+  @HiveField(10)
   int Maximum_length = 3457;
-  @HiveField(12)
+  @HiveField(11)
   double Top_p = 0.1;
-  @HiveField(13)
+  @HiveField(12)
   double Frequency_penalty = 1;
-  @HiveField(14)
+  @HiveField(13)
   double Presence_penalty = 1;
-  @HiveField(15)
+  @HiveField(14)
   int Best_of = 1;
-  @HiveField(16)
+  @HiveField(15)
   String Language = "English";
-  @HiveField(17)
+  @HiveField(16)
   String Model = "text-davinci-003";
-  @HiveField(18)
+  @HiveField(17)
   String Image_show_layout = "list";
-  @HiveField(19)
+  @HiveField(18)
   String Image_size = "256x256";
-  @HiveField(20)
+  @HiveField(19)
   int Number_of_images = 2;
-  @HiveField(21)
+  @HiveField(20)
   final String User_id;
-  @HiveField(22)
+  @HiveField(21)
   final String User_uid;
-  @HiveField(23)
-  final String Display_name;
-  @HiveField(24)
-  bool database_updated = false;
-  @HiveField(25)
-  final String primary_address;
-  
 }

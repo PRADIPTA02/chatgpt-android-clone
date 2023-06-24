@@ -14,8 +14,8 @@ class SessionEditDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _textCompletionProvider = Provider.of<TextCompletProvider>(
-        context as BuildContext,
+    final textCompletionProvider = Provider.of<TextCompletProvider>(
+        context,
         listen: false);
     return Consumer(
       builder: (context, value, child) => AlertDialog(
@@ -25,7 +25,7 @@ class SessionEditDialog extends StatelessWidget {
           'Edit Session Name',
           style: TextStyle(color: Colors.white70),
         ),
-        content: Container(
+        content: SizedBox(
           width: 500,
           child: TextField(
             controller: _controller,
@@ -57,8 +57,8 @@ class SessionEditDialog extends StatelessWidget {
                 backgroundColor: MaterialStateProperty.all<Color>(cgSecondary),
               ),
               onPressed: () => {
-                    _textCompletionProvider.updateSession(
-                        _textCompletionProvider.allSesions[sessionIndex],
+                    textCompletionProvider.updateSession(
+                        textCompletionProvider.allSesions[sessionIndex],
                         _controller.text.toString()),
                     Navigator.of(context).pop()
                   },

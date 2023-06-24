@@ -16,32 +16,22 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'models/user_data_model.dart';
 
-class PostHttpOverrides extends HttpOverrides {
-  @override
-  HttpClient createHttpClient(context) {
-    return super.createHttpClient(context)
-      ..badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-  }
-}
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  HttpOverrides.global = PostHttpOverrides();
   final InterNetConnectionCheck connectivityService = InterNetConnectionCheck();
   await connectivityService.startMonitoring();
   Directory document = await getApplicationDocumentsDirectory();
   Hive.init(document.path);
-  Hive.registerAdapter(UserDataAdapter());
   Hive.registerAdapter(MessageAdapter());
   Hive.registerAdapter(MessageSessionListAdapter());
   Hive.registerAdapter(ConversationAdapter());
-  await Hive.openBox<UserData>('userData');
+  Hive.registerAdapter(UserDataAdapter());
   await Hive.openBox<MessageSessionList>('sessionList');
   await Hive.openBox<Conversation>('messageList');
+  await Hive.openBox<UserData>('userData');
   runApp(MyApp(connectivityService: connectivityService));
 }
 

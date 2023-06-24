@@ -1,7 +1,5 @@
 import 'dart:async';
-
 import 'package:chatgpt/screens/auth/AuthScreen/auth_screen.dart';
-import 'package:chatgpt/screens/chatScreen/chatScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

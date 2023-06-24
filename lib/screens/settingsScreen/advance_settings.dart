@@ -287,7 +287,7 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                                           ? cgSecondary
                                           : cgSecondary.withOpacity(0.2))),
                           onPressed: () async {
-                            await authProvider.advanceSettingsValus();
+                            await authProvider.advanceSettingsValusUpdate();
                             if (!mounted) return;
                           },
                           child: authProvider.isLoading

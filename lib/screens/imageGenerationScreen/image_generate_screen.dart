@@ -13,18 +13,31 @@ class ImageGenerateScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return           Consumer<ImageGenerationProvider>(
+              builder: (context, value, child) =>Scaffold(
       appBar: AppBar(
         backgroundColor: bgColor,
         elevation: 0,
+        leading: IconButton(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            onPressed: () {
+              value.clearAllImages();
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back_rounded,
+              color: Colors.white,
+              size: 30,
+            )),
         title: Text(
           "Image Generation",
           style: GoogleFonts.nunito(fontSize: 20, fontWeight: FontWeight.w600),
         ),
         actions: [
-          Consumer<ImageGenerationProvider>(
-              builder: (context, value, child) => PopupMenuButton<String>(
-                    color: bgColor,
+ PopupMenuButton<String>(
+                    tooltip: null,
+                    color: secondaryColor,
                     icon: value.GetImageViewType == 'grid'
                         ? const Icon(
                             Icons.grid_view,
@@ -67,8 +80,10 @@ class ImageGenerateScreen extends StatelessWidget {
                         ),
                       ),
                     ],
-                  )),
+                  ),
           IconButton(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
               onPressed: () {
                 showDialog(
                   context: context,
@@ -140,6 +155,6 @@ class ImageGenerateScreen extends StatelessWidget {
           ]),
         ),
       ),
-    );
+    ));
   }
 }

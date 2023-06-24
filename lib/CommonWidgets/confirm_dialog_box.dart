@@ -1,6 +1,4 @@
 // ignore_for_file: non_constant_identifier_names
-
-import 'package:chatgpt/providers/auth_provider.dart';
 import 'package:chatgpt/providers/text_copletion_provider.dart';
 import 'package:chatgpt/util/constants/constants.dart';
 import 'package:flutter/material.dart';

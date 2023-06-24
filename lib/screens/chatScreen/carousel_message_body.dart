@@ -17,12 +17,12 @@ class CarouselMessageBody extends StatelessWidget {
     });
     final List<Message> ms;
     late int messageIndex = ms[0].indexOfUpdateMessage;
-    final upeerMessageIndex;
-    final sessionIndex ;
+    final int upeerMessageIndex;
+    final int sessionIndex ;
 
   @override
   Widget build(BuildContext context) {
-    final _textCompletionProvider =
+    final textCompletionProvider =
         Provider.of<TextCompletProvider>(context, listen: false);
     return Consumer<TextCompletProvider>(
       builder: (context, value, child) => Column(
@@ -45,7 +45,7 @@ class CarouselMessageBody extends StatelessWidget {
             children: [
               IconButton(
                   onPressed: () => {
-                       _textCompletionProvider.updateCarouselMessageLowerIndex(sessionIndex,upeerMessageIndex,(messageIndex-1)%ms.length)
+                       textCompletionProvider.updateCarouselMessageLowerIndex(sessionIndex,upeerMessageIndex,(messageIndex-1)%ms.length)
                       },
                   icon: const Icon(
                     Icons.arrow_back_ios,
@@ -75,7 +75,7 @@ class CarouselMessageBody extends StatelessWidget {
               ),
               IconButton(
                   onPressed: () => {
-                      _textCompletionProvider.updateCarouselMessageLowerIndex(sessionIndex,upeerMessageIndex,(1+messageIndex)%ms.length)
+                      textCompletionProvider.updateCarouselMessageLowerIndex(sessionIndex,upeerMessageIndex,(1+messageIndex)%ms.length)
                       },
                   icon: const Icon(Icons.arrow_forward_ios, color: Colors.white70,size: 20,))
             ],

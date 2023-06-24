@@ -16,7 +16,6 @@ import '../../models/home_screen_menu_item.dart';
 import '../../util/constants/constants.dart';
 import '../imageGenerationScreen/image_generate_screen.dart';
 import 'package:share_plus/share_plus.dart';
-
 import '../imageGenerationScreen/resent_images_carousel.dart';
 import '../settingsScreen/back_button.dart';
 import 'conversation_item.dart';
@@ -36,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final textCompletionProvider =
         Provider.of<TextCompletProvider>(context, listen: false);
     return Consumer2<TextCompletProvider, AuthProvider>(
-        builder: (context, value1, value2, child) => WillPopScope(
+        builder: (context, value1, value2, child) =>!value2.isLoading? WillPopScope(
           onWillPop:()async{
             final difference = DateTime.now().difference(timeBackPressed);
             final isExitWarning = difference >=  const Duration(seconds: 2);
@@ -75,64 +74,71 @@ class _HomeScreenState extends State<HomeScreen> {
                           dividerColor: const Color.fromARGB(68, 158, 158, 158),
                           dividerTheme: const DividerThemeData(
                               indent: 20, endIndent: 20, thickness: 1.5)),
-                      child: PopupMenuButton<MenuItem>(
-                          iconSize: 50,
-                          onSelected: (value) => {
-                                if (value.text.toString() == 'Sign Out')
-                                  {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return const SignOutDialog();
-                                        })
-                                  }
-                                else if (value.text.toString() == 'Account')
-                                  {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const AccountInfo()))
-                                  }
-                                else if (value.text.toString() == 'Settings')
-                                  {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const SettingsScreen()))
-                                  }
-                                else if (value.text.toString() == 'Share')
-                                  {Share.share('https://www.google.com')}
-                              },
-                          shape: BeveledRectangleBorder(
-                              borderRadius: BorderRadius.circular(3)),
-                          color: secondaryColor,
-                          icon: value2.User_image == ""
-                              ? const CircleAvatar(
-                                  backgroundColor: secondaryColor,
-                                  backgroundImage: AssetImage(
-                                      'assets/images/defaultAccountIcon.png'),
-                                )
-                              : value2.User_image.split('/').toList()[0] ==
-                                      'assets'
-                                  ? CircleAvatar(
-                                      backgroundColor: secondaryColor,
-                                      backgroundImage:
-                                          AssetImage(value2.User_image),
-                                    )
-                                  : CircleAvatar(
-                                      backgroundColor: secondaryColor,
-                                      backgroundImage:
-                                          FileImage(File(value2.User_image)),
-                                    ),
-                          itemBuilder: (context) => [
-                                ...MenuItems.itemsFirst.map(buildItem).toList(),
-                                const PopupMenuDivider(
-                                  height: 0.2,
-                                ),
-                                ...MenuItems.itemsSecond.map(buildItem).toList(),
-                              ]),
+                      child: Theme(
+                        data: Theme.of(context).copyWith(
+    highlightColor: Colors.transparent,
+    splashColor: Colors.transparent,
+  ),
+                        child: PopupMenuButton<MenuItem>(
+                            tooltip: '',                  
+                            iconSize: 50,
+                            onSelected: (value) => {
+                                  if (value.text.toString() == 'Sign Out')
+                                    {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return const SignOutDialog();
+                                          })
+                                    }
+                                  else if (value.text.toString() == 'Account')
+                                    {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const AccountInfo()))
+                                    }
+                                  else if (value.text.toString() == 'Settings')
+                                    {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const SettingsScreen()))
+                                    }
+                                  else if (value.text.toString() == 'Share')
+                                    {Share.share('https://www.google.com')}
+                                },
+                            shape: BeveledRectangleBorder(
+                                borderRadius: BorderRadius.circular(3)),
+                            color: secondaryColor,
+                            icon: value2.User_image == ""
+                                ? const CircleAvatar(
+                                    backgroundColor: secondaryColor,
+                                    backgroundImage: AssetImage(
+                                        'assets/images/defaultAccountIcon.png'),
+                                  )
+                                : value2.User_image.split('/').toList()[0] ==
+                                        'assets'
+                                    ? CircleAvatar(
+                                        backgroundColor: secondaryColor,
+                                        backgroundImage:
+                                            AssetImage(value2.User_image),
+                                      )
+                                    : CircleAvatar(
+                                        backgroundColor: secondaryColor,
+                                        backgroundImage:
+                                            FileImage(File(value2.User_image)),
+                                      ),
+                            itemBuilder: (context) => [
+                                  ...MenuItems.itemsFirst.map(buildItem).toList(),
+                                  const PopupMenuDivider(
+                                    height: 0.2,
+                                  ),
+                                  ...MenuItems.itemsSecond.map(buildItem).toList(),
+                                ]),
+                      ),
                     ),
                   ],
                   systemOverlayStyle: const SystemUiOverlayStyle(
@@ -357,6 +363,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       )),
                 ),
               ),
+        ): Container(
+          color: bgColor,
+          child: const Center(child: CircularProgressIndicator(
+            color: cgSecondary,
+          ),),
         ));
   }
 
@@ -383,25 +394,4 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ));
-
-      Future<bool>  _onBackButtonPressed(BuildContext context) async{
-          bool? exitApp = await showDialog(context: context, builder: (BuildContext context){
-            return AlertDialog(
-              backgroundColor: secondaryColor,
-              title: Text('Do you want to exit this application?',style:GoogleFonts.nunito(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w600,)),
-              content:  Text('We hate to see you leave...',style:GoogleFonts.nunito(color: Colors.white70,fontSize: 15,fontWeight: FontWeight.w600,)),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(false),
-                  child:  Text('No',style:GoogleFonts.nunito(color: Colors.white70,fontSize: 16,fontWeight: FontWeight.w600,)),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(true),
-                  child: Text('Yes',style:GoogleFonts.nunito(color: Colors.white70,fontSize: 16,fontWeight: FontWeight.w600,)),
-                ),
-              ],
-            );
-          });
-          return exitApp ?? false;
-        }
 }

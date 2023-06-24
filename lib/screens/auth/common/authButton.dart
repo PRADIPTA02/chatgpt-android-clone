@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../util/constants/constants.dart';
 
 class AuthButton extends StatelessWidget {
@@ -7,21 +8,28 @@ class AuthButton extends StatelessWidget {
   final String buttonIcon;
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: ontap,
-      child: Container(
-        width: MediaQuery.of(context).size.width*0.43,
-        height:MediaQuery.of(context).size.height*0.07,
-        decoration: BoxDecoration(
-          color: secondaryColor,
-          borderRadius: BorderRadius.circular(5),
-          border: Border.all(
-            color: cglasscolor,
-            width: 2
-          )
-        ),
-        child: Center(child: Image.asset(buttonIcon,height: 35,))
-        ),
-    );
+    return Container(
+      height:MediaQuery.of(context).size.height*0.06,
+      decoration: BoxDecoration(
+        color: secondaryColor,
+        borderRadius: BorderRadius.circular(5),
+        border: Border.all(
+          color: cglasscolor,
+          width: 2
+        )
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(buttonIcon,height: 20,),
+          SizedBox(width: MediaQuery.of(context).size.width*0.05,),
+          Text("Sign in with Google",style: GoogleFonts.nunito(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: Colors.white70
+          ),)
+        ],
+      )
+      );
   }
 }
