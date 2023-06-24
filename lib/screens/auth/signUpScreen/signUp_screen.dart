@@ -243,14 +243,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   initialDateTime: DateTime.now(),
                   mode: CupertinoDatePickerMode.date,
                   backgroundColor: secondaryColor,
-                  onDateTimeChanged: (value) => setState(() {
-                    SystemSound.play(SystemSoundType.click);
+                  onDateTimeChanged: (value) => 
                     setState(() {
+                    // SystemSound.play(SystemSoundType.click);
+                    HapticFeedback.mediumImpact();
                       _dateTimeController.text =
                           DateFormat.yMMMd().format(value);
                       pickedtime = value;
-                    });
-                  }),
+                    }),
                 ),
               ),
             )
