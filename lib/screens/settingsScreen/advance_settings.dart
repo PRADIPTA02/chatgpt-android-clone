@@ -2,6 +2,8 @@
 import 'package:chatgpt/providers/auth_provider.dart';
 import 'package:chatgpt/util/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -72,6 +74,7 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                             activeColor: cgSecondary,
                             value: authProvider.IsAdvanceModeOn,
                             onChanged: (bool value) {
+                              HapticFeedback.lightImpact();
                               authProvider.changeIsAdvanceModeONOF(value);
                             })
                       ],
@@ -287,8 +290,15 @@ class _AdvanceSettingsState extends State<AdvanceSettings> {
                                           ? cgSecondary
                                           : cgSecondary.withOpacity(0.2))),
                           onPressed: () async {
+                            HapticFeedback.lightImpact();
                             await authProvider.advanceSettingsValusUpdate();
-                            if (!mounted) return;
+                            Fluttertoast.showToast(
+                                msg: 'Settings Saved',
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.TOP,
+                                backgroundColor: successColor,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
                           },
                           child: authProvider.isLoading
                               ? const CircularProgressIndicator(

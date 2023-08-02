@@ -53,7 +53,6 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider.value(value: connectivityService),
         ],
         child: MaterialApp(
-          useInheritedMediaQuery: true,
           debugShowCheckedModeBanner: false,
           title: 'AI BUDDY',
           theme: ThemeData(

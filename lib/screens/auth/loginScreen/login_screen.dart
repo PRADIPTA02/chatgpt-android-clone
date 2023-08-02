@@ -7,10 +7,12 @@ import 'package:chatgpt/screens/auth/signUpScreen/signUp_screen.dart';
 import 'package:chatgpt/screens/settingsScreen/profile_edit_screen.dart';
 import 'package:chatgpt/util/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/auth_provider.dart';
 import '../../homeScreen/home_screen.dart';
+import '../forgot_password/forgot_password_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -177,7 +179,13 @@ class LoginScreen extends StatelessWidget {
                           InkWell(
                             // splashColor: Colors.transparent,
                             highlightColor: Colors.transparent,
-                            onTap: () => {},
+                            splashColor: Colors.transparent,
+                            onTap: () => {
+                              HapticFeedback.lightImpact(),
+                              Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) => const ForgotPasswordScreen())),
+                            },
                             child: Align(
                               alignment: Alignment.bottomRight,
                               child: Text(
@@ -192,24 +200,27 @@ class LoginScreen extends StatelessWidget {
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.10,
                           ),
-                          AuthSubmitButton(
-                              ontap: () async {
-                                if (_login_formKey.currentState!.validate()) {
-                                  _login_formKey.currentState!.save();
-                                  await authProvider.SignIn(
-                                      email: authProvider
-                                          .login_email_controller.text,
-                                      password: authProvider
-                                          .login_password_controller.text,
-                                      context: context);
-                                }
-                                if(context.mounted){
-                                Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                        builder: (context) => const HomeScreen()));
-                                }
-                              },
-                              title: "Log in"),
+                          InkWell(
+                            onTap: ()async{
+                                HapticFeedback.lightImpact();
+                                  if (_login_formKey.currentState!.validate()) {
+                                    _login_formKey.currentState!.save();
+                                    await authProvider.SignIn(
+                                        email: authProvider
+                                            .login_email_controller.text,
+                                        password: authProvider
+                                            .login_password_controller.text,
+                                        context: context);
+                                  }
+                                  // if(context.mounted){
+                                  // Navigator.of(context).pushReplacement(
+                                  //     MaterialPageRoute(
+                                  //         builder: (context) => const HomeScreen()));
+                                  // }
+                            },
+                            child: const AuthSubmitButton(
+                                title: "Log in"),
+                          ),
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.02,
                           ),
@@ -219,6 +230,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                           InkWell(
                             onTap: () async{
+                              HapticFeedback.lightImpact();
                               await authProvider.signInWithGoogle();
                               if(context.mounted){
                                 Navigator.of(context).push(
@@ -246,6 +258,7 @@ class LoginScreen extends StatelessWidget {
                               InkWell(
                                 splashColor: Colors.transparent,
                                 onTap: () => {
+                                  HapticFeedback.lightImpact(),
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => const SignUpScreen())),
                                 },

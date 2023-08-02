@@ -6,6 +6,7 @@ import 'package:chatgpt/screens/settingsScreen/profile_edit_screen.dart';
 import 'package:chatgpt/util/constants/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive/hive.dart';
@@ -258,7 +259,7 @@ final List<String> countries = [
 
 //User related data (getter)
 
-  String    get fast_name         =>   _first_name;
+  String    get first_name         =>   _first_name;
   String    get last_name         =>   _last_name;
   String?   get user_email       =>   _user_email;
   DateTime  get user_dob          =>   _user_dob;
@@ -428,7 +429,7 @@ final List<String> countries = [
   void SignOut() async {
     _isLoading = true;
     await FirebaseAuth.instance.signOut();
-    await deleteUserLocaly();
+    User_data.clear();
     _isLoading = false;
     notifyListeners();
   }
@@ -452,36 +453,52 @@ final List<String> countries = [
             _isGoogleSingInRunning = true;
             var tempUser = await FirebaseFirestore.instance.collection('users').add({
               'created_at': DateTime.now(),
-              'user_email': user.user!.email,
-              'user_firstname': user.user!.displayName!.split(' ')[0],
-              'user_lastname': user.user!.displayName!.split(' ')[1],
-              'user_uid':     user.user!.uid,
-              'user_login_date': DateTime.now(),
-              'user_name': user.user!.displayName,
+              'user_email':       user.user!.email,
+              'user_firstname':   user.user!.displayName!.split(' ')[0],
+              'user_lastname':    user.user!.displayName!.split(' ')[1],
+              'user_uid':         user.user!.uid,
+              'user_login_date':  DateTime.now(),
+              'user_name':        user.user!.displayName,
+              'user_image_path':  giveRandomavater(),
+              'user_gender':      'Gender',
+              'user_country':     'Select Country',
+              'user_password':    '',
+              'user_dob':         DateTime.now(),
+              
+            });
+            await FirebaseFirestore.instance.collection('users').doc(tempUser.id).update({
+              'user_id': tempUser.id,
             });
               await createUserLocaly(
-                    user_id :tempUser.id,
-                    user_uid:user.user!.uid,
-                    firstname:user.user!.displayName!.split(' ')[0],
-                    lastname:user.user!.displayName!.split(' ')[1],
-                    email_id:user.user!.email,
-                    password:"password",
-                    birthday:DateTime.now(), 
-                    country:'Select Country', 
-                    profile_image:giveRandomavater(),
-                    gender:'Gender');
+                    user_id :       tempUser.id,
+                    user_uid:       user.user!.uid,
+                    firstname:      user.user!.displayName!.split(' ')[0],
+                    lastname:       user.user!.displayName!.split(' ')[1],
+                    email_id:       user.user!.email,
+                    password:       "",
+                    birthday:       DateTime.now(), 
+                    country:        'Select Country', 
+                    profile_image:  giveRandomavater(),
+                    gender:         'Gender');
+              changeIsLoading(false);
+              notifyListeners();
+          }else{
+            await loadUserDataLocalyFromFirebase(uid: user.user!.uid);
             changeIsLoading(false);
             notifyListeners();
           }
 
     }catch(e){
       Fluttertoast.showToast(
-        msg: "Error: $e",
-        textColor: Colors.white,
+        msg:            "Error: $e",
+        textColor:     Colors.white,
         backgroundColor: errorColor,
-        gravity: ToastGravity.TOP,
+        gravity:         ToastGravity.TOP,
       );
+      changeIsLoading(false);
+      notifyListeners();
     }
+    notifyListeners();
   }
 
   ///////////////////////////////////////////////////// SIGN IN WITH EMAIL AND PASSWORD //////////////////////////////////////////////////////////
@@ -495,6 +512,12 @@ final List<String> countries = [
         final user = await  FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
         await loadUserDataLocalyFromFirebase(uid: user.user!.uid);
         changeIsLoading(false);
+        Fluttertoast.showToast(
+          msg:            "Login Successfull",
+          textColor:     Colors.white,
+          backgroundColor: successColor,
+          gravity:         ToastGravity.TOP,
+        );
         _login_email_controller.text = "";
         _login_password_controller.text = "";
       } on FirebaseAuthException catch (e) {
@@ -674,6 +697,11 @@ final List<String> countries = [
             gender:         gender,
           );
           changeIsLoading(false);
+          Fluttertoast.showToast(
+            msg: 'User created successfully',
+            textColor: Colors.white,
+            backgroundColor: successColor,
+            gravity: ToastGravity.TOP,);
 
         }catch(e){
           if (e.toString().contains('email address is already in use')){
@@ -711,6 +739,72 @@ final List<String> countries = [
       user.save();
     }
     changeIsLoading(false);
+    notifyListeners();
+  }
+
+  Future<void> profileUpdate({
+    required String   user_id,
+    required String   firstname,
+    required String   lastname,
+    required DateTime birthday,
+    required String   country,
+    required String   profile_image,
+    required String   gender,
+  })async{
+    changeIsLoading(true);
+    try{await FirebaseFirestore.instance.collection('users').doc(user_id).update({
+            'user_firstname':   firstname,
+            'user_lastname':    lastname,
+            'user_country':     country,
+            'user_dob':         birthday,
+            'user_image_path':  profile_image,
+            'user_gender':      gender,
+          });
+    if (User_data.values.toList().isNotEmpty) {
+      final user          = User_data.values.toList()[0];
+      user.Firstname      = firstname;
+      user.Lastname       = lastname;
+      user.Birthday       = birthday;
+      user.Country        = country;
+      user.Gender         = gender;
+      user.Profile_image  = profile_image;
+      user.save();
+      _first_name         = user.Firstname;
+      _last_name          = user.Lastname;
+      _user_dob           = user.Birthday;
+      _user_country       = user.Country;
+      _user_gender        = user.Gender;
+      _user_image         = user.Profile_image;
+    }}catch(e){
+      Fluttertoast.showToast(
+              msg: 'Error: Unknown error occured',
+              textColor: Colors.white,
+              backgroundColor: errorColor,
+              gravity: ToastGravity.TOP,);
+    }
+    changeIsLoading(false);
+    notifyListeners();
+  }
+
+   Future<void> resetPassword({required String email}) async {
+    
+    try{
+      changeIsLoading(true);
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      Fluttertoast.showToast(
+              msg: 'Password reset link sent to your email',
+              textColor: Colors.white,
+              backgroundColor: successColor,
+              gravity: ToastGravity.TOP,);
+      changeIsLoading(false);
+    }catch(e){
+      Fluttertoast.showToast(
+              msg: 'Error: Unknown error occured',
+              textColor: Colors.white,
+              backgroundColor: errorColor,
+              gravity: ToastGravity.TOP,);
+      changeIsLoading(false);
+    }
     notifyListeners();
   }
 

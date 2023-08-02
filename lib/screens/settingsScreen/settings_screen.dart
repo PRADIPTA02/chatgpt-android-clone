@@ -3,6 +3,7 @@ import 'package:chatgpt/providers/auth_provider.dart';
 import 'package:chatgpt/screens/accountInfo/account_info.dart';
 import 'package:chatgpt/screens/settingsScreen/language_setting.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../util/constants/constants.dart';
@@ -27,7 +28,9 @@ class SettingsScreen extends StatelessWidget {
           ),
           leading: IconButton(
               splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
               onPressed: () {
+                HapticFeedback  .lightImpact();
                 value.changeIsExpanded(false);
                 value.changeIsAdvanceModeONOF(false);
                 Navigator.pop(context);
@@ -83,7 +86,7 @@ class SettingsScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "",
+                            "${'${value.first_name} '}${value.last_name}",
                             style: GoogleFonts.nunito(
                                 color:
                                     const Color.fromARGB(255, 212, 211, 211),
@@ -103,6 +106,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   CustomBackButton(
                     onTap: () => {
+                      HapticFeedback.lightImpact(),
                       Navigator.push(
                           context,
                           MaterialPageRoute(

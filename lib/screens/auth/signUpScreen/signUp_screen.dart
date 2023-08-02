@@ -245,8 +245,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   backgroundColor: secondaryColor,
                   onDateTimeChanged: (value) => 
                     setState(() {
-                    // SystemSound.play(SystemSoundType.click);
-                    HapticFeedback.mediumImpact();
+                    SystemSound.play(SystemSoundType.click);
+                    HapticFeedback.lightImpact();
                       _dateTimeController.text =
                           DateFormat.yMMMd().format(value);
                       pickedtime = value;
@@ -683,22 +683,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.10,
                     ),
-                    AuthSubmitButton(
-                        ontap: () {
-                          if (signupformKey.currentState!.validate()) {
-                            authProvider.changeIsLoading(true);
-                            authProvider.signUp(
-                              profile_image: authProvider.giveRandomavater(),
-                              gender: _selectedGender,
-                              birthday: pickedtime,
-                              country: _selectedCountry,
-                                fullname: signupFullNameController.text,
-                                email: signupEmailController.text,
-                                password: signupPasswordController.text,
-                                );
-                          }
-                        },
-                        title: "Sign up"),
+                    InkWell(
+                      onTap: ()async{
+HapticFeedback.lightImpact();
+                            if (signupformKey.currentState!.validate()) {
+                              authProvider.changeIsLoading(true);
+                              authProvider.signUp(
+                                profile_image: authProvider.giveRandomavater(),
+                                gender: _selectedGender,
+                                birthday: pickedtime,
+                                country: _selectedCountry,
+                                  fullname: signupFullNameController.text,
+                                  email: signupEmailController.text,
+                                  password: signupPasswordController.text,
+                                  );
+                            }
+                      },
+                      child: const AuthSubmitButton(
+                          title: "Sign up"),
+                    ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.05,
                     ),
@@ -715,6 +718,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         InkWell(
                           splashColor: Colors.transparent,
                           onTap: () => {
+                            HapticFeedback.lightImpact(),
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => LoginScreen())),
                           },

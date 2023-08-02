@@ -6,14 +6,12 @@ import 'package:provider/provider.dart';
 import '../../../util/constants/constants.dart';
 
 class AuthSubmitButton extends StatelessWidget {
-  const AuthSubmitButton({super.key, required this.ontap, required this.title});
-  final VoidCallback ontap;
+  const AuthSubmitButton({super.key, required this.title});
   final String title;
   @override
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(
       builder: (context, value, child) => InkWell(
-        onTap: ontap,
         child: Container(
           height: MediaQuery.of(context).size.height * 0.06,
           decoration: BoxDecoration(

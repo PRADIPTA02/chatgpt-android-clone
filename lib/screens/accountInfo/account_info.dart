@@ -6,6 +6,7 @@ import 'package:chatgpt/providers/auth_provider.dart';
 import 'package:chatgpt/screens/settingsScreen/gender_widget.dart';
 import 'package:chatgpt/screens/settingsScreen/profile_edit_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../util/constants/constants.dart';
@@ -31,7 +32,11 @@ class _AccountInfoState extends State<AccountInfo> {
           elevation: 0,
           leading: IconButton(
               splashColor: Colors.transparent,
-              onPressed: () => Navigator.of(context).pop(),
+              highlightColor: Colors.transparent,
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                Navigator.of(context).pop();
+                },
               icon: const Icon(Icons.arrow_back)),
               title: Text(
                 "Account",
@@ -42,7 +47,10 @@ class _AccountInfoState extends State<AccountInfo> {
               ),
           actions: [
             IconButton(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
               onPressed: () => {
+                HapticFeedback.lightImpact(),
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -128,7 +136,7 @@ class _AccountInfoState extends State<AccountInfo> {
                         fontWeight: FontWeight.w700),
                   ),
                   InfoWidget(
-                    data: "${value.fast_name} ${value.last_name}",
+                    data: "${value.first_name} ${value.last_name}",
                   )
                 ],
               ),
@@ -167,23 +175,7 @@ class _AccountInfoState extends State<AccountInfo> {
                 ],
               ),
               SizedBox(height: MediaQuery.of(context).size.width * 0.15),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Phone",
-                    style: GoogleFonts.nunito(
-                        color: Colors.white30,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700),
-                  ),
-                  InfoWidget(
-                    data: value.user_phone_number.toString(),
-                  )
-                ],
-              ),
-              SizedBox(height: MediaQuery.of(context).size.width * 0.14),
+             
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

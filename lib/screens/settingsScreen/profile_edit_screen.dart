@@ -33,7 +33,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   late TextEditingController _emailController;
   late TextEditingController _ageController;
   late TextEditingController _dateTimeController;
-  late DateTime _selectedDate;
+  // late DateTime _selectedDate;
   late String _selectedCountry = '';
   late String _selectedGender = '';
   List<String> countries = [
@@ -222,17 +222,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     'Zimbabwe'
   ];
 
-  //validator for phonr number
-  bool _isValidPhoneNumber(String value) {
-    final RegExp phoneRegExp = RegExp(r'^[0-9]{10}$');
-    return phoneRegExp.hasMatch(value);
-  }
-
   //validator for email
 
   bool _isValidEmail(String value) {
-    // You can use a regular expression to define your email address format
-    // Here's a basic example of an email address format validation
     final RegExp emailRegExp = RegExp(
         r'^[\w-]+(\.[\w-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$');
 
@@ -269,10 +261,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       _lastNameController.text = user.Lastname;
       _phoneNumberController.text = user.Phone_number.toString();
       _emailController.text = user.Email_id!;
+      _ageController.text = (DateTime.now().year - user.Birthday.year).toString();
       // _ageController.text = user.Age.toString();
       picked_time = user.Birthday;
       _dateTimeController.text = DateFormat.yMMMd().format(user.Birthday);
-      _selectedDate = user.Birthday;
+      // _selectedDate = user.Birthday;
       _image = user.Profile_image != "" ? File(user.Profile_image) : null;
     }
     _selectedCountry = widget.user_data.isNotEmpty
@@ -349,6 +342,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                         ImagePickerButton(
                           title: "Chose from Gallery",
                           ontap: () => {
+                            HapticFeedback.lightImpact(),
                             _pickImage(ImageSource.gallery),
                             Navigator.of(context).pop(),
                           },
@@ -360,6 +354,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                         ImagePickerButton(
                           title: "Capture from Camera",
                           ontap: () => {
+                            HapticFeedback.lightImpact(),
                             _pickImage(ImageSource.camera),
                             Navigator.of(context).pop(),
                           },
@@ -371,6 +366,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                         ImagePickerButton(
                           title: "Remove Photo",
                           ontap: () => {
+                            HapticFeedback.lightImpact(),
                             setState(() {
                               _image = null;
                             }),
@@ -389,6 +385,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                 InkWell(
                                   splashColor: Colors.transparent,
                                   onTap: () {
+                                    HapticFeedback.lightImpact();
                                     setState(() {
                                       _image =
                                           File("assets/images/avater_1.png");
@@ -405,6 +402,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                 InkWell(
                                   splashColor: Colors.transparent,
                                   onTap: () {
+                                    HapticFeedback.lightImpact();
                                     setState(() {
                                       _image =
                                           File("assets/images/avater_2.png");
@@ -421,6 +419,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                 InkWell(
                                   splashColor: Colors.transparent,
                                   onTap: () {
+                                    HapticFeedback.lightImpact();
                                     setState(() {
                                       _image =
                                           File("assets/images/avater_3.png");
@@ -437,6 +436,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                 InkWell(
                                   splashColor: Colors.transparent,
                                   onTap: () {
+                                    HapticFeedback.lightImpact();
                                     setState(() {
                                       _image =
                                           File("assets/images/avater_4.png");
@@ -453,6 +453,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                 InkWell(
                                   splashColor: Colors.transparent,
                                   onTap: () {
+                                    HapticFeedback.lightImpact();
                                     setState(() {
                                       _image =
                                           File("assets/images/avater_5.png");
@@ -479,6 +480,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                               InkWell(
                                 splashColor: Colors.transparent,
                                 onTap: () {
+                                  HapticFeedback.lightImpact();
                                   setState(() {
                                     _image = File("assets/images/avater_6.png");
                                     Navigator.of(context).pop();
@@ -494,6 +496,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                               InkWell(
                                 splashColor: Colors.transparent,
                                 onTap: () {
+                                  HapticFeedback.lightImpact();
                                   setState(() {
                                     _image = File("assets/images/avater_7.png");
                                     Navigator.of(context).pop();
@@ -509,6 +512,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                               InkWell(
                                 splashColor: Colors.transparent,
                                 onTap: () {
+                                  HapticFeedback.lightImpact();
                                   setState(() {
                                     _image = File("assets/images/avater_8.png");
                                     Navigator.of(context).pop();
@@ -524,6 +528,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                               InkWell(
                                 splashColor: Colors.transparent,
                                 onTap: () {
+                                  HapticFeedback.lightImpact();
                                   setState(() {
                                     _image = File("assets/images/avater_9.png");
                                     Navigator.of(context).pop();
@@ -539,6 +544,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                               InkWell(
                                 splashColor: Colors.transparent,
                                 onTap: () {
+                                  HapticFeedback.lightImpact();
                                   setState(() {
                                     _image =
                                         File("assets/images/avater_10.png");
@@ -571,8 +577,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
           elevation: 0,
           backgroundColor: bgColor,
           leading: IconButton(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
             icon: const Icon(Icons.arrow_back),
             onPressed: () async {
+              HapticFeedback.lightImpact();
               Navigator.of(context).pop();
             },
           ),
@@ -619,7 +628,10 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           bottom: -8,
                           right: -2,
                           child: IconButton(
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
                               onPressed: () {
+                                HapticFeedback.lightImpact();
                                 _showImageSelectionBottomSheet(context);
                               },
                               icon: Container(
@@ -732,7 +744,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
-                      readOnly: false,
+                      readOnly: true,
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
@@ -770,49 +782,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                       },
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                    TextFormField(
-                      controller: _phoneNumberController,
-                      style: GoogleFonts.nunito(
-                        color: Colors.white70,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 15, horizontal: 12),
-                        filled: true,
-                        fillColor: secondaryColor,
-                        labelText: "Phone number",
-                        labelStyle: GoogleFonts.nunito(
-                          color: Colors.white70,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        errorStyle: const TextStyle(height: 0),
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: cglasscolor),
-                        ),
-                        focusedBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: cgSecondary),
-                        ),
-                        errorBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: errorColor),
-                        ),
-                        focusedErrorBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(width: 2, color: errorColor),
-                        ),
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return '';
-                        }
-                        if (!_isValidPhoneNumber(value)) {
-                          return '';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                    
                     Row(
                       children: [
                         Expanded(
@@ -977,6 +947,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                               color: Colors.white70,
                               fontWeight: FontWeight.w500,
                             ),
+                            readOnly: true,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(
@@ -1077,7 +1048,15 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                       builder: (context, value, child) => Column(
                         children: [
                           InkWell(
-                            onTap: () => {},
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onTap: () {
+                              HapticFeedback.lightImpact();
+                              if (!mounted) return;          
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          const HomeScreen()));
+                            },
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.95,
                               height: MediaQuery.of(context).size.height * 0.06,
@@ -1098,28 +1077,24 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                               height:
                                   MediaQuery.of(context).size.height * 0.02),
                           InkWell(
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
                             onTap: () async {
+                              HapticFeedback.lightImpact();
                               if (_formKey.currentState!.validate()) {
-                                // await value.profileEditForm(
-                                //   firstname: _firstNameController.text,
-                                //   lastname: _lastNameController.text,
-                                //   email_id: _emailController.text,
-                                //   gender: _selectedGender,
-                                //   dob: picked_time,
-                                //   age: _ageController.text,
-                                //   country: _selectedCountry,
-                                //   img_path: _image == null ? "" : _image!.path,
-                                //   phone_number: _phoneNumberController.text,
-                                //   context: context,
-                                // );
-                                if (!mounted) return;
-                                // if (!value.User_form_filled) {
-                                //   Navigator.of(context).push(MaterialPageRoute(
-                                //       builder: (context) =>
-                                //           const HomeScreen()));
-                                // }
+                                await value.profileUpdate(
+                                  user_id: widget.user_data[0].User_id,
+                                  firstname: _firstNameController.text,
+                                  lastname: _lastNameController.text,
+                                  birthday: picked_time,
+                                  country: _selectedCountry,
+                                  profile_image: _image == null
+                                      ? ""
+                                      : _image!.path,
+                                      gender: _selectedGender,
+                                );
                                 Fluttertoast.showToast(
-                                    msg: 'Profile Updated Successfully',
+                                    msg: "Profile Updated Successfully",
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.TOP,
                                     timeInSecForIosWeb: 1,

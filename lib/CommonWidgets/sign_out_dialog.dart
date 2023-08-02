@@ -2,6 +2,7 @@ import 'package:chatgpt/providers/auth_provider.dart';
 import 'package:chatgpt/providers/text_copletion_provider.dart';
 import 'package:chatgpt/util/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -49,6 +50,7 @@ class SignOutDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () => {
+            HapticFeedback.lightImpact(),
             Navigator.pop(context),
           },
           child: Text(
@@ -65,7 +67,9 @@ class SignOutDialog extends StatelessWidget {
         ),
         Consumer<TextCompletProvider>(
           builder: (context, value, child) => TextButton(
+            
             onPressed: () async {
+              HapticFeedback.lightImpact();
               Navigator.pop(context);
               await value.clearConversations();
               authProvider.SignOut();
