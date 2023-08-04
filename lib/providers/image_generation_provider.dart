@@ -95,7 +95,7 @@ class ImageGenerationProvider with ChangeNotifier {
       var headers = {
         'Content-Type': 'application/json',
         'Authorization':
-            'Bearer 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',
+            'Bearer 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',
       };
       var payload = {
         'n': _number_of_images,

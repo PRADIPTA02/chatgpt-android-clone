@@ -356,49 +356,51 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: TextFormField(
-                        focusNode: _focusNode2,
-                        onFieldSubmitted: (e) => {_focusNode3.requestFocus()},
-                        controller: signupEmailController,
-                        cursorColor: cgSecondary,
-                        cursorRadius: const Radius.circular(5),
-                        keyboardType: TextInputType.emailAddress,
-                        style: GoogleFonts.nunito(
-                            color: Colors.white70, fontWeight: FontWeight.w500),
-                        validator: (value) {
-                          final emailRegex = RegExp(
-                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-                          if (!emailRegex.hasMatch(value!) || value.isEmpty) {
-                            return 'please enter a valid cradetial';
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 12),
-                          filled: true,
-                          fillColor: secondaryColor,
-                          labelText: 'Email Address',
-                          labelStyle: GoogleFonts.nunito(
-                            color: Colors.white70,
+                      child: Consumer<AuthProvider>(
+                        builder:(context, value, child) => TextFormField(
+                            focusNode: _focusNode2,
+                            onFieldSubmitted: (e) => {_focusNode3.requestFocus()},
+                            controller: authProvider.login_email_controller,
+                            cursorColor: cgSecondary,
+                            cursorRadius: const Radius.circular(5),
+                            keyboardType: TextInputType.emailAddress,
+                            style: GoogleFonts.nunito(
+                                color: Colors.white70, fontWeight: FontWeight.w500),
+                            validator: (value) {
+                              final emailRegex = RegExp(
+                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                              if (!emailRegex.hasMatch(value!) || value.isEmpty) {
+                                return 'please enter a valid cradetial';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 12),
+                              filled: true,
+                              fillColor: secondaryColor,
+                              labelText: 'Email Address',
+                              labelStyle: GoogleFonts.nunito(
+                                color: Colors.white70,
+                              ),
+                              errorStyle:
+                                  GoogleFonts.nunito(fontWeight: FontWeight.bold),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 2, color: cglasscolor),
+                              ),
+                              focusedBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(width: 2, color: cgSecondary),
+                              ),
+                              errorBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(width: 2, color: errorColor),
+                              ),
+                              focusedErrorBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(width: 2, color: errorColor),
+                              ),
+                            ),
                           ),
-                          errorStyle:
-                              GoogleFonts.nunito(fontWeight: FontWeight.bold),
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 2, color: cglasscolor),
-                          ),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 2, color: cgSecondary),
-                          ),
-                          errorBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(width: 2, color: errorColor),
-                          ),
-                          focusedErrorBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(width: 2, color: errorColor),
-                          ),
-                        ),
                       ),
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.01),
@@ -719,7 +721,7 @@ HapticFeedback.lightImpact();
                           splashColor: Colors.transparent,
                           onTap: () => {
                             HapticFeedback.lightImpact(),
-                            Navigator.of(context).push(MaterialPageRoute(
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(
                                 builder: (context) => LoginScreen())),
                           },
                           child: Text(

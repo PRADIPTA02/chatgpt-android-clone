@@ -41,7 +41,7 @@ class SettingsScreen extends StatelessWidget {
         ),
         backgroundColor: bgColor,
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 25),
           child: ListView(
             physics: const BouncingScrollPhysics(
                 decelerationRate: ScrollDecelerationRate.fast),

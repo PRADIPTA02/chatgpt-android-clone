@@ -211,12 +211,9 @@ class LoginScreen extends StatelessWidget {
                                         password: authProvider
                                             .login_password_controller.text,
                                         context: context);
+                                        
+                                        Navigator.pop(context);
                                   }
-                                  // if(context.mounted){
-                                  // Navigator.of(context).pushReplacement(
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) => const HomeScreen()));
-                                  // }
                             },
                             child: const AuthSubmitButton(
                                 title: "Log in"),

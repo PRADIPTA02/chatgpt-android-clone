@@ -68,7 +68,7 @@ class _AccountInfoState extends State<AccountInfo> {
         ),
         backgroundColor: bgColor,
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 25),
           child: ListView(
             physics: const BouncingScrollPhysics(
                 decelerationRate: ScrollDecelerationRate.normal),

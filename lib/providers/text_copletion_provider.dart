@@ -136,7 +136,7 @@ class TextCompletProvider with ChangeNotifier {
     var headers = {
       'Content-Type': 'application/json',
       'Authorization':
-          'Bearer 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',
+          'Bearer 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',
     };
     try {
       var url = "https://api.openai.com/v1/completions";

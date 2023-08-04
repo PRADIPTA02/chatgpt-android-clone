@@ -3,6 +3,7 @@
 import 'dart:io';
 import 'package:chatgpt/providers/auth_provider.dart';
 import 'package:chatgpt/util/constants/constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -261,7 +262,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       _lastNameController.text = user.Lastname;
       _phoneNumberController.text = user.Phone_number.toString();
       _emailController.text = user.Email_id!;
-      _ageController.text = (DateTime.now().year - user.Birthday.year).toString();
+      _ageController.text =
+          (DateTime.now().year - user.Birthday.year).toString();
       // _ageController.text = user.Age.toString();
       picked_time = user.Birthday;
       _dateTimeController.text = DateFormat.yMMMd().format(user.Birthday);
@@ -290,20 +292,71 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     super.dispose();
   }
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
+  // Future<void> _selectDate(BuildContext context) async {
+  //   final DateTime? picked = await showDatePicker(
+  //     context: context,
+  //     initialDate: widget.user_data.isNotEmpty
+  //         ? widget.user_data[0].Birthday
+  //         : DateTime.now(),
+  //     firstDate: DateTime(1900),
+  //     lastDate: DateTime.now(),
+  //   );
+  //   if (picked != null) {
+  //     setState(() {
+  //       _dateTimeController.text = DateFormat.yMMMd().format(picked);
+  //       picked_time = picked;
+  //       _ageController.text = (DateTime.now().year - picked.year).toString();
+  //     });
+  //   }
+  // }
+
+    Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showCupertinoModalPopup(
+        context: context,
+        builder: (BuildContext context) => Container(
+              height: MediaQuery.of(context).size.height * 0.3,
+              padding: const EdgeInsets.only(top: 6.0),
+              margin: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: Theme(
+                data: Theme.of(context).copyWith(
+                  colorScheme: const ColorScheme.dark(),
+                ),
+                child: CupertinoDatePicker(
+                  initialDateTime: widget.user_data.isNotEmpty
+          ? widget.user_data[0].Birthday
+          : DateTime.now(),
+                  mode: CupertinoDatePickerMode.date,
+                  backgroundColor: secondaryColor,
+                  onDateTimeChanged: (value) => 
+                    setState(() {
+                    SystemSound.play(SystemSoundType.click);
+                    HapticFeedback.lightImpact();
+                      _dateTimeController.text =
+                          DateFormat.yMMMd().format(value);
+                       picked_time = value;
+                       setState(() {
+                         _ageController.text = (DateTime.now().year - picked_time.year).toString();
+                       });
+                      
+                    }),
+                ),
+              ),
+            )
+        // initialDate: DateTime.now(),
+        // firstDate: DateTime(1900),
+        // lastDate: DateTime.now(),
+        );
     if (picked != null) {
       setState(() {
         _dateTimeController.text = DateFormat.yMMMd().format(picked);
-        picked_time = picked;
+         picked_time = picked;
+         _ageController.text = (DateTime.now().year - picked.year).toString();
       });
     }
   }
+
 
   void _showImageSelectionBottomSheet(BuildContext context) {
     showModalBottomSheet(
@@ -628,8 +681,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           bottom: -8,
                           right: -2,
                           child: IconButton(
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
                               onPressed: () {
                                 HapticFeedback.lightImpact();
                                 _showImageSelectionBottomSheet(context);
@@ -782,7 +835,6 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                       },
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                    
                     Row(
                       children: [
                         Expanded(
@@ -1052,10 +1104,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                             highlightColor: Colors.transparent,
                             onTap: () {
                               HapticFeedback.lightImpact();
-                              if (!mounted) return;          
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          const HomeScreen()));
+                              if (!mounted) return;
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const HomeScreen()));
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.95,
@@ -1088,10 +1139,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                   lastname: _lastNameController.text,
                                   birthday: picked_time,
                                   country: _selectedCountry,
-                                  profile_image: _image == null
-                                      ? ""
-                                      : _image!.path,
-                                      gender: _selectedGender,
+                                  profile_image:
+                                      _image == null ? "" : _image!.path,
+                                  gender: _selectedGender,
                                 );
                                 Fluttertoast.showToast(
                                     msg: "Profile Updated Successfully",
