@@ -10,7 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import '../../../CommonWidgets/internet_check_dialog.dart';
 import '../../../providers/auth_provider.dart';
+import '../../../providers/internet_connection_check_provider.dart';
 import '../../homeScreen/home_screen.dart';
 import '../forgot_password/forgot_password_screen.dart';
 
@@ -22,8 +24,8 @@ class LoginScreen extends StatelessWidget {
     FocusNode _focusNode1 = FocusNode();
     FocusNode _focusNode2 = FocusNode();
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    return Consumer<AuthProvider>(
-      builder: (context, value, child) => Scaffold(
+    return Consumer2<AuthProvider,InterNetConnectionCheck>(
+      builder: (context, value,interNetConnectionCheck, child) => Scaffold(
         backgroundColor: bgColor,
         body: SafeArea(
           child: SingleChildScrollView(
@@ -203,7 +205,18 @@ class LoginScreen extends StatelessWidget {
                           InkWell(
                             onTap: ()async{
                                 HapticFeedback.lightImpact();
-                                  if (_login_formKey.currentState!.validate()) {
+                                 if (!interNetConnectionCheck
+                                                      .isOnline)
+                                                    {
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return const InternetCheckDialog();
+                                                        },
+                                                      );
+                                                    }
+                                  else if (_login_formKey.currentState!.validate()) {
                                     _login_formKey.currentState!.save();
                                     await authProvider.SignIn(
                                         email: authProvider
@@ -228,12 +241,25 @@ class LoginScreen extends StatelessWidget {
                           InkWell(
                             onTap: () async{
                               HapticFeedback.lightImpact();
+                              if (!interNetConnectionCheck
+                                                      .isOnline)
+                                                    {
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return const InternetCheckDialog();
+                                                        },
+                                                      );
+                                                    }
+                              else{
                               await authProvider.signInWithGoogle();
                               if(context.mounted){
                                 Navigator.of(context).push(
                                     MaterialPageRoute(
                                         builder: (context) =>  ProfileEditScreen(user_data: authProvider.User_Data.values.toList())));
                                 }
+                                       }
                             },
                             child: AuthButton(
                                 ontap: (){ },

@@ -11,14 +11,12 @@ class InternetCheckDialog extends StatelessWidget {
     return AlertDialog(
       title: Row(
         children:  [
-          const Icon(Icons.signal_wifi_off,color: Colors.red,),
+          const Icon(Icons.signal_wifi_off,color: Colors.white,),
           const SizedBox(width: 10),
           Text(
             'No Internet Connection',
             style: GoogleFonts.nunito (
-              color: Colors.red,
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
+              color: Colors.white
             ),
           ),
         ],
@@ -38,7 +36,6 @@ class InternetCheckDialog extends StatelessWidget {
                     'Please check your internet connection and try again.',
                     style: GoogleFonts.nunito(
                       color: Colors.white70,
-                      fontSize: 16.0,
                     ),
                   ),
                 ),

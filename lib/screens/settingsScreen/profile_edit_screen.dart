@@ -12,7 +12,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../CommonWidgets/custom_snakebar.dart';
+import '../../CommonWidgets/internet_check_dialog.dart';
 import '../../models/user_data_model.dart';
+import '../../providers/internet_connection_check_provider.dart';
 import '../homeScreen/home_screen.dart';
 import 'coustom_image_picker_button.dart';
 
@@ -1096,8 +1098,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                       ],
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-                    Consumer<AuthProvider>(
-                      builder: (context, value, child) => Column(
+                    Consumer2<AuthProvider,InterNetConnectionCheck>(
+                      builder: (context, value,interNetConnectionCheck, child) => Column(
                         children: [
                           InkWell(
                             splashColor: Colors.transparent,
@@ -1132,7 +1134,18 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                             highlightColor: Colors.transparent,
                             onTap: () async {
                               HapticFeedback.lightImpact();
-                              if (_formKey.currentState!.validate()) {
+                               if (!interNetConnectionCheck
+                                                      .isOnline)
+                                                    {
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return const InternetCheckDialog();
+                                                        },
+                                                      );
+                                                    }
+                              else if (_formKey.currentState!.validate()) {
                                 await value.profileUpdate(
                                   user_id: widget.user_data[0].User_id,
                                   firstname: _firstNameController.text,

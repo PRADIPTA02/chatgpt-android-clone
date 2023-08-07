@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       vsync: this,
     )..repeat();
     animation = CurvedAnimation(parent: controller!, curve: Curves.easeIn);
-    _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
       setState(() {
         isloading = false;
       });

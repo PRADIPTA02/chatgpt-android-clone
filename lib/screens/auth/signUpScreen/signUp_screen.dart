@@ -7,8 +7,11 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import '../../../CommonWidgets/internet_check_dialog.dart';
 import '../../../providers/auth_provider.dart';
 import 'package:flutter/cupertino.dart';
+
+import '../../../providers/internet_connection_check_provider.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -23,11 +26,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   late String _selectedGender = 'Gender';
   late DateTime pickedtime;
   late String _selectedCountry = 'Select Country';
-  late TextEditingController signupEmailController ;
-  late TextEditingController signupPasswordController ;
-  late TextEditingController signupFullNameController ;
+  late TextEditingController signupEmailController;
+  late TextEditingController signupPasswordController;
+  late TextEditingController signupFullNameController;
   final List<String> countries = [
-      'Select Country',
+    'Select Country',
     'Afghanistan',
     'Albania',
     'Algeria',
@@ -210,10 +213,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     'Yemen',
     'Zambia',
     'Zimbabwe'
-];
+  ];
 
   RegExp fullNameRegex = RegExp(r'^[a-zA-Z]+( [a-zA-Z]+)+$');
-
 
   @override
   initState() {
@@ -243,14 +245,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   initialDateTime: DateTime.now(),
                   mode: CupertinoDatePickerMode.date,
                   backgroundColor: secondaryColor,
-                  onDateTimeChanged: (value) => 
-                    setState(() {
+                  onDateTimeChanged: (value) => setState(() {
                     SystemSound.play(SystemSoundType.click);
                     HapticFeedback.lightImpact();
-                      _dateTimeController.text =
-                          DateFormat.yMMMd().format(value);
-                      pickedtime = value;
-                    }),
+                    _dateTimeController.text = DateFormat.yMMMd().format(value);
+                    pickedtime = value;
+                  }),
                 ),
               ),
             )
@@ -272,6 +272,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
     FocusNode _focusNode2 = FocusNode();
     FocusNode _focusNode3 = FocusNode();
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final interNetConnectionCheck =
+        Provider.of<InterNetConnectionCheck>(context, listen: false);
     return Scaffold(
       backgroundColor: bgColor,
       body: SafeArea(
@@ -320,7 +322,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             fontSize: 16,
                             fontWeight: FontWeight.w500),
                         validator: (value) {
-                          if (!fullNameRegex.hasMatch(value!) || value.isEmpty) {
+                          if (!fullNameRegex.hasMatch(value!) ||
+                              value.isEmpty) {
                             return 'Please enter a valid username';
                           }
                           return null;
@@ -357,50 +360,53 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Consumer<AuthProvider>(
-                        builder:(context, value, child) => TextFormField(
-                            focusNode: _focusNode2,
-                            onFieldSubmitted: (e) => {_focusNode3.requestFocus()},
-                            controller: authProvider.login_email_controller,
-                            cursorColor: cgSecondary,
-                            cursorRadius: const Radius.circular(5),
-                            keyboardType: TextInputType.emailAddress,
-                            style: GoogleFonts.nunito(
-                                color: Colors.white70, fontWeight: FontWeight.w500),
-                            validator: (value) {
-                              final emailRegex = RegExp(
-                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-                              if (!emailRegex.hasMatch(value!) || value.isEmpty) {
-                                return 'please enter a valid cradetial';
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 12),
-                              filled: true,
-                              fillColor: secondaryColor,
-                              labelText: 'Email Address',
-                              labelStyle: GoogleFonts.nunito(
-                                color: Colors.white70,
-                              ),
-                              errorStyle:
-                                  GoogleFonts.nunito(fontWeight: FontWeight.bold),
-                              enabledBorder: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 2, color: cglasscolor),
-                              ),
-                              focusedBorder: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 2, color: cgSecondary),
-                              ),
-                              errorBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(width: 2, color: errorColor),
-                              ),
-                              focusedErrorBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(width: 2, color: errorColor),
-                              ),
+                        builder: (context, value, child) => TextFormField(
+                          focusNode: _focusNode2,
+                          onFieldSubmitted: (e) => {_focusNode3.requestFocus()},
+                          controller: authProvider.login_email_controller,
+                          cursorColor: cgSecondary,
+                          cursorRadius: const Radius.circular(5),
+                          keyboardType: TextInputType.emailAddress,
+                          style: GoogleFonts.nunito(
+                              color: Colors.white70,
+                              fontWeight: FontWeight.w500),
+                          validator: (value) {
+                            final emailRegex = RegExp(
+                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+                            if (!emailRegex.hasMatch(value!) || value.isEmpty) {
+                              return 'please enter a valid cradetial';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 12),
+                            filled: true,
+                            fillColor: secondaryColor,
+                            labelText: 'Email Address',
+                            labelStyle: GoogleFonts.nunito(
+                              color: Colors.white70,
+                            ),
+                            errorStyle:
+                                GoogleFonts.nunito(fontWeight: FontWeight.bold),
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 2, color: cglasscolor),
+                            ),
+                            focusedBorder: const OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 2, color: cgSecondary),
+                            ),
+                            errorBorder: const OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 2, color: errorColor),
+                            ),
+                            focusedErrorBorder: const OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 2, color: errorColor),
                             ),
                           ),
+                        ),
                       ),
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height * 0.01),
@@ -626,83 +632,85 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       height: MediaQuery.of(context).size.height * 0.01,
                     ),
                     DropdownButtonFormField<String>(
-                            value: _selectedCountry,
-                            dropdownColor: secondaryColor,
-                            menuMaxHeight: 300,
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                _selectedCountry = newValue!;
-                              });
-                            },
-                            items: countries
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: GoogleFonts.nunito(
-                                    color: Colors.white70,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              );
-                            }).toList(),
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 12),
-                              filled: true,
-                              fillColor: secondaryColor,
-                              labelText: 'Country',
-                              labelStyle: GoogleFonts.nunito(
-                                color: Colors.white70,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              errorStyle: const TextStyle(height: 0),
-                              enabledBorder: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 2, color: cglasscolor),
-                              ),
-                              focusedBorder: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 2, color: cgSecondary),
-                              ),
-                              errorBorder: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 2, color: errorColor),
-                              ),
-                              focusedErrorBorder: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(width: 2, color: errorColor),
-                              ),
+                      value: _selectedCountry,
+                      dropdownColor: secondaryColor,
+                      menuMaxHeight: 300,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedCountry = newValue!;
+                        });
+                      },
+                      items: countries
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: GoogleFonts.nunito(
+                              color: Colors.white70,
+                              fontWeight: FontWeight.w500,
                             ),
-                            validator: (value) {
-                              if (value == null || value == 'Select Country') {
-                                return '';
-                              }
-                              return null;
-                            },
                           ),
+                        );
+                      }).toList(),
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 15, horizontal: 12),
+                        filled: true,
+                        fillColor: secondaryColor,
+                        labelText: 'Country',
+                        labelStyle: GoogleFonts.nunito(
+                          color: Colors.white70,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        errorStyle: const TextStyle(height: 0),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: cglasscolor),
+                        ),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: cgSecondary),
+                        ),
+                        errorBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: errorColor),
+                        ),
+                        focusedErrorBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(width: 2, color: errorColor),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value == 'Select Country') {
+                          return '';
+                        }
+                        return null;
+                      },
+                    ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.10,
                     ),
                     InkWell(
-                      onTap: ()async{
-HapticFeedback.lightImpact();
-                            if (signupformKey.currentState!.validate()) {
-                              authProvider.changeIsLoading(true);
-                              authProvider.signUp(
-                                profile_image: authProvider.giveRandomavater(),
-                                gender: _selectedGender,
-                                birthday: pickedtime,
-                                country: _selectedCountry,
-                                  fullname: signupFullNameController.text,
-                                  email: signupEmailController.text,
-                                  password: signupPasswordController.text,
-                                  );
-                            }
+                      onTap: () async {
+                        HapticFeedback.lightImpact();
+                        if (!interNetConnectionCheck.isOnline) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return const InternetCheckDialog();
+                            },
+                          );
+                        } else if (signupformKey.currentState!.validate()) {
+                          authProvider.changeIsLoading(true);
+                          authProvider.signUp(
+                            profile_image: authProvider.giveRandomavater(),
+                            gender: _selectedGender,
+                            birthday: pickedtime,
+                            country: _selectedCountry,
+                            fullname: signupFullNameController.text,
+                            email: signupEmailController.text,
+                            password: signupPasswordController.text,
+                          );
+                        }
                       },
-                      child: const AuthSubmitButton(
-                          title: "Sign up"),
+                      child: const AuthSubmitButton(title: "Sign up"),
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.05,
@@ -721,8 +729,9 @@ HapticFeedback.lightImpact();
                           splashColor: Colors.transparent,
                           onTap: () => {
                             HapticFeedback.lightImpact(),
-                            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                builder: (context) => LoginScreen())),
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => LoginScreen())),
                           },
                           child: Text(
                             "Log in",

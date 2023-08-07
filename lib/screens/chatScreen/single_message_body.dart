@@ -1,10 +1,13 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:chatgpt/screens/chatScreen/chat_avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter/services.dart';
+import '../../CommonWidgets/internet_check_dialog.dart';
+import '../../providers/internet_connection_check_provider.dart';
 import '../../util/constants/constants.dart';
 import '../../providers/text_copletion_provider.dart';
 
@@ -60,8 +63,8 @@ class SingleMessageBody extends StatelessWidget {
       return !isLiked;
     }
 
-    return Consumer<TextCompletProvider>(
-      builder: (context, value, child) => Container(
+    return Consumer2<TextCompletProvider,InterNetConnectionCheck>(
+      builder: (context, value,interNetConnectionCheck, child) => Container(
         padding: const EdgeInsets.all(5),
         margin: const EdgeInsets.only(top: 5, bottom: 5),
         decoration: BoxDecoration(
@@ -125,7 +128,7 @@ class SingleMessageBody extends StatelessWidget {
                 ),
                 !isApi
                     ? IconButton(
-                      splashRadius: 20,
+                        splashRadius: 20,
                         onPressed: () => {
                               textCompletionProvider
                                   .changeShowSaveAndCancelButton(id, true),
@@ -153,6 +156,28 @@ class SingleMessageBody extends StatelessWidget {
                       ),
                       Row(
                         children: [
+                          IconButton(
+                              onPressed: () => {
+                                    Clipboard.setData(
+                                        ClipboardData(text: text)),
+                                    Fluttertoast.showToast(
+                                      msg: 'Copy to Clipboard',
+                                      textColor: Colors.white,
+                                      backgroundColor: successColor,
+                                      gravity: ToastGravity.TOP,
+                                    ),
+                                  },
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              icon: isDisLiked
+                                  ? const Icon(
+                                      Icons.thumb_down_alt,
+                                      color: Color.fromARGB(255, 244, 67, 54),
+                                    )
+                                  : const Icon(
+                                      Icons.content_copy,
+                                      color: Colors.grey,
+                                    )),
                           LikeButton(
                               isLiked: isLiked,
                               size: 24.0,
@@ -208,11 +233,22 @@ class SingleMessageBody extends StatelessWidget {
                                 MaterialStateProperty.all<Color>(cgSecondary),
                           ),
                           onPressed: () => {
+                             if (!interNetConnectionCheck
+                                                      .isOnline)
+                                                    {
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return const InternetCheckDialog();
+                                                        },
+                                                      )
+                                                    }else{
                                 textCompletionProvider.updateMessage(
                                     upperMessageIndex,
                                     id,
                                     sessionIndex,
-                                    context)
+                                    context)},
                               },
                           child: Text(
                             "Save & Submit",
