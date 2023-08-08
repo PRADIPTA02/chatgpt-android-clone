@@ -27,6 +27,7 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       Birthday: fields[7] as DateTime,
       Country: fields[8] as String,
       Gender: fields[6] as String,
+      Share_link: fields[22] as String,
     )
       ..Phone_number = fields[4] as String
       ..Temperature = fields[9] as double
@@ -45,7 +46,7 @@ class UserDataAdapter extends TypeAdapter<UserData> {
   @override
   void write(BinaryWriter writer, UserData obj) {
     writer
-      ..writeByte(22)
+      ..writeByte(23)
       ..writeByte(0)
       ..write(obj.Profile_image)
       ..writeByte(1)
@@ -89,7 +90,9 @@ class UserDataAdapter extends TypeAdapter<UserData> {
       ..writeByte(20)
       ..write(obj.User_id)
       ..writeByte(21)
-      ..write(obj.User_uid);
+      ..write(obj.User_uid)
+      ..writeByte(22)
+      ..write(obj.Share_link);
   }
 
   @override

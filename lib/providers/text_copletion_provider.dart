@@ -29,14 +29,6 @@ class TextCompletProvider with ChangeNotifier {
     _current_session_index = sessions.values.toList().length - 1;
     _all_messages =
         listOfAllMessages.values.toList().map((e) => e.messages).toList();
-    // print(listOfAllMessages.values.toList().length);
-    // print(sessions.values.toList().length);
-    //  print(sessions.values.toList());
-    //  print(listOfAllMessages.values.toList());
-    //    for(int i=0;i<listOfAllMessages.values.toList().length;i++){
-    //     listOfAllMessages.values.toList()[i].delete();
-    //     sessions.values.toList()[i].delete();
-    // }
     notifyListeners();
   }
   final Dio dio = Dio();

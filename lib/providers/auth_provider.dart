@@ -1,12 +1,9 @@
 // ignore_for_file: non_constant_identifier_names, use_build_context_synchronously
 import 'dart:math';
-
 import 'package:chatgpt/models/user_data_model.dart';
-import 'package:chatgpt/screens/settingsScreen/profile_edit_screen.dart';
 import 'package:chatgpt/util/constants/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive/hive.dart';
@@ -14,10 +11,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthProvider extends ChangeNotifier {
   late Box<UserData> User_data;
+  late  String    _share_link = "www.aibuddy.com";
   AuthProvider() {
     User_data = Hive.box('userData');
     if (User_data.values.toList().isNotEmpty) {
       final user = User_data.values.toList()[0];
+      _share_link = user.Share_link;
       _temperature = user.Temperature;
       _maximum_length = user.Maximum_length;
       _top_p = user.Top_p;
@@ -34,6 +33,7 @@ class AuthProvider extends ChangeNotifier {
       _last_name = user.Lastname;
       _user_dob = user.Birthday;
       _user_country = user.Country;
+      _share_link = user.Share_link;
     }
   }
   //box data
@@ -250,12 +250,13 @@ final List<String> countries = [
 
   String    _first_name        =   "";
   String    _last_name         =   "";
-  String?    _user_email        =   "";
+  String?   _user_email        =   "";
   DateTime  _user_dob          =   DateTime.now();
   String    _user_phone_number =   "";
   String    _user_country      =   "";
   String    _user_gender       =   "";
   String    _user_image        =   "";
+
 
 //User related data (getter)
 
@@ -267,6 +268,7 @@ final List<String> countries = [
   String    get user_country      =>   _user_country;
   String    get user_gender       =>   _user_gender;
   String    get User_image        =>   _user_image;
+  String    get share_link        =>   _share_link;
 
   //all loadings (variable)
 
@@ -550,6 +552,13 @@ final List<String> countries = [
         notifyListeners();
     }
 
+    Future<String> getApplicationLink()async{
+    final docRef = FirebaseFirestore.instance.collection("application-link").doc('PPAgpEqf1ZaIwajESG3V');
+    DocumentSnapshot doc = await docRef.get();
+    final data = doc.data() as Map<String, dynamic>;  
+    return data['link'].toString();
+  }
+
     Future<void>loadUserDataLocalyFromFirebase({required String uid}) async {
       if (User_data.values.toList().isNotEmpty && User_data.values.toList()[0].User_uid != uid) {
         await User_data.clear();
@@ -609,6 +618,7 @@ final List<String> countries = [
     required String   profile_image,
     required String   gender,
     }) async {
+      final link = await  getApplicationLink();
       final UserData user = UserData(
         User_id:        user_id,
         User_uid:       user_uid,
@@ -619,7 +629,9 @@ final List<String> countries = [
         Birthday:       birthday,
         Gender:         gender,
         Country:        country,
-        Profile_image:  profile_image
+        Profile_image:  profile_image,
+        Share_link:     link,
+        
         
       );
       await User_data.add(user);
@@ -647,6 +659,7 @@ final List<String> countries = [
           _last_name = user.Lastname;
           _user_dob = user.Birthday;
           _user_country = user.Country;
+          _share_link = user.Share_link;
       }
       notifyListeners();
     }

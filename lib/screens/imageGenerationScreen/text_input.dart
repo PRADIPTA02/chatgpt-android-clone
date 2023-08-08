@@ -1,9 +1,12 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import '../../CommonWidgets/internet_check_dialog.dart';
+import '../../providers/internet_connection_check_provider.dart';
 import '../../util/constants/constants.dart';
 import '../../providers/image_generation_provider.dart';
 
@@ -19,8 +22,8 @@ class SearchTextInput extends StatelessWidget {
       size: 20.00,
     );
 
-    return Consumer<ImageGenerationProvider>(
-      builder: (context, value, child) => Row(
+    return Consumer2<ImageGenerationProvider,InterNetConnectionCheck>(
+      builder: (context, value,interNetConnectionCheck, child) => Row(
         children: [
           Expanded(
             child: Builder(builder: (context) {
@@ -77,14 +80,26 @@ class SearchTextInput extends StatelessWidget {
             child: imageGenerationProvider.isTyping
                 ? !imageGenerationProvider.isImageLoading
                     ? IconButton(
-                        onPressed: () => {
+                        onPressed: () async{
+                           HapticFeedback.lightImpact();
+                               if (!interNetConnectionCheck
+                                                      .isOnline)
+                                                    {
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return const InternetCheckDialog();
+                                                        },
+                                                      );
+                                                    }else{
                               imageGenerationProvider.getImages(
                                   imageGenerationProvider
-                                      .ImageInputControler.text),
+                                      .ImageInputControler.text);
                               imageGenerationProvider.ImageInputControler
-                                  .clear(),
-                              FocusManager.instance.primaryFocus?.unfocus(),
-                            },
+                                  .clear();
+                              FocusManager.instance.primaryFocus?.unfocus();
+                            }},
                         icon: const Icon(Icons.send_rounded,
                             size: 30, color: Colors.white))
                     : spinKit

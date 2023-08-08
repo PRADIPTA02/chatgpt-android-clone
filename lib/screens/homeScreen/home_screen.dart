@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:chatgpt/providers/auth_provider.dart';
 import 'package:chatgpt/providers/text_copletion_provider.dart';
 import 'package:chatgpt/screens/accountInfo/account_info.dart';
@@ -79,65 +78,70 @@ class _HomeScreenState extends State<HomeScreen> {
     highlightColor: Colors.transparent,
     splashColor: Colors.transparent,
   ),
-                        child: PopupMenuButton<MenuItem>(
-                            tooltip: '',                  
-                            iconSize: 50,
-                            onSelected: (value) => {
-                                  if (value.text.toString() == 'Sign Out')
-                                    {
-                                      showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return const SignOutDialog();
-                                          })
-                                    }
-                                  else if (value.text.toString() == 'Account')
-                                    {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const AccountInfo()))
-                                    }
-                                  else if (value.text.toString() == 'Settings')
-                                    {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const SettingsScreen()))
-                                    }
-                                  else if (value.text.toString() == 'Share')
-                                    {Share.share('https://www.google.com')}
-                                },
-                            shape: BeveledRectangleBorder(
-                                borderRadius: BorderRadius.circular(3)),
-                            color: secondaryColor,
-                            icon: value2.User_image == ""
-                                ? const CircleAvatar(
-                                    backgroundColor: secondaryColor,
-                                    backgroundImage: AssetImage(
-                                        'assets/images/defaultAccountIcon.png'),
-                                  )
-                                : value2.User_image.split('/').toList()[0] ==
-                                        'assets'
-                                    ? CircleAvatar(
+                        child: Consumer<AuthProvider>(
+                          builder:(context, value23, child) =>  PopupMenuButton<MenuItem>(
+                                tooltip: '',                  
+                                iconSize: 50,
+                                onSelected: (value) async{
+                                      final text =  value23.share_link.toString()==""?"ss":value23.share_link.toString();
+                                      if (value.text.toString() == 'Sign Out')
+                                        {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return const SignOutDialog();
+                                              });
+                                        }
+                                      else if (value.text.toString() == 'Account')
+                                        {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const AccountInfo()));
+                                        }
+                                      else if (value.text.toString() == 'Settings')
+                                        {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const SettingsScreen()));
+                                        }
+                                      else if (value.text.toString() == 'Share')
+                                        {
+                                          Share.share(text);
+                                          }
+                                    },
+                                shape: BeveledRectangleBorder(
+                                    borderRadius: BorderRadius.circular(3)),
+                                color: secondaryColor,
+                                icon: value2.User_image == ""
+                                    ? const CircleAvatar(
                                         backgroundColor: secondaryColor,
-                                        backgroundImage:
-                                            AssetImage(value2.User_image),
+                                        backgroundImage: AssetImage(
+                                            'assets/images/defaultAccountIcon.png'),
                                       )
-                                    : CircleAvatar(
-                                        backgroundColor: secondaryColor,
-                                        backgroundImage:
-                                            FileImage(File(value2.User_image)),
+                                    : value2.User_image.split('/').toList()[0] ==
+                                            'assets'
+                                        ? CircleAvatar(
+                                            backgroundColor: secondaryColor,
+                                            backgroundImage:
+                                                AssetImage(value2.User_image),
+                                          )
+                                        : CircleAvatar(
+                                            backgroundColor: secondaryColor,
+                                            backgroundImage:
+                                                FileImage(File(value2.User_image)),
+                                          ),
+                                itemBuilder: (context) => [
+                                      ...MenuItems.itemsFirst.map(buildItem).toList(),
+                                      const PopupMenuDivider(
+                                        height: 0.2,
                                       ),
-                            itemBuilder: (context) => [
-                                  ...MenuItems.itemsFirst.map(buildItem).toList(),
-                                  const PopupMenuDivider(
-                                    height: 0.2,
-                                  ),
-                                  ...MenuItems.itemsSecond.map(buildItem).toList(),
-                                ]),
+                                      ...MenuItems.itemsSecond.map(buildItem).toList(),
+                                    ]),
+                        ),
                       ),
                     ),
                   ],

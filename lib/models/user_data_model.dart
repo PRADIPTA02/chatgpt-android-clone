@@ -16,6 +16,7 @@ class UserData extends HiveObject {
     required this.Birthday,
     required this.Country,
     required this.Gender,
+    required this.Share_link,
     });
   @HiveField(0)
   String Profile_image = "";
@@ -61,4 +62,6 @@ class UserData extends HiveObject {
   final String User_id;
   @HiveField(21)
   final String User_uid;
+  @HiveField(22)
+  final String Share_link;
 }

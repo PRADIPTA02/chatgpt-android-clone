@@ -9,7 +9,6 @@ class GenderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        print(gender);
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.65,
       child: Consumer<AuthProvider>(

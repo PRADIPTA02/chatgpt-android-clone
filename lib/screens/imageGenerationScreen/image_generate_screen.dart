@@ -23,6 +23,7 @@ class ImageGenerateScreen extends StatelessWidget {
             highlightColor: Colors.transparent,
             onPressed: () {
               value.clearAllImages();
+              value.ImageInputControler.clear();
               Navigator.pop(context);
             },
             icon: const Icon(

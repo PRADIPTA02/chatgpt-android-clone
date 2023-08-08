@@ -28,7 +28,6 @@ class _UserDialogState extends State<UserDialog> {
     if (image != null) {
       setState(() {
         _profileImagePath = File(image.path);
-        debugPrint(image.path);
       });
     }
   }

@@ -1,6 +1,7 @@
 import 'package:chatgpt/screens/chatScreen/chatscreen_sidebar.dart';
 import 'package:chatgpt/screens/chatScreen/message_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../providers/internet_connection_check_provider.dart';
@@ -44,7 +45,11 @@ class ChatScreen extends StatelessWidget {
                 leading: IconButton(
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
-                  onPressed: () => {Navigator.pop(context)},
+                  onPressed: () => {
+                    HapticFeedback.lightImpact(),
+                    Navigator.pop(context),
+                    textCompletionProvider.chat_imput_Controler.clear(),
+                    },
                   icon: const Icon(
                     Icons.arrow_back,
                     color: Colors.white70,

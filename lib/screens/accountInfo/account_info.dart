@@ -209,6 +209,23 @@ class _AccountInfoState extends State<AccountInfo> {
                   ),
                 ],
               ),
+              SizedBox(height: MediaQuery.of(context).size.width * 0.14),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Country",
+                    style: GoogleFonts.nunito(
+                        color: Colors.white30,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700),
+                  ),
+                  InfoWidget(
+                    data: value.user_country,
+                  ),
+                ],
+              ),
             ],
           ),
         ),
