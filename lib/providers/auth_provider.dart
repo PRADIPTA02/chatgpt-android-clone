@@ -512,6 +512,7 @@ final List<String> countries = [
       changeIsLoading(true);
       try {
         final user = await  FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+        // Navigator.pop(context);
         await loadUserDataLocalyFromFirebase(uid: user.user!.uid);
         changeIsLoading(false);
         Fluttertoast.showToast(
@@ -674,10 +675,13 @@ final List<String> countries = [
       required DateTime birthday,
       required String gender,
       required String profile_image,
+      required BuildContext context,
     }) async{
         try{
           changeIsLoading(true);
           final UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword( email: email, password: password);
+      
+          _login_email_controller.clear();
           var user = await FirebaseFirestore.instance.collection('users').add({
             'created_at': FieldValue.serverTimestamp(),
             'user_firstname':   fullname.split(" ")[0],
@@ -710,6 +714,7 @@ final List<String> countries = [
             gender:         gender,
           );
           changeIsLoading(false);
+          Navigator.pop(  context,);
           Fluttertoast.showToast(
             msg: 'User created successfully',
             textColor: Colors.white,

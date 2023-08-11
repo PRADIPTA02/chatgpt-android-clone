@@ -224,8 +224,6 @@ class LoginScreen extends StatelessWidget {
                                         password: authProvider
                                             .login_password_controller.text,
                                         context: context);
-                                        
-                                        Navigator.pop(context);
                                   }
                             },
                             child: const AuthSubmitButton(

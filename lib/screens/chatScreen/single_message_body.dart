@@ -169,12 +169,7 @@ class SingleMessageBody extends StatelessWidget {
                                   },
                               splashColor: Colors.transparent,
                               highlightColor: Colors.transparent,
-                              icon: isDisLiked
-                                  ? const Icon(
-                                      Icons.thumb_down_alt,
-                                      color: Color.fromARGB(255, 244, 67, 54),
-                                    )
-                                  : const Icon(
+                              icon: const Icon(
                                       Icons.content_copy,
                                       color: Colors.grey,
                                     )),

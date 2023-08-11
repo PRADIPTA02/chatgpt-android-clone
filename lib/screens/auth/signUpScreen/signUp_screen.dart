@@ -1,6 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers
 import 'package:chatgpt/screens/auth/common/authSubmtButton.dart';
 import 'package:chatgpt/screens/auth/loginScreen/login_screen.dart';
+import 'package:chatgpt/screens/homeScreen/home_screen.dart';
 import 'package:chatgpt/util/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -699,14 +700,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           );
                         } else if (signupformKey.currentState!.validate()) {
                           authProvider.changeIsLoading(true);
-                          authProvider.signUp(
+                          await authProvider.signUp(
                             profile_image: authProvider.giveRandomavater(),
                             gender: _selectedGender,
                             birthday: pickedtime,
                             country: _selectedCountry,
                             fullname: signupFullNameController.text,
-                            email: signupEmailController.text,
+                            email: authProvider.login_email_controller.text,
                             password: signupPasswordController.text,
+                            context: context,
                           );
                         }
                       },
